@@ -1,0 +1,10 @@
+# DJANGO
+__pycache__
+db.sqlite3
+
+# ENVIRONMENT
+venv
+.env
+
+# DOCs
+commit.md
