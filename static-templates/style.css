@@ -34,7 +34,6 @@
 
 .table-background {
     min-height: 400px;
-    padding: 10px;
     border-radius: 10px;
     background-color: var(--white-color);
     margin-bottom: 5rem;

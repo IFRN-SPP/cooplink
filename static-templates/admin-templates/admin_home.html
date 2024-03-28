@@ -29,27 +29,27 @@
                 <!-- Sidebar Navigation -->
                 <ul class="sidebar-nav">
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link"> Início </a>
+                        <a href="admin_home.html" class="sidebar-link"> Início </a>
                     </li>
 
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link"> Pedidos </a>
+                        <a href="admin_home.html" class="sidebar-link"> Pedidos </a>
                     </li>
 
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link"> Chamadas </a>
+                        <a href="chamadas_table.html" class="sidebar-link"> Chamadas </a>
                     </li>
 
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link"> Instituições </a>
+                        <a href="instituicoes_table.html" class="sidebar-link"> Instituições </a>
                     </li>
 
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link"> Produtos </a>
+                        <a href="produtos_table.html" class="sidebar-link"> Produtos </a>
                     </li>
 
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link"> Usuários </a>
+                        <a href="usuarios_table.html" class="sidebar-link"> Usuários </a>
                     </li>
                 </ul>
             </div>
@@ -65,7 +65,53 @@
             <main class="content px-3 py-2">
                 <div class="container-fluid">
                     <div class="mb-3">
-                        <h3>Bootstrap Sidebar Tutorial</h3>
+                        <!-- Tabela dos pedidos -->
+                        <div class="table-background">
+                            <div class="content-header d-flex justify-content-between">
+                                <h3 class="poppins-bold">Pedidos</h3>
+                                <div>
+                                    <button class="btn btn-success">Ordenar</button>
+                                    <button class="btn btn-success"> <i class="bi bi-plus-circle"></i> Novo pedido
+                                    </button>
+                                </div>
+                            </div>
+
+                            <table class="table table-striped mt-4">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">N°</th>
+                                        <th scope="col">INSTITUIÇÃO</th>
+                                        <th scope="col">STATUS</th>
+                                        <th scope="col">FEITO EM</th>
+                                        <th scope="col">AUTOR</th>
+                                        <th scope="col">OPÇÕES</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider">
+                                    <tr>
+                                        <th>1</th>
+                                        <td>IFRN SPP</td>
+                                        <td>Pendente</td>
+                                        <td>12/12/2023</td>
+                                        <td>Pedro</td>
+                                        <td>
+                                            <button class="btn btn-success"><i class="bi bi-three-dots-vertical"> </i> </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- Pagination -->
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center mt-5">
+                                    <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">Próxima</a></li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </main>
