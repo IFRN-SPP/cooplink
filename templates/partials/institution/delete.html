@@ -1,0 +1,17 @@
+<form method="post" action="{% url 'js-delete-institution' object.pk %}" class="js-delete-form">
+  {% csrf_token %}
+
+  <div class="modal-header">
+      <h4 class="modal-title">Deletar </h4>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+  </div>
+
+  <div class="modal-body">
+      <p>Deletar: <strong>{{ object }}</strong>?</p>
+  </div>        
+
+  <div class="modal-footer">
+      <button type="submit" class="btn btn-danger">Deletar</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+  </div>
+</form>
