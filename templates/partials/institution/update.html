@@ -1,19 +1,3 @@
 <form method="post" action="{% url 'js-update-institution' form.instance.pk %}" class="js-update-form">
-  {% csrf_token %}
 
-  <div class="modal-header">
-      <h4 class="modal-title">Editar</h4>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-  </div>
-
-  <div class="modal-body">
-      <strong>{{form.instance}}</strong>  
-      <p class='lead'>Preencha todos os campos obrigatórios.</p>
-      {{ form.as_p }}
-  </div>
-
-  <div class="modal-footer">
-      <button type="submit" class="btn btn-success">Salvar</button>
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-  </div>
-</form>
+{% include "partials/form.html" with modal_form=True title="Editar Instituição" button_text="Salvar" button_class="btn-primary" %}

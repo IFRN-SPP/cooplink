@@ -7,7 +7,7 @@ def index(request):
     return render(request, 'index.html')
 
 class InstitutionList(JsonListView):
-    template_name = 'institution/institution-list.html'
+    template_name = 'institution/list.html'
     partial_list = 'partials/institution/list.html'
     model = Institution
         
