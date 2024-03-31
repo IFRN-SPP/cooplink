@@ -6,6 +6,7 @@ from .models import *
 def index(request):
     return render(request, 'index.html')
 
+# CRUD INSTITUIÇÃO
 class InstitutionList(JsonListView):
     template_name = 'institution/list.html'
     partial_list = 'partials/institution/list.html'
@@ -21,3 +22,20 @@ class InstitutionUpdate(JsonUpdateView, InstitutionList):
 
 class InstitutionDelete(JsonDeleteView, InstitutionList):
     template_name = 'partials/institution/delete.html'
+
+# CRUD PRODUTOS
+class ProductList(JsonListView):
+    template_name = 'product/list.html'
+    partial_list = 'partials/product/list.html'
+    model = Product
+
+class ProductCreate(JsonCreateView, ProductList):
+    template_name = 'partials/product/create.html'
+    form_class = ProductForm
+
+class ProductUpdate(JsonUpdateView, ProductList):
+    template_name = 'partials/product/update.html'
+    form_class = ProductForm
+
+class ProductDelete(JsonDeleteView, ProductList):
+    template_name = 'partials/product/delete.html'

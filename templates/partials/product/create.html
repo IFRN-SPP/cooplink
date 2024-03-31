@@ -1,0 +1,3 @@
+<form method="post" action="{% url "js-create-product" %}" class="js-create-form">
+
+{% include "partials/form.html" with modal_form=True title="Cadastrar Produto" button_text="Cadastrar" button_class="btn-success" %}

@@ -8,3 +8,8 @@ class InstitutionForm(forms.ModelForm):
         model = Institution
         fields = ("__all__")
 
+class ProductForm(forms.ModelForm):
+    
+    class Meta:
+        model = Product
+        fields = ("__all__")

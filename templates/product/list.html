@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Produtos{% endblock title %}
+{% block content %}
+
+<div class="modal fade" id="modal-form">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+    </div>
+  </div>
+</div>
+
+<div class="container justify-content-center">
+
+  <h1>Produtos</h1>
+  <a href="{% url 'index' %}">index</a>
+  <br>
+  <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-product' %}">Cadastrar Produto</button>
+  
+  <table class="table" id="table-json">
+    <thead>
+      <th>PK</th>
+      <th>Nome</th>
+      <th>Unidade</th>
+    </thead>
+    <tbody>
+      {% include 'partials/product/list.html' %}
+    </tbody>
+  </table>
+
+</div>
+
+{% endblock content %}
+{% block script %}
+<script src="{% static 'js/event.js' %}"></script>
+{% endblock script %}

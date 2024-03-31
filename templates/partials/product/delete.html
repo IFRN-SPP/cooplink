@@ -1,0 +1,3 @@
+<form method="post" action="{% url 'js-delete-product' object.pk %}" class="js-delete-form">
+    
+{% include "partials/form.html" with modal_delete=True title="Excluir Produto" button_text="Excluir" button_class="btn-danger" %}
