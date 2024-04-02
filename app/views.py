@@ -39,3 +39,20 @@ class ProductUpdate(JsonUpdateView, ProductList):
 
 class ProductDelete(JsonDeleteView, ProductList):
     template_name = 'partials/product/delete.html'
+
+# CRUD USUARIO
+class UserList(JsonListView):
+    template_name = 'user/list.html'
+    partial_list = 'partials/user/list.html'
+    model = UserProfile
+
+class UserCreate(JsonCreateView, UserList):
+    template_name = 'partials/user/create.html'
+    form_class = UserCreateForm
+
+class UserUpdate(JsonUpdateView, UserList):
+    template_name =  'partials/user/update.html'
+    form_class = UserUpdateForm
+
+class UserDelete(JsonDeleteView, UserList):
+    template_name =  'partials/user/delete.html'

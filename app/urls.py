@@ -14,7 +14,12 @@ urlpatterns = [
     # CRUD Produtos com Ajax
     path("produtos/", ProductList.as_view(), name="product-list"),
     path("js/create/product/", ProductCreate.as_view(), name="js-create-product"),
-    path("js/update/product/<int:pk>", ProductUpdate.as_view(), name="js-update-product"),
-    path("js/delete/product/<int:pk>", ProductDelete.as_view(), name="js-delete-product"),
+    path("js/update/product/<int:pk>/", ProductUpdate.as_view(), name="js-update-product"),
+    path("js/delete/product/<int:pk>/", ProductDelete.as_view(), name="js-delete-product"),
 
+    # CRUD Usuáro com Ajax
+    path("usuarios/", UserList.as_view(), name="user-list"),
+    path("js/create/user/", UserCreate.as_view(), name="js-create-user"),
+    path("js/update/user/<int:pk>/", UserUpdate.as_view(), name="js-update-user"),
+    path("js/delete/user/<int:pk>/", UserDelete.as_view(), name="js-delete-user"),
 ]

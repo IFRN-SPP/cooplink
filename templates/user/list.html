@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Usuários{% endblock title %}
+{% block content %}
+
+<div class="modal fade" id="modal-form">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+    </div>
+  </div>
+</div>
+
+<div class="container justify-content-center">
+
+  <h1>Usuários</h1>
+  <a href="{% url 'index' %}">index</a>
+  <br>
+  <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-user' %}">Cadastrar Usuário</button>
+  
+  <table class="table" id="table-json">
+    <thead>
+      <th>PK</th>
+      <th>Username</th>
+      <th>Nome</th>
+      <th>Instituição</th>
+      <th>Ativo</th>
+      <th>Administrador</th>
+    </thead>
+    <tbody>
+      {% include 'partials/user/list.html' %}
+    </tbody>
+  </table>
+
+</div>
+
+{% endblock content %}
+{% block script %}
+<script src="{% static 'js/event.js' %}"></script>
+{% endblock script %}

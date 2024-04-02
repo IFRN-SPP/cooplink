@@ -1,0 +1,14 @@
+{% for object in object_list %}
+<tr>
+  <th>{{object.pk}}</th>
+  <th>{{object.username}}</th>
+  <th>{{object.first_name}}</th>
+  <th>{{object.institution}}</th>
+  <th>{{object.is_active}}</th>
+  <th>{{object.is_staff}}</th>
+  <th>
+    <a class="js-update btn btn-secondary" data-url="{% url 'js-update-user' object.pk %}">Editar</a>
+    <a class="js-delete btn btn-danger" data-url="{% url 'js-delete-user' object.pk %}">Deletar</a>
+  </th> 
+</tr>
+{% endfor %}

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 class Institution(models.Model):
     name = models.CharField(max_length=100)
@@ -8,12 +8,11 @@ class Institution(models.Model):
     def __str__(self):
         return self.name
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    institution = models.ForeignKey(Institution, on_delete=models.CASCADE)
+class UserProfile(AbstractUser):
+    institution = models.ForeignKey(Institution, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.user.username
+        return self.username
 
 class Call(models.Model):
     number = models.CharField( max_length=50)
