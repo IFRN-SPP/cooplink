@@ -63,21 +63,28 @@
                     </thead>
                     <tbody class="table-group-divider">
                         <tr>
-                            <td>Produto 001</td>
-                            <td>100 KG</td>
+                            <!-- Produto do pedido -->
+                            <td>
+                                <select name="produto" class="form-select">
+                                    <option value="abacaxi">Abacaxi</option>
+                                    <option value="acerola">Acerola</option>
+                                </select>
+                            </td>
+
+                            <!-- Quantidade do pedido -->
+                            <td>
+                                <input type="number" name="quantidade">
+                                <label for="quantidade" class="form-label">KG</label>
+                            </td>
+
+                            <!-- Saldo atual -->
                             <td>500 KG</td>
+
                             <td>
-                                <button class="btn btn-danger"> Apagar <i class="bi bi-dash-circle"></i> </button>
+                                <button class="btn btn-danger"> <i class="bi bi-dash-circle"></i> </button>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Produto 002</td>
-                            <td>100 KG</td>
-                            <td>100 UNI</td>
-                            <td>
-                                <button class="btn btn-danger"> Apagar <i class="bi bi-dash-circle"></i> </button>
-                            </td>
-                        </tr>
+                        
                         <tr>
                             <td colspan="4">
                                 <button class="btn btn-success"> ADICIONAR PRODUTO <i class="bi bi-plus-circle"></i>
@@ -86,11 +93,13 @@
                         </tr>
                     </tbody>
                 </table>
+                
+                <div class="d-flex align-items-baseline justify-content-end mt-5 gap-5">
+                    <button class="btn btn-success" type="submit">Fazer pedido</button>
+                </div>
             </form>
 
-            <div class="d-flex align-items-baseline justify-content-end mt-5 gap-5">
-                <button class="btn btn-success">Fazer pedido</button>
-            </div>
+
         </div>
     </div>
 </body>
