@@ -67,7 +67,7 @@
                     <div class="mb-3">
                         <div class="table-background">
                             <div class="content-header d-flex justify-content-between">
-                                <h3 class="poppins-bold">Pedidos</h3>
+                                <h3 class="poppins-bold">Usuários</h3>
                                 <div>
                                     <button class="btn btn-success"> <i class="bi bi-plus-circle"></i> Cadastrar usuário
                                     </button>
@@ -93,8 +93,19 @@
                                         <td>SIM</td>
                                         <td>ATIVO</td>
                                         <td>
-                                            <button class="btn btn-success"><i class="bi bi-three-dots-vertical"> </i>
-                                            </button>
+                                            <!-- Dropdown menu -->
+                                            <div class="dropdown">
+                                                <button class="btn btn-success" type="button"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="bi bi-three-dots-vertical"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-fill"></i> Editar informações do usuário</a></li>
+                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-exclamation-triangle-fill"></i> Alterar permissões do usuário</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-trash3-fill"></i> Excluir</a></li>
+                                                </ul>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
