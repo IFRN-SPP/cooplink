@@ -1,0 +1,8 @@
+<a href="{% url 'institution-list' %}">Instituições</a>
+<a href="{% url 'product-list' %}">Produtos</a>
+<a href="{% url 'user-list' %}">Usuários</a>
+<a href="{% url 'call-list' %}">Chamadas</a>
+{% if user.is_authenticated %}
+{{request.user}}
+<form action="{% url "logout" %}" method="post">{% csrf_token %}<button type="submit">Logout</button></form>
+{% endif %}

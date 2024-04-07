@@ -1,4 +1,8 @@
 from django.shortcuts import render
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+
 from .ajax import *
 from .models import *
 
@@ -7,11 +11,12 @@ from django.views.generic.list import ListView
 from django.urls import reverse_lazy
 
 # Create your views here.
+@login_required
 def index(request):
     return render(request, 'index.html')
 
 # CRUD INSTITUIÇÃO
-class InstitutionList(JsonListView):
+class InstitutionList(LoginRequiredMixin, JsonListView):
     template_name = 'institution/list.html'
     partial_list = 'partials/institution/list.html'
     model = Institution
@@ -28,7 +33,7 @@ class InstitutionDelete(JsonDeleteView, InstitutionList):
     template_name = 'partials/institution/delete.html'
 
 # CRUD PRODUTOS
-class ProductList(JsonListView):
+class ProductList(LoginRequiredMixin, JsonListView):
     template_name = 'product/list.html'
     partial_list = 'partials/product/list.html'
     model = Product
@@ -45,7 +50,7 @@ class ProductDelete(JsonDeleteView, ProductList):
     template_name = 'partials/product/delete.html'
 
 # CRUD USUARIO
-class UserList(JsonListView):
+class UserList(LoginRequiredMixin, JsonListView):
     template_name = 'user/list.html'
     partial_list = 'partials/user/list.html'
     model = UserProfile
@@ -64,26 +69,23 @@ class UserDelete(JsonDeleteView, UserList):
 
 #CRUD CHAMADA
 
-class CallList(ListView):
+class CallList(LoginRequiredMixin, ListView):
     model= Call
     template_name = 'call/list.html'
 
-class CallCreate(CreateView):
+class CallCreate(LoginRequiredMixin, CreateView):
     model = Call
     fields = ['number', 'institution', 'start','end', 'active']
     template_name = 'call/create.html'
     success_url = reverse_lazy('call-list')
 
-class CallUpdate(UpdateView):
+class CallUpdate(LoginRequiredMixin, UpdateView):
     model = Call
     fields = ['number', 'institution', 'start','end', 'active']
     template_name = 'call/create.html'
     success_url = reverse_lazy('call-list')
 
-class CallDelete(DeleteView):
+class CallDelete(LoginRequiredMixin, DeleteView):
     model= Call
     template_name = 'call/delete.html'
     success_url = reverse_lazy('call-list')
-
-
-

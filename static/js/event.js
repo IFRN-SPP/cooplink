@@ -12,6 +12,7 @@ $(function(){
                 $("#modal-form .modal-content").html(data.html_form);
             }
         });
+        
     };
     
     var saveForm = function(){
@@ -87,7 +88,7 @@ $(function(){
     $("#modal-form").on("submit", ".js-delete-form", saveForm); 
     
     // PAGINATION
-    $("#page-json").on("click", ".js-link", paginatation);
+    // $("#page-json").on("click", ".js-link", paginatation);
 
     // FILTER
     $("#filter-form").on("input", filter);

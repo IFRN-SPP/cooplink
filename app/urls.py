@@ -1,9 +1,14 @@
 from django.urls import path
+from django.contrib.auth.views import LoginView, LogoutView
 from .views import *
 
 # Adicione suas URLs aqui
 urlpatterns = [
     path("", index, name="index"),
+
+    # Autenticação
+    path("login/", LoginView.as_view(), name="login"),
+    path("logout/", LogoutView.as_view(), name="logout"),
 
     # CRUD Instituição com Ajax
     path('instituicoes/', InstitutionList.as_view(), name='institution-list'),
@@ -23,7 +28,7 @@ urlpatterns = [
     path("js/update/user/<int:pk>/", UserUpdate.as_view(), name="js-update-user"),
     path("js/delete/user/<int:pk>/", UserDelete.as_view(), name="js-delete-user"),
 
-    # CRUD Call sem Ajax - Padrão Django
+    # CRUD Call - Padrão Django
     path('chamadas/', CallList.as_view(), name= 'call-list'),
     path('create/call/', CallCreate.as_view(), name='call-create'),
     path('update/call/<int:pk>/', CallUpdate.as_view(), name='update-call'),
