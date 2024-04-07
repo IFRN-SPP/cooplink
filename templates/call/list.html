@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Chamadas{% endblock title %}
+
+{% block content %}
+    <div class="container justify-content-center">
+        <h1>Chamadas</h1>
+        <a href="{% url 'index' %}">index</a>
+        <br>
+        <a href="{% url 'call-create' %}" class="btn btn-success">Cadastrar Chamada</a>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Número</th>
+                        <th>Instituição</th>
+                        <th>Início</th>
+                        <th>Término</th>
+                        <th>Situação</th>
+                        <th>Opções</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for object in object_list %}
+                        <tr>
+                            <td>{{ object.number }}</td>
+                            <td>{{ object.institution }}</td>
+                            <td>{{ object.start }}</td>
+                            <td>{{ object.end }}</td>
+                            <td>{{ object.active }}</td>
+                            <td>
+                                <a href="{% url 'update-call' object.pk %}" class="btn btn-warning btn-sm" title="Editar">E</a>
+                                <a href="{% url 'delete-call' object.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6">Nenhuma chamada até o momento</td>
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+
+    </div>
+{% endblock content %}

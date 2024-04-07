@@ -2,6 +2,10 @@ from django.shortcuts import render
 from .ajax import *
 from .models import *
 
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.list import ListView
+from django.urls import reverse_lazy
+
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
@@ -56,3 +60,30 @@ class UserUpdate(JsonUpdateView, UserList):
 
 class UserDelete(JsonDeleteView, UserList):
     template_name =  'partials/user/delete.html'
+
+
+#CRUD CHAMADA
+
+class CallList(ListView):
+    model= Call
+    template_name = 'call/list.html'
+
+class CallCreate(CreateView):
+    model = Call
+    fields = ['number', 'institution', 'start','end', 'active']
+    template_name = 'call/create.html'
+    success_url = reverse_lazy('call-list')
+
+class CallUpdate(UpdateView):
+    model = Call
+    fields = ['number', 'institution', 'start','end', 'active']
+    template_name = 'call/create.html'
+    success_url = reverse_lazy('call-list')
+
+class CallDelete(DeleteView):
+    model= Call
+    template_name = 'call/delete.html'
+    success_url = reverse_lazy('call-list')
+
+
+

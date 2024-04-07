@@ -22,4 +22,10 @@ urlpatterns = [
     path("js/create/user/", UserCreate.as_view(), name="js-create-user"),
     path("js/update/user/<int:pk>/", UserUpdate.as_view(), name="js-update-user"),
     path("js/delete/user/<int:pk>/", UserDelete.as_view(), name="js-delete-user"),
+
+    # CRUD Call sem Ajax - Padrão Django
+    path('chamadas/', CallList.as_view(), name= 'call-list'),
+    path('create/call/', CallCreate.as_view(), name='call-create'),
+    path('update/call/<int:pk>/', CallUpdate.as_view(), name='update-call'),
+    path('delete/call/<int:pk>/', CallDelete.as_view(), name='delete-call'),
 ]
