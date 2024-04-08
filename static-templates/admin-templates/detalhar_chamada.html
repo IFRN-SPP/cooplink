@@ -68,14 +68,19 @@
                     <div class="mb-3">
                         <!-- Tabela das chamadas -->
                         <div class="table-background">
-                            <div class="content-header">
+                            <div class="content-header d-flex justify-content-between">
                                 <h3 class="poppins-bold">Chamada 001</h3>
                                 <div class="content-header">
-                                    <p>INSTITUIÇÃO: IFRN</p>
-                                    <p>INÍCIO: xx/xx/xxxx</p>
-                                    <p>TÉRMINO: xx/xx/xxxx</p>
+                                    <button class="btn btn-success">
+                                        Editar chamada
+                                    </button>
                                 </div>
+                            </div>
 
+                            <div class="content-header">
+                                <p>INSTITUIÇÃO: IFRN</p>
+                                <p>INÍCIO: xx/xx/xxxx</p>
+                                <p>TÉRMINO: xx/xx/xxxx</p>
                             </div>
 
                             <table class="table table-striped mt-4">
@@ -93,18 +98,9 @@
                                         <td>100 KG</td>
                                         <td>500 KG</td>
                                         <td>
-                                            <!-- Dropdown menu -->
-                                            <div class="dropdown">
-                                                <button class="btn btn-success" type="button"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="bi bi-three-dots-vertical"></i>
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-fill"></i> Editar informações da chamada </a></li>
-                                                    <li><hr class="dropdown-divider"></li>
-                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-trash3-fill"></i> Excluir</a></li>
-                                                </ul>
-                                            </div>
+                                            <button class="btn btn-danger">
+                                                <i class="bi bi-trash3-fill"></i> Excluir
+                                            </button>    
                                         </td>
                                     </tr>
                                 </tbody>

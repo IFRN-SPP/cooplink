@@ -70,8 +70,53 @@
                             <div class="content-header d-flex justify-content-between">
                                 <h3 class="poppins-bold">Produtos</h3>
                                 <div>
-                                    <button class="btn btn-success"> <i class="bi bi-plus-circle"></i> Adicionar produto
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal"> <i class="bi bi-plus-circle"></i> Adicionar
+                                        produto
                                     </button>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form action="#" method="POST">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastrar
+                                                        produto
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close">
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal-body">
+
+
+                                                    <div class="form-group">
+                                                        <label for="nome">Nome: </label>
+                                                        <input type="text" id="nome" name="nome" required>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="unidade">Unidade: </label>
+                                                        <select name="unidade">
+                                                            <option value="kg">KG</option>
+                                                            <option value="uni">UNI</option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger"
+                                                        data-bs-dismiss="modal">Cancelar</button>
+                                                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -92,14 +137,19 @@
                                         <td>
                                             <!-- Dropdown menu -->
                                             <div class="dropdown">
-                                                <button class="btn btn-success" type="button"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                <button class="btn btn-success" type="button" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
                                                     <i class="bi bi-three-dots-vertical"></i>
                                                 </button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-fill"></i> Editar informações do produto</a></li>
-                                                    <li><hr class="dropdown-divider"></li>
-                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-trash3-fill"></i> Excluir</a></li>
+                                                    <li><a class="dropdown-item" href="#"> <i
+                                                                class="bi bi-pencil-fill"></i> Editar informações do
+                                                            produto</a></li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li><a class="dropdown-item" href="#"> <i
+                                                                class="bi bi-trash3-fill"></i> Excluir</a></li>
                                                 </ul>
                                             </div>
                                         </td>

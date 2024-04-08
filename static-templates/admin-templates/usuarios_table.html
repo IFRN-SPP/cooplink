@@ -69,8 +69,53 @@
                             <div class="content-header d-flex justify-content-between">
                                 <h3 class="poppins-bold">Usuários</h3>
                                 <div>
-                                    <button class="btn btn-success"> <i class="bi bi-plus-circle"></i> Cadastrar usuário
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal"> <i class="bi bi-plus-circle"></i> Cadastrar
+                                        usuário
                                     </button>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form action="#" method="POST">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastrar
+                                                        usuário
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close">
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+
+
+                                                    <div class="form-group">
+                                                        <label for="nome">Nome: </label>
+                                                        <input type="text" name="nome" required>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="senha">Senha: </label>
+                                                        <input type="text" name="senha" required>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="instituicao">Instituição: </label>
+                                                        <input type="text" name="instituicao" required>
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger"
+                                                        data-bs-dismiss="modal">Cancelar</button>
+                                                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -95,15 +140,22 @@
                                         <td>
                                             <!-- Dropdown menu -->
                                             <div class="dropdown">
-                                                <button class="btn btn-success" type="button"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                <button class="btn btn-success" type="button" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
                                                     <i class="bi bi-three-dots-vertical"></i>
                                                 </button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-fill"></i> Editar informações do usuário</a></li>
-                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-exclamation-triangle-fill"></i> Alterar permissões do usuário</a></li>
-                                                    <li><hr class="dropdown-divider"></li>
-                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-trash3-fill"></i> Excluir</a></li>
+                                                    <li><a class="dropdown-item" href="#"> <i
+                                                                class="bi bi-pencil-fill"></i> Editar informações do
+                                                            usuário</a></li>
+                                                    <li><a class="dropdown-item" href="#"> <i
+                                                                class="bi bi-exclamation-triangle-fill"></i> Alterar
+                                                            permissões do usuário</a></li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li><a class="dropdown-item" href="#"> <i
+                                                                class="bi bi-trash3-fill"></i> Excluir</a></li>
                                                 </ul>
                                             </div>
                                         </td>

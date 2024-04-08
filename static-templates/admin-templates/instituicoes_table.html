@@ -69,10 +69,60 @@
                             <div class="content-header d-flex justify-content-between">
                                 <h3 class="poppins-bold">Instituições</h3>
                                 <div>
-                                    <button class="btn btn-success"> <i class="bi bi-plus-circle"></i> Adicionar
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal"> <i class="bi bi-plus-circle"></i> Adicionar
                                         instituição
                                     </button>
                                 </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form action="#" method="POST">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastrar
+                                                        instituição
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close">
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal-body">
+
+
+                                                    <div class="form-group">
+                                                        <label for="nome">Nome:</label>
+                                                        <input type="text" id="nome" name="nome" required>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="cnpj">CNPJ:</label>
+                                                        <input type="text" id="cnpj" name="cnpj" required>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="responsavel">Responsável: </label>
+                                                        <select name="responsavel" required>
+                                                            <option value="kg">Ana</option>
+                                                            <option value="uni">Pedro</option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger"
+                                                        data-bs-dismiss="modal">Cancelar</button>
+                                                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
                             <table class="table table-striped mt-4">
@@ -92,15 +142,21 @@
                                         <td>
                                             <!-- Dropdown menu -->
                                             <div class="dropdown">
-                                                <button class="btn btn-success" type="button"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                <button class="btn btn-success" type="button" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
                                                     <i class="bi bi-three-dots-vertical"></i>
                                                 </button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-fill"></i> Editar informações da instituição</a></li>
-                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-eye-fill"></i> Detalhar </a></li>
-                                                    <li><hr class="dropdown-divider"></li>
-                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-trash3-fill"></i> Excluir</a></li>
+                                                    <li><a class="dropdown-item" href="#"> <i
+                                                                class="bi bi-pencil-fill"></i> Editar informações da
+                                                            instituição</a></li>
+                                                    <li><a class="dropdown-item" href="#"> <i
+                                                                class="bi bi-eye-fill"></i> Detalhar </a></li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li><a class="dropdown-item" href="#"> <i
+                                                                class="bi bi-trash3-fill"></i> Excluir</a></li>
                                                 </ul>
                                             </div>
                                         </td>
