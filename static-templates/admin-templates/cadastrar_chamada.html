@@ -29,11 +29,11 @@
                 <!-- Sidebar Navigation -->
                 <ul class="sidebar-nav">
                     <li class="sidebar-item">
-                        <a href="admin_home.html" class="sidebar-link"> Início </a>
+                        <a href="pedidos_table.html" class="sidebar-link"> Início </a>
                     </li>
 
                     <li class="sidebar-item">
-                        <a href="admin_home.html" class="sidebar-link"> Pedidos </a>
+                        <a href="pedidos_table.html" class="sidebar-link"> Pedidos </a>
                     </li>
 
                     <li class="sidebar-item">
@@ -71,31 +71,31 @@
                             <div class="content-header d-flex align-items-baseline">
                                 <p>INSTITUIÇÃO:</p>
                                 <div class="mx-3">
-                                    <button class="btn btn-success"> Selecione <i class="bi bi-plus-circle"></i>
+                                    <button type="button" class="btn btn-success"> Selecione <i class="bi bi-plus-circle"></i>
                                     </button>
 
-                                    <button class="btn btn-success"> Cadastrar instituição <i
+                                    <button type="button" class="btn btn-success"> Cadastrar instituição <i
                                             class="bi bi-plus-circle"></i>
                                     </button>
                                 </div>
                             </div>
-
-                            <div class="content-header d-flex align-items-baseline">
-                                <p>INÍCIO: </p>
-                                <div class="mx-3">
-                                    <input type="date" name="inicio" class="form-control">
+                            <form action="chamadas_table.html">
+                                <div class="content-header d-flex align-items-baseline">
+                                    <p>INÍCIO: </p>
+                                    <div class="mx-3">
+                                        <input type="date" name="inicio" class="form-control">
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="content-header d-flex align-items-baseline">
-                                <p>TÉRMINO: </p>
-                                <div class="mx-3">
-                                    <input type="date" name="termino" class="form-control">
+                                <div class="content-header d-flex align-items-baseline">
+                                    <p>TÉRMINO: </p>
+                                    <div class="mx-3">
+                                        <input type="date" name="termino" class="form-control">
+                                    </div>
                                 </div>
-                            </div>
 
-                            <form action="#">
-                                <table class="table table-striped mt-4">
+
+                                <table class="table table-striped mt-4 table-scroll">
                                     <thead>
                                         <tr>
                                             <th scope="col">PRODUTO</th>
@@ -114,14 +114,15 @@
                                                 </select>
                                             </th>
                                             <!-- Saldo -->
-                                            <td>
-                                                <input type="number" name="saldo">
+                                            <td>                                                
+                                                <input type="number" name="saldo" class="input-control"> 
                                                 <label for="saldo" class="form-label">KG</label>
                                             </td>
+
                                             <!-- Preço -->
                                             <td>
                                                 <label for="preco" class="form-label">R$</label>
-                                                <input type="number" name="preco">
+                                                <input type="number" name="preco" class="input-control">
                                             </td>
                                             <td>
                                                 <button class="btn btn-danger"> <i class="bi bi-dash-circle"></i>
@@ -139,13 +140,13 @@
                                             </th>
                                             <!-- Saldo -->
                                             <td>
-                                                <input type="number" name="saldo">
+                                                <input type="number" name="saldo" class="input-control">
                                                 <label for="saldo" class="form-label">KG</label>
                                             </td>
                                             <!-- Preço -->
                                             <td>
                                                 <label for="preco" class="form-label">R$</label>
-                                                <input type="number" name="preco">
+                                                <input type="number" name="preco" class="input-control">
                                             </td>
                                             <td>
                                                 <button class="btn btn-danger"> <i class="bi bi-dash-circle"></i>
@@ -155,8 +156,8 @@
 
                                         <tr>
                                             <td colspan="4">
-                                                <button class="btn btn-success"> ADICIONAR PRODUTO 
-                                                    <i class="bi bi-plus-circle"></i> 
+                                                <button type="button" class="btn btn-success"> ADICIONAR PRODUTO
+                                                    <i class="bi bi-plus-circle"></i>
                                                 </button>
                                             </td>
                                         </tr>

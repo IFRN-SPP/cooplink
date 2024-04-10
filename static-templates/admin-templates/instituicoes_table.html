@@ -29,11 +29,11 @@
                 <!-- Sidebar Navigation -->
                 <ul class="sidebar-nav">
                     <li class="sidebar-item">
-                        <a href="admin_home.html" class="sidebar-link"> Início </a>
+                        <a href="pedidos_table.html" class="sidebar-link"> Início </a>
                     </li>
 
                     <li class="sidebar-item">
-                        <a href="admin_home.html" class="sidebar-link"> Pedidos </a>
+                        <a href="pedidos_table.html" class="sidebar-link"> Pedidos </a>
                     </li>
 
                     <li class="sidebar-item">
@@ -92,23 +92,27 @@
 
                                                 <div class="modal-body">
 
+                                                    <div class="d-flex flex-column">
+                                                        <div class="form-group">
+                                                            <label for="nome" class="form-label">Nome:</label>
+                                                            <input type="text" id="nome" name="nome"
+                                                                class="form-control" required>
+                                                        </div>
 
-                                                    <div class="form-group">
-                                                        <label for="nome">Nome:</label>
-                                                        <input type="text" id="nome" name="nome" required>
-                                                    </div>
+                                                        <div class="form-group">
+                                                            <label for="cnpj" class="form-label">CNPJ:</label>
+                                                            <input type="text" id="cnpj" name="cnpj"
+                                                                class="form-control" required>
+                                                        </div>
 
-                                                    <div class="form-group">
-                                                        <label for="cnpj">CNPJ:</label>
-                                                        <input type="text" id="cnpj" name="cnpj" required>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="responsavel">Responsável: </label>
-                                                        <select name="responsavel" required>
-                                                            <option value="kg">Ana</option>
-                                                            <option value="uni">Pedro</option>
-                                                        </select>
+                                                        <div class="form-group">
+                                                            <label for="responsavel" class="form-label">Responsável:
+                                                            </label>
+                                                            <select name="responsavel" class="form-select" required>
+                                                                <option value="kg">Ana</option>
+                                                                <option value="uni">Pedro</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
 
                                                 </div>

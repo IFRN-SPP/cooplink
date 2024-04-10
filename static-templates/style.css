@@ -8,11 +8,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
     font-family: "Poppins", sans-serif;
 }
 
-    body {
+body {
     background-color: var(--main-bg-color);
 }
 
@@ -34,6 +33,7 @@
 
 .table-background {
     min-height: 400px;
+    max-height: auto;
     border-radius: 10px;
     background-color: var(--white-color);
     margin-bottom: 5rem;
@@ -43,6 +43,13 @@
 .content-header p {
     font-size: 20px;
 }
+
+.input-control {
+    padding: .375rem .75rem;
+    border-radius: .375rem;
+    border: 1px #dee2e6 solid;
+}
+
 
 /* SIDEBAR */
 

@@ -29,11 +29,11 @@
                 <!-- Sidebar Navigation -->
                 <ul class="sidebar-nav">
                     <li class="sidebar-item">
-                        <a href="admin_home.html" class="sidebar-link"> Início </a>
+                        <a href="pedidos_table.html" class="sidebar-link"> Início </a>
                     </li>
 
                     <li class="sidebar-item">
-                        <a href="admin_home.html" class="sidebar-link"> Pedidos </a>
+                        <a href="pedidos_table.html" class="sidebar-link"> Pedidos </a>
                     </li>
 
                     <li class="sidebar-item">
@@ -68,21 +68,33 @@
                     <div class="mb-3">
                         <!-- Tabela das chamadas -->
                         <div class="table-background">
-                            <div class="content-header d-flex justify-content-between">
-                                <h3 class="poppins-bold">Chamada 001</h3>
-                                <div class="content-header">
-                                    <button class="btn btn-success">
-                                        Editar chamada
-                                    </button>
+                            <div class="content-header">
+                                <div class="d-flex justify-content-between">
+
+                                    <div class="d-flex align-items-baseline gap-3 mb-3">
+                                        <h3 class="poppins-bold">Chamada 001</h3>
+                                        <p class="bg-success p-2 text-white rounded">ATIVO</p>
+                                    </div>
+
+                                    <div class="content-header">
+                                        <a class="btn btn-success" href="cadastrar_chamada.html">
+                                            Editar chamada
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-column gap-2">
+                                    <div>
+                                        <p>INSTITUIÇÃO: IFRN</p>
+                                        
+                                    </div>
+                                    <div class="d-flex gap-3">
+                                        <p>INÍCIO: xx/xx/xxxx</p>
+                                        <p>TÉRMINO: xx/xx/xxxx</p>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="content-header">
-                                <p>INSTITUIÇÃO: IFRN</p>
-                                <p>INÍCIO: xx/xx/xxxx</p>
-                                <p>TÉRMINO: xx/xx/xxxx</p>
-                            </div>
-
                             <table class="table table-striped mt-4">
                                 <thead>
                                     <tr>
@@ -100,7 +112,7 @@
                                         <td>
                                             <button class="btn btn-danger">
                                                 <i class="bi bi-trash3-fill"></i> Excluir
-                                            </button>    
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>

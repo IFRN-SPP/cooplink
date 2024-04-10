@@ -29,11 +29,11 @@
                 <!-- Sidebar Navigation -->
                 <ul class="sidebar-nav">
                     <li class="sidebar-item">
-                        <a href="admin_home.html" class="sidebar-link"> Início </a>
+                        <a href="pedidos_table.html" class="sidebar-link"> Início </a>
                     </li>
 
                     <li class="sidebar-item">
-                        <a href="admin_home.html" class="sidebar-link"> Pedidos </a>
+                        <a href="pedidos_table.html" class="sidebar-link"> Pedidos </a>
                     </li>
 
                     <li class="sidebar-item">
@@ -89,25 +89,28 @@
                                                         aria-label="Close">
                                                     </button>
                                                 </div>
+
+                                                <!-- Modal body -->
                                                 <div class="modal-body">
-
-
-                                                    <div class="form-group">
-                                                        <label for="nome">Nome: </label>
-                                                        <input type="text" name="nome" required>
+                                                    <div class="d-flex flex-column column-gap-5">
+                                                        <div class="form-group">
+                                                            <label for="nome" class="form-label">Nome: </label>
+                                                            <input type="text" name="nome" class="form-control" required>
+                                                        </div>
+    
+                                                        <div class="form-group">
+                                                            <label for="senha" class="form-label">Senha: </label>
+                                                            <input type="text" name="senha" class="form-control" required>
+                                                        </div>
+    
+                                                        <div class="form-group">
+                                                            <label for="instituicao" class="form-label">Instituição: </label>
+                                                            <input type="text" name="instituicao" class="form-control" required>
+                                                        </div>
                                                     </div>
-
-                                                    <div class="form-group">
-                                                        <label for="senha">Senha: </label>
-                                                        <input type="text" name="senha" required>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="instituicao">Instituição: </label>
-                                                        <input type="text" name="instituicao" required>
-                                                    </div>
-
                                                 </div>
+
+                                                <!-- Modal footer -->
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-danger"
                                                         data-bs-dismiss="modal">Cancelar</button>
