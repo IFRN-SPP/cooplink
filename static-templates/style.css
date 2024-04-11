@@ -40,7 +40,7 @@ body {
     padding: 2rem;
 }
 
-.content-header p {
+.content-header p, .content-header label {
     font-size: 20px;
 }
 

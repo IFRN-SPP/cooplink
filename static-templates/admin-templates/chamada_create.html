@@ -67,19 +67,23 @@
                     <div class="mb-3">
                         <!-- Tabela das chamadas -->
                         <div class="table-background">
-                            <h3 class="poppins-bold">Cadastrar chamada</h3>
-                            <div class="content-header d-flex align-items-baseline">
-                                <p>INSTITUIÇÃO:</p>
-                                <div class="mx-3">
-                                    <button type="button" class="btn btn-success"> Selecione <i class="bi bi-plus-circle"></i>
-                                    </button>
+                            <form action="chamadas_table.html">
+                                <h3 class="poppins-bold">Cadastrar chamada</h3>
+                                
+                                <div class="content-header d-flex align-items-baseline gap-2">
+                                    <div class="my-3 d-flex align-items-baseline gap-2">
+                                        <label for="instituicao">INSTITUIÇÃO:</label>
+
+                                        <select name="instituicao" class="form-select">
+                                            <option value="IFRN">IFRN</option>
+                                        </select>
+                                    </div>
 
                                     <button type="button" class="btn btn-success"> Cadastrar instituição <i
                                             class="bi bi-plus-circle"></i>
                                     </button>
                                 </div>
-                            </div>
-                            <form action="chamadas_table.html">
+
                                 <div class="content-header d-flex align-items-baseline">
                                     <p>INÍCIO: </p>
                                     <div class="mx-3">
@@ -114,8 +118,8 @@
                                                 </select>
                                             </th>
                                             <!-- Saldo -->
-                                            <td>                                                
-                                                <input type="number" name="saldo" class="input-control"> 
+                                            <td>
+                                                <input type="number" name="saldo" class="input-control">
                                                 <label for="saldo" class="form-label">KG</label>
                                             </td>
 
