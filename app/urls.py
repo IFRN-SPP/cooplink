@@ -27,6 +27,9 @@ urlpatterns = [
     path("js/create/user/", UserCreate.as_view(), name="js-create-user"),
     path("js/update/user/<int:pk>/", UserUpdate.as_view(), name="js-update-user"),
     path("js/delete/user/<int:pk>/", UserDelete.as_view(), name="js-delete-user"),
+    # Update de infos do Usuário
+    path("usuario/<int:pk>/mudar-senha/", UserUpdatePassword.as_view(), name="update-user-password"),
+    path("usuario/<int:pk>/mudar-permissao", UserUpdatePermission.as_view(), name="update-user-permission"),
 
     # CRUD Call - Padrão Django
     path('chamadas/', CallList.as_view(), name= 'call-list'),

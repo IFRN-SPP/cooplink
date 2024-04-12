@@ -17,6 +17,13 @@
   <a href="{% url 'index' %}">index</a>
   <br>
   <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-user' %}">Cadastrar Usuário</button>
+  <br>
+  {% for msg in messages %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      {{msg}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
   
   <table id="partial-table"  class="table">
     <thead>
