@@ -3,7 +3,8 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
-from .ajax import *
+from .ajax import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView
+from .forms import InstitutionForm, ProductForm, UserCreateForm, UserUpdateForm
 from .models import *
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -16,55 +17,67 @@ def index(request):
     return render(request, 'index.html')
 
 # CRUD INSTITUIÇÃO
-class InstitutionList(LoginRequiredMixin, JsonListView):
+class InstitutionList(LoginRequiredMixin, AjaxListView):
+    model = Institution
     template_name = 'institution/list.html'
     partial_list = 'partials/institution/list.html'
-    model = Institution
         
-class InstitutionCreate(JsonCreateView, InstitutionList):
+class InstitutionCreate(AjaxCreateView):
+    form_class = InstitutionForm
     template_name = 'partials/institution/create.html'
-    form_class = InstitutionForm
+    success_url = reverse_lazy('institution-list')
 
-class InstitutionUpdate(JsonUpdateView, InstitutionList):
+class InstitutionUpdate(AjaxUpdateView):
+    form_class = InstitutionForm
     template_name = 'partials/institution/update.html'
-    form_class = InstitutionForm
+    success_url = reverse_lazy('institution-list')
 
-class InstitutionDelete(JsonDeleteView, InstitutionList):
+class InstitutionDelete(AjaxDeleteView):
+    model = Institution
     template_name = 'partials/institution/delete.html'
+    success_url = reverse_lazy('institution-list')
 
 # CRUD PRODUTOS
-class ProductList(LoginRequiredMixin, JsonListView):
+class ProductList(LoginRequiredMixin, AjaxListView):
+    model = Product
     template_name = 'product/list.html'
     partial_list = 'partials/product/list.html'
-    model = Product
 
-class ProductCreate(JsonCreateView, ProductList):
+class ProductCreate(AjaxCreateView):
+    form_class = ProductForm
     template_name = 'partials/product/create.html'
-    form_class = ProductForm
+    success_url = reverse_lazy('product-list')
 
-class ProductUpdate(JsonUpdateView, ProductList):
+class ProductUpdate(AjaxUpdateView):
+    form_class = ProductForm
     template_name = 'partials/product/update.html'
-    form_class = ProductForm
+    success_url = reverse_lazy('product-list')
 
-class ProductDelete(JsonDeleteView, ProductList):
+class ProductDelete(AjaxDeleteView):
+    model = Product
     template_name = 'partials/product/delete.html'
+    success_url = reverse_lazy('product-list')
 
 # CRUD USUARIO
-class UserList(LoginRequiredMixin, JsonListView):
+class UserList(LoginRequiredMixin, AjaxListView):
+    model = UserProfile
     template_name = 'user/list.html'
     partial_list = 'partials/user/list.html'
-    model = UserProfile
 
-class UserCreate(JsonCreateView, UserList):
-    template_name = 'partials/user/create.html'
+class UserCreate(AjaxCreateView):
     form_class = UserCreateForm
+    template_name = 'partials/user/create.html'
+    success_url = reverse_lazy('user-list')
 
-class UserUpdate(JsonUpdateView, UserList):
-    template_name =  'partials/user/update.html'
+class UserUpdate(AjaxUpdateView):
     form_class = UserUpdateForm
+    template_name =  'partials/user/update.html'
+    success_url = reverse_lazy('user-list')
 
-class UserDelete(JsonDeleteView, UserList):
+class UserDelete(AjaxDeleteView):
+    model = UserProfile
     template_name =  'partials/user/delete.html'
+    success_url = reverse_lazy('user-list')
 
 
 #CRUD CHAMADA

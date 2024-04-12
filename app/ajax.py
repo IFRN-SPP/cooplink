@@ -1,85 +1,30 @@
 from django.shortcuts import get_object_or_404, render
-from django.template.loader import render_to_string
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import JsonResponse
 from django.views import View
-from .models import *
-from .forms import *
+from .mixins import AjaxResponseMixin, FormResponseMixin, DeleteReponseMixin
 
-class JsonListView(View):
+class AjaxListView(View, AjaxResponseMixin):
     """
     Base view for returning JSON response for object listing.
     """
-
-    template_name = None
-    partial_list = None
-    partial_pagination = 'partials/pagination.html'
-    model = None
-    paginate_by = None
-    object_list = 'object_list'
-    
     def get(self, request, *args, **kwargs):
         """
         GET method to handle object listing request.
         """
         object_list = self.get_queryset()
         context = self.get_context()
-
         context[f'{self.object_list}'] = object_list
-        
-        if self.paginate_by:
-            object_list = self.paginate(request, self.paginate_by, object_list)
-            
-            context.update({
-                'page': object_list,
-                f'{self.object_list}': object_list,
-            })
 
-            data = {
-                'html_list': render_to_string(self.partial_list, {f'{self.object_list}': object_list}),
-                'html_pagination': render_to_string(self.partial_pagination, context)
-            }
-        else:
-            data = {
-                'html_list': render_to_string(self.partial_list, {f'{self.object_list}': object_list})
-            }
+        if request.headers.get('header') == 'ajax':
+            return self.ajax_response(object_list=object_list, context=context, paginate_by=self.paginate_by)
 
-        if request.headers.get('header') == 'XMLHttpRequest':
-            return JsonResponse(data)
         else:
+            if self.paginate_by:
+                object_list = self.paginate(self.request, self.paginate_by, object_list)
+                context['page'] = context[f'{self.object_list}'] = object_list
+
             return render(request, self.template_name, context)
-      
-    def paginate(self, request, paginate_by, object_list):
-        """
-        Paginate the object list.
-        """
-        paginator = Paginator(object_list, self.paginate_by)
-        page_num = request.GET.get('page')
         
-        try:
-            object_list = paginator.get_page(page_num)
-        except PageNotAnInteger:
-            object_list = paginator.page(1)
-        except EmptyPage:
-            object_list = paginator.page(paginator.num_pages)
-
-        return object_list
-
-    def get_queryset(self):
-        """
-        Return the queryset of objects to be listed.
-        """
-        queryset = self.model.objects.all()
-        return queryset
-
-    def get_context(self):
-        """
-        Return the context to be used in the template.
-        """
-        context = {}
-        return context
-
-class FormView(JsonListView):
+class AjaxFormView(View, FormResponseMixin):
     """
     Base view for form processing and returning JSON responses.
     """
@@ -90,53 +35,23 @@ class FormView(JsonListView):
         GET method to handle form rendering request.
         """
         form = self.form_class()
-        return self.render_form(request, form)
+        return self.render_form(form)
 
     def post(self, request, *args, **kwargs):
         """
         POST method to handle form submission.
         """
         form = self.form_class(request.POST)
-        return self.form_valid(request, form)
-
-    def form_valid(self, request, form):
-        """
-        Check if the form is valid and return the appropriate JSON response.
-        """
-        data = {}
-        if form.is_valid():
-            self.save_form(form)
-
-            data['form_is_valid'] = True
-
-            object_list = self.model.objects.all()
-            
-            if self.paginate_by:
-                object_list = self.paginate(request, self.paginate_by, object_list)
-                context = {'page': object_list}
-
-                data['html_pagination'] = render_to_string(f'{self.partial_pagination}', context)
-
-            data['html_list'] = render_to_string(self.partial_list, {f'{self.object_list}': object_list})
-        else:
-            data['form_is_valid'] = False
-
-        data['html_form'] = render_to_string(self.template_name, {'form': form}, request=request)
-        return JsonResponse(data)
-
-    def render_form(self, request, form):
-        """
-        Render the form into a JSON context.
-        """
-        data = {}
-        context = {'form': form}
-        data['html_form'] = render_to_string(self.template_name, context, request=request)
-        return JsonResponse(data)
+        return self.form_valid(form)
     
-    def save_form(self, form):
-        return form.save()
+    def form_valid(self, form):
+        """
+        Save form parameters and return the form validation.
+        """
+        form.save()
+        return super().form_valid(form)
 
-class JsonCreateView(FormView):
+class AjaxCreateView(AjaxFormView):
     """
     View to create a new object using AJAX.
     """
@@ -146,46 +61,31 @@ class JsonCreateView(FormView):
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 
-
-class JsonUpdateView(FormView):
+class AjaxUpdateView(AjaxFormView):
     """
     View to update an existing object using AJAX.
     """
     def get(self, request, pk, *args, **kwargs):
-        instance = get_object_or_404(self.model, pk=pk)
+        model = self.form_class._meta.model
+        instance = get_object_or_404(model, pk=pk)
         form = self.form_class(instance=instance)
-        return self.render_form(request, form)
+        return self.render_form(form)
 
     def post(self, request, pk, *args, **kwargs):
-        instance = get_object_or_404(self.model, pk=pk)
+        model = self.form_class._meta.model
+        instance = get_object_or_404(model, pk=pk)
         form = self.form_class(request.POST, instance=instance)
-        return self.form_valid(request, form)
+        return self.form_valid(form)
 
-
-class JsonDeleteView(JsonListView):
+class AjaxDeleteView(View, DeleteReponseMixin):
     """
     View to delete an existing object using AJAX.
     """
     def get(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(self.model, pk=pk)
-        data = {'form_is_valid': False}
-        data['html_form'] = render_to_string(self.template_name, {'object': instance}, request=request)
-
-        return JsonResponse(data)
+        return self.render_form(instance)
 
     def post(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(self.model, pk=pk)
         instance.delete()
-        data = {'form_is_valid': True}
-
-        object_list = self.model.objects.all()
-            
-        if self.paginate_by:
-            object_list = self.paginate(request, self.paginate_by, object_list)
-            context = {'page': object_list}
-
-            data['html_pagination'] = render_to_string(f'{self.partial_pagination}', context)
-
-        data['html_list'] = render_to_string(self.partial_list, {f'{self.object_list}': object_list})
-
-        return JsonResponse(data)
+        return self.form_valid()

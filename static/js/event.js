@@ -12,7 +12,6 @@ $(function(){
                 $("#modal-form .modal-content").html(data.html_form);
             }
         });
-        
     };
     
     var saveForm = function(){
@@ -24,13 +23,13 @@ $(function(){
             dataType: 'json',
             success: function(data){
                 if(data.form_is_valid){
-                    $("#table-json tbody").html(data.html_list);
-                    $("#modal-form").modal("hide");
-                    if(data.html_pagination){
-                        $("#page-json").html(data.html_pagination);
+                    if(data.success_url){
+                        loadList(data.success_url)
                     }
-                    $('#filter-form')[0].reset();
-                    filter($('#filter-form'));
+                    $("#modal-form").modal("hide");
+                    if(data.success_message){
+                        addMessage(data.success_message)
+                    }
                 }
                 else{
                     $("#modal-form .modal-content").html(data.html_form)
@@ -40,6 +39,24 @@ $(function(){
         return false
     };
 
+    var loadList = function(url) {
+        $.ajax({
+            type: "get",
+            url: url,
+            dataType: "json",
+            headers: { 'header': 'ajax' },
+            success: function(data) {
+                $('#partial-table tbody').html(data.html_list);
+                if (data.html_pagination) {
+                    $('#partial-page').html(data.html_pagination);
+                }
+                if ($('#filter-form').length > 0){
+                    $('#filter-form')[0].reset()
+                }
+            }
+        });
+    };
+
     var filter = function(){
         var form = $(this);
         $.ajax({
@@ -47,11 +64,11 @@ $(function(){
             data: form.serialize(),
             type: form.attr("method"),
             dataType: 'json',
-            headers:{ 'header': 'XMLHttpRequest'},
+            headers:{ 'header': 'ajax'},
             success: function(data){
-                $('#table-json tbody').html(data.html_list);
+                $('#partial-table tbody').html(data.html_list);
                 if (data.html_pagination){
-                    $('#page-json').html(data.html_pagination);
+                    $('#partial-page').html(data.html_pagination);
                 }
             }
         });
@@ -59,40 +76,50 @@ $(function(){
     }
 
     var paginatation = function(){
-        var url = $(this).attr("href");
+        var url = $(this).attr("data-url");
         $.ajax({
             url: url,
             type: 'get',
             dataType: 'json',    
-            headers: {'header': 'XMLHttpRequest'},
+            headers: {'header': 'ajax'},
             success: function(data){
-                $("#table-json tbody").html(data.html_list);
+                $("#partial-table tbody").html(data.html_list);
                 if(data.html_pagination){
-                    $("#page-json").html(data.html_pagination);
+                    $("#partial-page").html(data.html_pagination);
                 }
             }
         });
         return false
     };
  
+    function addMessage(text){
+        var alert = $('<div class="alert alert-warning alert-dismissible fade show fw-bold" role="alert">' + text + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+
+        if ($('#message').length) {$('#message').append(alert)}
+    }
+
     // CREATE
     $(".js-create").click(loadForm);
     $("#modal-form").on("submit", ".js-create-form", saveForm);
 
     // UPDATE
-    $("#table-json").on("click", ".js-update", loadForm);
+    $("#partial-table").on("click", ".js-update", loadForm);
     $("#modal-form").on("submit", ".js-update-form", saveForm);
 
     // DELETE
-    $("#table-json").on("click", ".js-delete", loadForm);
+    $("#partial-table").on("click", ".js-delete", loadForm);
     $("#modal-form").on("submit", ".js-delete-form", saveForm); 
     
     // PAGINATION
-    // $("#page-json").on("click", ".js-link", paginatation);
+    $("#partial-page").on("click", ".js-link", paginatation);
 
     // FILTER
     $("#filter-form").on("input", filter);
     $("#filter-form").on("submit", filter);
-    $('#filter-form').on("reset", function() { filter($(this)) });
+
+    // BTN RESET FILTER 
+    $('.btn-reset').on("click", function() {
+        loadList('?')
+    });
 
 });
