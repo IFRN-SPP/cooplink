@@ -36,4 +36,11 @@ urlpatterns = [
     path('create/call/', CallCreate.as_view(), name='call-create'),
     path('update/call/<int:pk>/', CallUpdate.as_view(), name='update-call'),
     path('delete/call/<int:pk>/', CallDelete.as_view(), name='delete-call'),
+
+    # CRUD Call Product 
+
+    path('produtos-chamadas/', CallProductList, name= 'call-product-list'),
+    path('produtos-chamadas/create/', CallProductCreate, name= 'call-product-create'),
+    path('produtos-chamadas/delete/<int:pk>/', CallProductDelete, name= 'delete-call-product')
+
 ]

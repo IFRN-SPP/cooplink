@@ -16,6 +16,16 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ("__all__")
 
+class CallForm(forms.ModelForm):
+    class Meta:
+        model = Call
+        fields = ("__all__")
+
+class CallProductForm(forms.ModelForm):
+    class Meta:
+        model = CallProduct
+        fields = ("__all__")
+
 class UserCreateForm(UserCreationForm):
     class Meta:
         model = UserProfile
@@ -52,3 +62,5 @@ class ConfirmPasswordForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
+

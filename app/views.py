@@ -1,13 +1,14 @@
 from django.contrib import messages
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.forms import inlineformset_factory
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .ajax import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView
 from .registration import ConfirmPasswordMixin
-from .forms import InstitutionForm, ProductForm, UserCreateForm, UserUpdateForm, SetPasswordForm, PermissionForm
+from .forms import InstitutionForm, ProductForm, UserCreateForm, UserUpdateForm, SetPasswordForm, PermissionForm, CallProductForm, CallForm
 from .models import *
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
@@ -141,3 +142,63 @@ class CallDelete(LoginRequiredMixin, DeleteView):
     model= Call
     template_name = 'call/delete.html'
     success_url = reverse_lazy('call-list')
+
+# CRUD Produtos da Chamada
+
+@login_required
+def CallProductList(request):
+    call_products = CallProduct.objects.all()
+    context = {'call_product_list': call_products}
+    return render(request, 'call-product/list.html', context)
+
+@login_required
+def CallProductCreate(request):
+    # se o metodo for GET (deseja adcionar um produto)
+    if (request.method == 'GET'):
+        form = CallProductForm() # trago o form 
+
+        form_product_factory = inlineformset_factory(Call, CallProduct, form= CallProductForm, extra=2) 
+        form_product= form_product_factory()
+        context = {
+            'form':form, 
+            'form_product': form_product
+        } # dou o contexto
+
+        return render(request, 'call-product/create.html', context) # passo o html do form
+    
+    # se for POST (deseja enviar dado produto)
+    elif (request.method == 'POST'):
+        form = CallProductForm(request.POST)
+        form_product_factory = inlineformset_factory(Call, CallProduct, form= CallProductForm)
+        form_product= form_product_factory(request.POST)
+
+        if form.is_valid() and form_product.is_valid():
+            call_product_instance = form.save(commit=False)  # não salva de imediato no formulário no callproductform até ter uma logica concluida
+            call_instance = Call.objects.first()   # obtém ou cria uma instância/pk/obj no modelo Call 
+
+            call_product_instance.call = call_instance
+            call_product_instance.save()
+
+            # salva o formulário de conjunto em linha (inlineformset)
+            form_product.instance = call_product_instance
+            form_product.instance.save()
+            return redirect('call-product-list') # redireciono
+        else:
+            form = CallProductForm()
+            form_product_factory = inlineformset_factory(Call, CallProduct, form=CallProductForm, extra=2)
+            form_product = form_product_factory()
+
+            context = {
+                'form': form,
+                'form_product': form_product,
+            }
+            return render(request, 'call-product/create.html', context)
+
+@login_required
+def CallProductDelete(request, pk):
+    call_product = get_object_or_404(CallProduct, pk=pk)
+    if (request.method == 'POST'):
+        call_product.delete()
+        return redirect('call-product-list')
+    return render(request, 'call-product/delete.html', {'call_product': call_product})
+

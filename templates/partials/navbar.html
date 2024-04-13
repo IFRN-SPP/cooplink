@@ -2,6 +2,7 @@
 <a href="{% url 'product-list' %}">Produtos</a>
 <a href="{% url 'user-list' %}">Usuários</a>
 <a href="{% url 'call-list' %}">Chamadas</a>
+<a href="{% url 'call-product-list'%}">Produtos das Chamadas</a>
 {% if user.is_authenticated %}
 {{request.user}}
 <form action="{% url "logout" %}" method="post">{% csrf_token %}<button type="submit">Logout</button></form>
