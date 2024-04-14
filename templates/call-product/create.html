@@ -12,7 +12,7 @@
         <form action="" method="POST">
             {% csrf_token %}
 
-            {{ form.as_p }}
+            Chamada: {{ form.call }}
 
             {{ form_product.management_form}} 
             

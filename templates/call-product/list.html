@@ -8,6 +8,11 @@
         <a href="{% url 'index' %}">index</a>
         <br>
 
+        {% for call in call_product_list %}
+            {{call}}
+
+        {% endfor %}
+
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -21,24 +26,26 @@
 
                 <tbody>
                     
-                    {% for object in call_product_list %} <!-- organiza as call-->
-
-                    <!-- o list ainda não mostra os produtos do form inline (preciso ajeitar um for que percorra...)-->
+                    {% for call in call_product_list %} 
+                            {% for product in  call.chamada.all %}
                             <tr>
-                                <td>{{ object.product }}</td>
-                                <td>{{ object.price }}</td>
-                                <td>{{ object.balance }}</td>
+                                <td>{{ product.product }}</td>
+                                <td>{{ product.price }}</td>
+                                <td>{{ product.balance }}</td>
                                 <td>
                                     <a href="#" class="btn btn-warning btn-sm" title="Editar">E</a>
-                                    <a href="{% url 'delete-call-product' object.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
+                                    <a href="{% url 'delete-call-product' product.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
                                 </td>
                             </tr>
+                            {% endfor %}            
                     {% endfor %}
+
                     <tr>
                         <td colspan= '4'>
                             <a href="{% url 'call-product-create' %}" class="btn btn-success btn-sm"> Adicionar um produto +</a>
                         </td>
                     </tr>
+                  
                 </tbody>
 
 

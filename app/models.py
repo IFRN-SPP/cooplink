@@ -32,8 +32,8 @@ class Product(models.Model):
         return self.name
 
 class CallProduct(models.Model):
-    call = models.ForeignKey(Call, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    call = models.ForeignKey(Call, on_delete=models.CASCADE, related_name='chamada')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='produto')
     price = models.DecimalField(max_digits=10, decimal_places=2)
     balance = models.IntegerField(default=0)
 

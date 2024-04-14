@@ -147,7 +147,7 @@ class CallDelete(LoginRequiredMixin, DeleteView):
 
 @login_required
 def CallProductList(request):
-    call_products = CallProduct.objects.all()
+    call_products = Call.objects.all()
     context = {'call_product_list': call_products}
     return render(request, 'call-product/list.html', context)
 
@@ -172,27 +172,22 @@ def CallProductCreate(request):
         form_product_factory = inlineformset_factory(Call, CallProduct, form= CallProductForm)
         form_product= form_product_factory(request.POST)
 
-        if form.is_valid() and form_product.is_valid():
-            call_product_instance = form.save(commit=False)  # não salva de imediato no formulário no callproductform até ter uma logica concluida
-            call_instance = Call.objects.first()   # obtém ou cria uma instância/pk/obj no modelo Call 
-
-            call_product_instance.call = call_instance
-            call_product_instance.save()
-
-            # salva o formulário de conjunto em linha (inlineformset)
-            form_product.instance = call_product_instance
-            form_product.instance.save()
+        if  form_product.is_valid():
+            call_instance = Call.objects.first()
+            form = call_instance
+            form.save()
+            
+            form_product.instance = form
+            form_product.save()
+            
             return redirect('call-product-list') # redireciono
         else:
-            form = CallProductForm()
-            form_product_factory = inlineformset_factory(Call, CallProduct, form=CallProductForm, extra=2)
-            form_product = form_product_factory()
-
             context = {
                 'form': form,
                 'form_product': form_product,
             }
             return render(request, 'call-product/create.html', context)
+            
 
 @login_required
 def CallProductDelete(request, pk):
