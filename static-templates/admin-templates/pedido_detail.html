@@ -67,12 +67,28 @@
                     <div class="mb-3">
                         <!-- Tabela das chamadas -->
                         <div class="table-background">
-                            <h3 class="poppins-bold">PEDIDO 01 - CHAMADA 01</h3>
-                            <div class="content-header d-flex align-items-baseline">
+                            <div class="content-header">
+                                <div class="d-flex justify-content-between">
 
-                                <div>
-                                    <p>AUTOR: Pedro</p>
-                                    <p>INSTITUIÇÃO: IFRN</p>
+                                    <div class="d-flex align-items-baseline gap-3 mb-3">
+                                        <h3 class="poppins-bold">PEDIDO 01 - CHAMADA 01</h3>
+                                        <p class="bg-success p-2 text-white rounded">ENTREGUE</p>
+                                    </div>
+
+                                    <div class="content-header">
+                                        <a class="btn btn-success" href="pedido_rate.html">
+                                            Avaliar pedido
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="content-header d-flex align-items-baseline">
+    
+                                    <div>
+                                        <p>AUTOR: Pedro</p>
+                                        <p>INSTITUIÇÃO: IFRN</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -83,7 +99,6 @@
                                             <th scope="col">PRODUTOS</th>
                                             <th scope="col">QUANTIDADE</th>
                                             <th scope="col">SALDO ATUAL DA CHAMADA</th>
-                                            <th scope="col">SITUAÇÃO</th>
                                         </tr>
                                     </thead>
                                     <tbody class="table-group-divider">
@@ -95,22 +110,13 @@
                                             </th>
                                             <!-- Quantidade -->
                                             <td>
-                                                <input type="number" name="quantidade" class="input-control">
-                                                <label for="quantidade" class="form-label">KG</label>
+                                                <p>100 KG</p>
                                             </td>
                                             <!-- Saldo atual da chamada -->
                                             <td>
                                                 <p>40 KG</p>
                                             </td>
                                             <!-- Situação -->
-                                            <td>
-                                                <select name="situacao" class="form-select">
-                                                    <option selected disabled hidden></option>
-                                                    <option value="disponivel"> Disponível </option>
-                                                    <option value="parcialmente">Parcialmente</option>
-                                                    <option value="indisponível">indisponível</option>
-                                                </select>
-                                            </td>
                                         </tr>
 
                                         <!-- LINHA -->
@@ -121,20 +127,11 @@
                                             </th>
                                             <!-- Quantidade -->
                                             <td>
-                                                <input type="number" name="quantidade" class="input-control">
-                                                <label for="quantidade" class="form-label">UNI</label>
+                                                <p>100 UNI</p>
                                             </td>
                                             <!-- Saldo atual da chamada -->
                                             <td>
                                                 <p>0 UNI</p>
-                                            </td>
-                                            <td>
-                                                <select name="situacao" class="form-select">
-                                                    <option selected disabled hidden></option>
-                                                    <option value="disponivel"> Disponível </option>
-                                                    <option value="parcialmente">Parcialmente</option>
-                                                    <option value="indisponível">indisponível</option>
-                                                </select>
                                             </td>
                                         </tr>
 
@@ -146,30 +143,16 @@
                                             </th>
                                             <!-- Quantidade -->
                                             <td>
-                                                <input type="number" name="quantidade" class="input-control">
-                                                <label for="quantidade" class="form-label">KG</label>
+                                                <p>100 KG</p>
                                             </td>
                                             <!-- Saldo atual da chamada -->
                                             <td>
                                                 <p>200 KG</p>
                                             </td>
-                                            <td>
-                                                <select name="situacao" class="form-select">
-                                                    <option selected disabled hidden></option>
-                                                    <option value="disponivel"> Disponível </option>
-                                                    <option value="parcialmente">Parcialmente</option>
-                                                    <option value="indisponível">indisponível</option>
-                                                </select>
-                                            </td>
                                         </tr>
                                     </tbody>
 
                                 </table>
-                                <div class="d-flex align-items-baseline justify-content-end mt-5 gap-5">
-                                    <button class="btn btn-success px-5" type="submit">OK</button>
-                                    <button class="btn btn-danger px-5" type="submit">NEGAR</button>
-                                </div>
-
                             </form>
                         </div>
                     </div>
