@@ -10,7 +10,6 @@
 
         {% for call in call_product_list %}
             {{call}}
-
         {% endfor %}
 
         <div class="table-responsive">
@@ -33,17 +32,22 @@
                                 <td>{{ product.price }}</td>
                                 <td>{{ product.balance }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-warning btn-sm" title="Editar">E</a>
                                     <a href="{% url 'delete-call-product' product.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
                                 </td>
                             </tr>
-                            {% endfor %}            
+                            {% endfor %} 
+           
                     {% endfor %}
 
                     <tr>
                         <td colspan= '4'>
                             <a href="{% url 'call-product-create' %}" class="btn btn-success btn-sm"> Adicionar um produto +</a>
+                           
+                            {% for call in call_product_list %}
+                                <a href="{% url 'update-call_product' call.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar produtos </a>
+                            {% endfor %}
                         </td>
+
                     </tr>
                   
                 </tbody>

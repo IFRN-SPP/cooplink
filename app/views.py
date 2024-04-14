@@ -157,7 +157,7 @@ def CallProductCreate(request):
     if (request.method == 'GET'):
         form = CallProductForm() # trago o form 
 
-        form_product_factory = inlineformset_factory(Call, CallProduct, form= CallProductForm, extra=2) 
+        form_product_factory = inlineformset_factory(Call, CallProduct, form= CallProductForm, extra=1) 
         form_product= form_product_factory()
         context = {
             'form':form, 
@@ -172,12 +172,12 @@ def CallProductCreate(request):
         form_product_factory = inlineformset_factory(Call, CallProduct, form= CallProductForm)
         form_product= form_product_factory(request.POST)
 
-        if  form_product.is_valid():
-            call_instance = Call.objects.first()
-            form = call_instance
+        if  form_product.is_valid(): 
+            call_instance = Call.objects.first() # para validar os produtos, preciso de uma pk da call
+            form = call_instance  # adiciono a pk para o form e logo apos salvo
             form.save()
             
-            form_product.instance = form
+            form_product.instance = form # o mesmo vale para a instancia/objeto do form de produto
             form_product.save()
             
             return redirect('call-product-list') # redireciono
@@ -187,7 +187,45 @@ def CallProductCreate(request):
                 'form_product': form_product,
             }
             return render(request, 'call-product/create.html', context)
-            
+        
+
+@login_required
+def CallProductUpdate(request, pk):
+    # pego a pk da call, na qual quero editar os produtos
+    call_instance = get_object_or_404(Call, pk=pk)
+
+    if request.method == 'GET':
+        form = CallProductForm(instance=call_instance) #informo a pk 
+
+        # obtém todos os produtos relacionados à chamada
+        products = CallProduct.objects.filter(call=call_instance)
+        form_product_factory = inlineformset_factory(Call, CallProduct, form=CallProductForm, extra=0)
+        form_product = form_product_factory(instance=call_instance, queryset=products)
+        context = {
+            'form': form,
+            'form_product': form_product,
+        }
+        return render(request, 'call-product/create.html', context)
+
+    # Se o método for POST, processa os dados submetidos
+    if request.method == 'POST':
+        form = CallProductForm(request.POST, instance=call_instance)
+        form_product_factory = inlineformset_factory(Call, CallProduct, form=CallProductForm)
+        form_product = form_product_factory(request.POST, instance=call_instance)
+
+        if form_product.is_valid():
+            form_product.save()
+
+            return redirect('call-product-list')  # Redireciona para a lista de produtos
+
+        else:
+            context = {
+                'form': form,
+                'form_product': form_product,
+            }
+            return render(request, 'call-product/create.html', context)
+
+
 
 @login_required
 def CallProductDelete(request, pk):
@@ -196,4 +234,3 @@ def CallProductDelete(request, pk):
         call_product.delete()
         return redirect('call-product-list')
     return render(request, 'call-product/delete.html', {'call_product': call_product})
-

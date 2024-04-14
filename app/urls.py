@@ -41,6 +41,7 @@ urlpatterns = [
 
     path('produtos-chamadas/', CallProductList, name= 'call-product-list'),
     path('produtos-chamadas/create/', CallProductCreate, name= 'call-product-create'),
-    path('produtos-chamadas/delete/<int:pk>/', CallProductDelete, name= 'delete-call-product')
+    path('produtos-chamadas/delete/<int:pk>/', CallProductDelete, name= 'delete-call-product'),
+    path('produtos-chamadas/update/<int:pk>/', CallProductUpdate, name= 'update-call_product'),
 
 ]
