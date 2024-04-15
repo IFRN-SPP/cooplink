@@ -172,8 +172,8 @@ def CallProductCreate(request):
         form_product_factory = inlineformset_factory(Call, CallProduct, form= CallProductForm)
         form_product= form_product_factory(request.POST)
 
-        if  form_product.is_valid(): 
-            call_instance = Call.objects.first() # para validar os produtos, preciso de uma pk da call
+        if form.is_valid() or form_product.is_valid(): 
+            call_instance = form.cleaned_data['call'] # obtem a call selecionada no select do formulario
             form = call_instance  # adiciono a pk para o form e logo apos salvo
             form.save()
             
