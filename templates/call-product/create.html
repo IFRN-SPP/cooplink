@@ -17,14 +17,29 @@
             {{ form_product.management_form}} 
             
             {% for product in form_product %}
+            <div class='inlineform'>
                 <hr>
                 {{ product }}
+            </div>
+               
             {% endfor %}
 
             <hr>
 
-            <button type="submit" class="btn btn-primary">Cadastrar</button>
+            <button type="submit" class="btn btn-primary ">Cadastrar</button>
         </form>
 
     </div>
 {% endblock content %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(function() {
+            $('.inlineform').formset({
+                prefix: '{{ form_product.prefix }}',
+                addText: '<button type="submit" class="btn btn-success btn-sm">+</button>',
+                deleteText: '<button type="submit" class="btn btn-danger btn-sm">x</button>',
+            });
+        })
+    </script>
+{% endblock script %}
