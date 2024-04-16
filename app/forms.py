@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 
 from django.contrib.auth.hashers import check_password
@@ -25,6 +26,12 @@ class CallProductForm(forms.ModelForm):
     class Meta:
         model = CallProduct
         fields = ("__all__")
+
+# Inline formset dos call product
+CallProductFormSet = inlineformset_factory(
+    Call, CallProduct, form=CallProductForm, 
+    extra=1, can_delete=True, can_delete_extra=True
+)
 
 class UserCreateForm(UserCreationForm):
     class Meta:

@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="container justify-content-center">
-        <h3>Produtos das Chamadas</h3>
+        <h3>Editar Produtos da Chamada</h3>
         <p class="lead">Preencha todos os campos obrigatórios:</p>
 
         <hr>
@@ -12,14 +12,17 @@
         <form action="" method="POST">
             {% csrf_token %}
 
-            Chamada: {{ form.call }}
+            <h3>{{call.institution}} - {{call.number}} ({% if call.active %}ATIVO{% else %}FECHADA{% endif %}) </h3>
 
             {{ form_product.management_form}} 
             
-            {% for product in form_product %}
+            {% for form in form_product %}
             <div class='inlineform'>
                 <hr>
-                {{ product }}
+                {{ form.as_p }}
+                {% comment %} permite que o form seja deletado caso esteja no bd {% endcomment %}
+                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                
             </div>
                
             {% endfor %}
@@ -39,6 +42,7 @@
                 prefix: '{{ form_product.prefix }}',
                 addText: '<button type="submit" class="btn btn-success btn-sm">+</button>',
                 deleteText: '<button type="submit" class="btn btn-danger btn-sm">x</button>',
+                hideLastAddForm: true,
             });
         })
     </script>

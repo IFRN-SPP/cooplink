@@ -33,15 +33,15 @@ urlpatterns = [
 
     # CRUD Call - Padrão Django
     path('chamadas/', CallList.as_view(), name= 'call-list'),
-    path('create/call/', CallCreate.as_view(), name='call-create'),
-    path('update/call/<int:pk>/', CallUpdate.as_view(), name='update-call'),
-    path('delete/call/<int:pk>/', CallDelete.as_view(), name='delete-call'),
+    path('cadastrar/chamada/', CallCreate, name='create-call'),
+    path('detalhar/<int:pk>/chamada/', CallDetail, name='detail-call'),
+    path('atualizar/<int:pk>/chamada/', CallUpdate.as_view(), name='update-call'),
+    path('deletar/<int:pk>/chamada/', CallDelete.as_view(), name='delete-call'),
 
     # CRUD Call Product 
-
-    path('produtos-chamadas/', CallProductList, name= 'call-product-list'),
-    path('produtos-chamadas/create/', CallProductCreate, name= 'call-product-create'),
+    path('produtos-chamadas/', CallProductList, name= 'call-product-list'), # inutilizado
+    # path('produtos-chamadas/create/', CallProductCreate, name= 'call-product-create'),
     path('produtos-chamadas/delete/<int:pk>/', CallProductDelete, name= 'delete-call-product'),
-    path('produtos-chamadas/update/<int:pk>/', CallProductUpdate, name= 'update-call_product'),
+    path('produtos-chamadas/update/<int:pk>/', CallProductUpdate, name= 'update-call-product'),
 
 ]

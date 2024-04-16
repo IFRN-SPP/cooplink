@@ -1,14 +1,13 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.forms import inlineformset_factory
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .ajax import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView
 from .registration import ConfirmPasswordMixin
-from .forms import InstitutionForm, ProductForm, UserCreateForm, UserUpdateForm, SetPasswordForm, PermissionForm, CallProductForm, CallForm
+from .forms import InstitutionForm, ProductForm, UserCreateForm, UserUpdateForm, SetPasswordForm, PermissionForm, CallProductForm, CallForm, CallProductFormSet
 from .models import *
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
@@ -126,12 +125,6 @@ class CallList(LoginRequiredMixin, ListView):
     model= Call
     template_name = 'call/list.html'
 
-class CallCreate(LoginRequiredMixin, CreateView):
-    model = Call
-    fields = ['number', 'institution', 'start','end', 'active']
-    template_name = 'call/create.html'
-    success_url = reverse_lazy('call-list')
-
 class CallUpdate(LoginRequiredMixin, UpdateView):
     model = Call
     fields = ['number', 'institution', 'start','end', 'active']
@@ -143,7 +136,7 @@ class CallDelete(LoginRequiredMixin, DeleteView):
     template_name = 'call/delete.html'
     success_url = reverse_lazy('call-list')
 
-# CRUD Produtos da Chamada
+# CRUD Chamada Function Based Views
 
 @login_required
 def CallProductList(request):
@@ -152,85 +145,91 @@ def CallProductList(request):
     return render(request, 'call-product/list.html', context)
 
 @login_required
-def CallProductCreate(request):
+def CallCreate(request):
     # se o metodo for GET (deseja adcionar um produto)
-    if (request.method == 'GET'):
-        form = CallProductForm() # trago o form 
-
-        form_product_factory = inlineformset_factory(Call, CallProduct, form= CallProductForm, extra=1) 
-        form_product= form_product_factory()
+    if request.method == 'GET':
+        form = CallForm() # form de chamada
+        form_product_factory = CallProductFormSet
+        form_product = form_product_factory() # form de produtos
         context = {
             'form':form, 
             'form_product': form_product
         } # dou o contexto
-
-        return render(request, 'call-product/create.html', context) # passo o html do form
+        return render(request, 'call/create.html', context) # passo o html do form
     
     # se for POST (deseja enviar dado produto)
-    elif (request.method == 'POST'):
-        form = CallProductForm(request.POST)
-        form_product_factory = inlineformset_factory(Call, CallProduct, form= CallProductForm)
-        form_product= form_product_factory(request.POST)
+    if request.method == 'POST':
+        form = CallForm(request.POST) # post form de chamada
+        form_product_factory = CallProductFormSet
+        form_product = form_product_factory(request.POST)
 
-        if form.is_valid() or form_product.is_valid(): 
-            call_instance = form.cleaned_data['call'] # obtem a call selecionada no select do formulario
-            form = call_instance  # adiciono a pk para o form e logo apos salvo
-            form.save()
-            
-            form_product.instance = form # o mesmo vale para a instancia/objeto do form de produto
+        if form.is_valid() and form_product.is_valid(): 
+            call = form.save() # salva chamada 
+            form_product.instance = call # relaciona os produtos a chamada salva
             form_product.save()
             
-            return redirect('call-product-list') # redireciono
+            return redirect('call-list') # redireciono
         else:
             context = {
                 'form': form,
                 'form_product': form_product,
             }
-            return render(request, 'call-product/create.html', context)
+            return render(request, 'call/create.html', context)
         
 
 @login_required
 def CallProductUpdate(request, pk):
     # pego a pk da call, na qual quero editar os produtos
-    call_instance = get_object_or_404(Call, pk=pk)
+    call = get_object_or_404(Call, pk=pk)
 
     if request.method == 'GET':
-        form = CallProductForm(instance=call_instance) #informo a pk 
-
         # obtém todos os produtos relacionados à chamada
-        products = CallProduct.objects.filter(call=call_instance)
-        form_product_factory = inlineformset_factory(Call, CallProduct, form=CallProductForm, extra=0)
-        form_product = form_product_factory(instance=call_instance, queryset=products)
+        products = CallProduct.objects.filter(call=call)
+        form_product_factory = CallProductFormSet
+        form_product = form_product_factory(instance=call, queryset=products)
         context = {
-            'form': form,
+            'call': call,
             'form_product': form_product,
         }
         return render(request, 'call-product/create.html', context)
 
     # Se o método for POST, processa os dados submetidos
     if request.method == 'POST':
-        form = CallProductForm(request.POST, instance=call_instance)
-        form_product_factory = inlineformset_factory(Call, CallProduct, form=CallProductForm)
-        form_product = form_product_factory(request.POST, instance=call_instance)
+        form = CallProductForm(request.POST, instance=call)
+        form_product_factory = CallProductFormSet 
+        form_product = form_product_factory(request.POST, instance=call)
 
         if form_product.is_valid():
+            # deleta os produtos que foram excluidos
+            for form in form_product.deleted_forms:
+                if form.instance.pk:
+                    form.instance.delete()
             form_product.save()
-
-            return redirect('call-product-list')  # Redireciona para a lista de produtos
-
+            return redirect('detail-call', pk=call.pk)  # Redireciona para a página da chamada
         else:
             context = {
+                'call': call,
                 'form': form,
                 'form_product': form_product,
             }
             return render(request, 'call-product/create.html', context)
 
 
+@login_required
+def CallDetail(request, pk):
+    call = get_object_or_404(Call, pk=pk)
+    products = CallProduct.objects.filter(call=call)
+    context = {
+        'call': call, 
+        'products': products,
+    }
+    return render(request, 'call/detail.html', context)
+
 
 @login_required
 def CallProductDelete(request, pk):
     call_product = get_object_or_404(CallProduct, pk=pk)
-    if (request.method == 'POST'):
+    if request.method == 'POST':
         call_product.delete()
-        return redirect('call-product-list')
+        return redirect('detail-call', pk=call_product.call.pk) # retorna para a página da chamada
     return render(request, 'call-product/delete.html', {'call_product': call_product})

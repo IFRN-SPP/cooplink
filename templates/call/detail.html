@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Chamada {% endblock title %}
+{% block content %}
+<div class="container justify-content-center">
+  <h1>Chamada {{call.number}}</h1>
+  <a href="{% url "call-list" %}">Chamadas</a>
+  <hr>
+  <a href="{% url "update-call" call.pk %}" class="btn btn-success">Editar Chamada</a>
+  <hr>
+  <p>Instiuição: {{call.institution}}</p>
+  <p>Inicio: {{call.start}}</p>
+  <p>Termino: {{call.end}}</p>
+  
+  <a href="{% url "update-call-product" call.pk %}" class="btn btn-success">Editar Produtos</a>
+  
+  <table class="table">
+    <thead>
+      <th>Produto</th>
+      <th>Saldo</th>
+      <th>Unidade</th>
+      <th>Preço</th>
+      <th>Deletar?</th>
+    </thead>
+    <tbody>
+  {% for product in products %}
+      <tr>
+        <td>{{product.product}}</td>
+        <td>{{product.balance}}</td>
+        <td>{{product.product.unit}}</td>
+        <td>{{product.price}}</td>
+        <td>
+          <a href="{% url 'delete-call-product' product.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
+        </td>
+      </tr>
+  {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+{% endblock %}

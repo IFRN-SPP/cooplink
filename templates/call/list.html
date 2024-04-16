@@ -7,7 +7,7 @@
         <h1>Chamadas</h1>
         <a href="{% url 'index' %}">index</a>
         <br>
-        <a href="{% url 'call-create' %}" class="btn btn-success">Cadastrar Chamada</a>
+        <a href="{% url 'create-call' %}" class="btn btn-success">Cadastrar Chamada</a>
 
         <div class="table-responsive">
             <table class="table table-striped">
@@ -31,8 +31,11 @@
                             <td>{{ object.end }}</td>
                             <td>{{ object.active }}</td>
                             <td>
+                                <a href="{% url "detail-call" object.pk %}" class="btn btn-primary btn-sm">Detalhar</a>
                                 <a href="{% url 'update-call' object.pk %}" class="btn btn-warning btn-sm" title="Editar">E</a>
                                 <a href="{% url 'delete-call' object.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
+                                <a href="{% url 'update-call-product' object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar produtos</a>
+
                             </td>
                         </tr>
                     {% empty %}

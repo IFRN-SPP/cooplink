@@ -24,7 +24,7 @@
 
                         <tbody>
 
-                            {% for product in  call.chamada.all %}
+                            {% for product in  call.products.all %}
                                 <tr>
                                     <td>{{ product.product }}</td>
                                     <td>{{ product.price }}</td>
@@ -37,8 +37,8 @@
 
                             <tr>
                                 <td colspan= '4'>
-                                    <a href="{% url 'call-product-create' %}" class="btn btn-success btn-sm"> Adicionar um produto +</a>
-                                    <a href="{% url 'update-call_product' call.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar produtos </a>
+                                    {% comment %} <a href="{% url 'call-product-create' %}" class="btn btn-success btn-sm"> Adicionar um produto +</a> {% endcomment %}
+                                    <a href="{% url 'update-call-product' call.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar produtos </a>
                                 
                                 </td>
 

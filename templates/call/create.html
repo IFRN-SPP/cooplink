@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="container justify-content-center">
-        <h3>Chamadas</h3>
+        <h3>Cadastrar Chamada</h3>
         <p class="lead">Preencha todos os campos obrigatórios:</p>
 
         <hr>
@@ -14,8 +14,35 @@
 
             {{ form.as_p }}
 
+            {% if form_product %}
+                <h3>Produtos da Chamada</h3>
+                {{ form_product.management_form}} 
+                
+                {% for form in form_product %}
+                    <div class='inlineform'>
+                        <hr>
+                        {{ form.as_p }}
+                    </div>
+                {% endfor %}
+            
+            {% endif %}
+            <hr>
+
             <button type="submit" class="btn btn-primary">Cadastrar</button>
         </form>
 
     </div>
 {% endblock content %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(function() {
+            $('.inlineform').formset({
+                prefix: '{{ form_product.prefix }}',
+                addText: '<button type="submit" class="btn btn-success btn-sm">+</button>',
+                deleteText: '<button type="submit" class="btn btn-danger btn-sm">x</button>',
+                //hideLastAddForm: true,
+            });
+        })
+    </script>
+{% endblock script %}
