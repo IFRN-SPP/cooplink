@@ -39,8 +39,6 @@ urlpatterns = [
     path('deletar/<int:pk>/chamada/', CallDelete.as_view(), name='delete-call'),
 
     # CRUD Call Product 
-    path('produtos-chamadas/', CallProductList, name= 'call-product-list'), # inutilizado
-    # path('produtos-chamadas/create/', CallProductCreate, name= 'call-product-create'),
     path('produtos-chamadas/delete/<int:pk>/', CallProductDelete, name= 'delete-call-product'),
     path('produtos-chamadas/update/<int:pk>/', CallProductUpdate, name= 'update-call-product'),
 

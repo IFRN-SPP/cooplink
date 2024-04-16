@@ -19,7 +19,7 @@
             {% for form in form_product %}
             <div class='inlineform'>
                 <hr>
-                {{ form.as_p }}
+                {{ form }}
                 {% comment %} permite que o form seja deletado caso esteja no bd {% endcomment %}
                 {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
                 

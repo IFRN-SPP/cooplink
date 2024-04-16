@@ -138,11 +138,7 @@ class CallDelete(LoginRequiredMixin, DeleteView):
 
 # CRUD Chamada Function Based Views
 
-@login_required
-def CallProductList(request):
-    call_products = Call.objects.all()
-    context = {'call_product_list': call_products}
-    return render(request, 'call-product/list.html', context)
+
 
 @login_required
 def CallCreate(request):
@@ -191,7 +187,7 @@ def CallProductUpdate(request, pk):
             'call': call,
             'form_product': form_product,
         }
-        return render(request, 'call-product/create.html', context)
+        return render(request, 'call-product/update.html', context)
 
     # Se o método for POST, processa os dados submetidos
     if request.method == 'POST':
@@ -212,7 +208,7 @@ def CallProductUpdate(request, pk):
                 'form': form,
                 'form_product': form_product,
             }
-            return render(request, 'call-product/create.html', context)
+            return render(request, 'call-product/update.html', context)
 
 
 @login_required
