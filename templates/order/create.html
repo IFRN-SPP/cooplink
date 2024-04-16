@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Pedido{% endblock title %}
+
+{% block content %}
+    <div class="container justify-content-center">
+        <h3>Cadastrar Pedido</h3>
+        <p class="lead">Preencha todos os campos obrigatórios:</p>
+
+        <hr>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+
+         
+            {{ form.as_p}}
+          
+
+            {% if form_product %}
+                <h3>Produtos do Pedidos</h3>
+                {{ form_product.management_form}} 
+                
+                {% for form in form_product %}
+                    <div class='inlineform'>
+                        <hr>
+                        {{ form }}
+                    </div>
+                {% endfor %}
+
+                
+            
+            {% endif %}
+            <hr>
+
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </form>
+
+    </div>
+
+{% endblock content %}

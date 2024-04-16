@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Pedido {% endblock title %}
+
+{% block content %}
+<div class="container justify-content-center">
+    <h1>Pedido {{order.pk}}</h1>
+    <p>Autor: {{ order.user }}</p>
+    <p>Instituição: {{ order.institution }}</p>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Situação</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for object in products %}
+                    <tr>
+                        <td>{{ object.call_product }}</td>
+                        <td>{{ object.quantity }}</td>
+                        <td>{{ object.status }}</td>
+
+                    </tr>
+                {% comment %} {% empty %}
+                    <tr>
+                        <td colspan="4">Nenhum produto até o momento</td>
+                    </tr> {% endcomment %}
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+  
+
+</div>
+
+
+
+
+
+{% endblock content %}

@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .ajax import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView
 from .registration import ConfirmPasswordMixin
-from .forms import InstitutionForm, ProductForm, UserCreateForm, UserUpdateForm, SetPasswordForm, PermissionForm, CallProductForm, CallForm, CallProductFormSet
+from .forms import InstitutionForm, ProductForm, UserCreateForm, UserUpdateForm, SetPasswordForm, PermissionForm, CallProductForm, CallForm, CallProductFormSet, OrderForm, OrderedProductFormSet
 from .models import *
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
@@ -139,7 +139,6 @@ class CallDelete(LoginRequiredMixin, DeleteView):
 # CRUD Chamada Function Based Views
 
 
-
 @login_required
 def CallCreate(request):
     # se o metodo for GET (deseja adcionar um produto)
@@ -229,3 +228,66 @@ def CallProductDelete(request, pk):
         call_product.delete()
         return redirect('detail-call', pk=call_product.call.pk) # retorna para a página da chamada
     return render(request, 'call-product/delete.html', {'call_product': call_product})
+
+
+# CRUD Pedidos
+
+@login_required
+def OrderList(request):
+    order = Order.objects.all()
+    context = {'order_list': order}
+    return render(request, 'order/list.html', context)
+
+@login_required
+def OrderCreate(request):
+    if request.method == 'GET':
+        form = OrderForm()
+        form_product_factory = OrderedProductFormSet
+        form_product = form_product_factory()
+        context = {
+            'form':form, 
+            'form_product': form_product
+        } 
+        
+        return render(request, 'order/create.html', context)
+    
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST) 
+        form_product_factory = OrderedProductFormSet
+        form_product = form_product_factory(request.POST)
+
+        if form.is_valid() and form_product.is_valid():
+            order = form.save()
+            form.save() 
+            form_product.instance = order 
+            form_product.save()
+            
+            return redirect('order-list') 
+        else:
+            context = {
+                'form': form,
+                'form_product': form_product,
+            }
+            return render(request, 'order/create.html', context)
+        
+@login_required
+def OrderDetail(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    products = OrderedProduct.objects.filter(order=order)
+    context = {
+        'order': order, 
+        'products': products,
+    }
+    return render(request, 'order/detail.html', context)
+
+# deleta os pedidos, não os produtos dos pedidos em especifico
+def OrderDelete(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    if request.method == 'POST':
+        order.delete()
+        return redirect('order-list') 
+    return render(request, 'order/delete.html', {'order': order})
+
+
+

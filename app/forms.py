@@ -33,6 +33,21 @@ CallProductFormSet = inlineformset_factory(
     extra=1, can_delete=True, can_delete_extra=True
 )
 
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ("__all__")
+
+class OrderedProductForm(forms.ModelForm):
+    class Meta:
+        model = OrderedProduct
+        fields= ("__all__")
+
+OrderedProductFormSet = inlineformset_factory(
+    Order, OrderedProduct, form = OrderedProductForm,
+    extra=1, can_delete=True, can_delete_extra=True
+)
+
 class UserCreateForm(UserCreationForm):
     class Meta:
         model = UserProfile

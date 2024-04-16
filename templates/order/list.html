@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Pedidos{% endblock title %}
+
+{% block content %}
+    <div class="container justify-content-center">
+        <h1>Pedidos</h1>
+        <a href="{% url 'index' %}">index</a>
+        <br>
+
+        <a href="{% url 'create-order' %}" class="btn btn-success btn-sm">Cadastrar Pedido</a>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Instituição</th>
+                        <th>Situação</th>
+                        <th>Feito em</th>
+                        <th>User</th>
+                        <th>Opções</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for object in order_list %}
+                        <tr>
+                            <td>{{ object.pk }}</td>
+                            <td>{{ object.institution }}</td>
+                            <td>{{object.status}}</td>
+                            <td>{{ object.timestamp }}</td>
+                            <td>{{ object.user }}</td>
+                            <td>
+                                <a href="{% url 'detail-order' object.pk %}" class="btn btn-primary btn-sm">Detalhar</a>
+                                <a href="{% url "delete-order" object.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
+                                <a href="#" class="btn btn-warning btn-sm" title="Editar">Editar pedido</a>
+
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">Nenhum pedido até o momento</td>
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    
+
+    </div>
+
+{% endblock content %}

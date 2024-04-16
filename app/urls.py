@@ -42,4 +42,10 @@ urlpatterns = [
     path('produtos-chamadas/delete/<int:pk>/', CallProductDelete, name= 'delete-call-product'),
     path('produtos-chamadas/update/<int:pk>/', CallProductUpdate, name= 'update-call-product'),
 
+    # CRUD Pedidos e Produtos dos pedidos
+    path('pedidos/', OrderList, name= 'order-list'),
+    path('cadastrar/pedido/', OrderCreate, name= 'create-order'),
+    path('detalhar/<int:pk>/pedido/', OrderDetail, name='detail-order'),
+    path('deletar/<int:pk>/pedido/', OrderDelete, name='delete-order')
+
 ]
