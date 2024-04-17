@@ -13,7 +13,7 @@
             <thead>
                 <tr>
                     <th>Produto</th>
-                    <th>Quantidade</th>
+                    <th>Quantidade Pedida</th>
                     <th>Situação</th>
                 </tr>
             </thead>
@@ -22,7 +22,7 @@
                 {% for object in products %}
                     <tr>
                         <td>{{ object.call_product }}</td>
-                        <td>{{ object.quantity }}</td>
+                        <td>{{ object.ordered_quantity }}</td>
                         <td>{{ object.status }}</td>
 
                     </tr>

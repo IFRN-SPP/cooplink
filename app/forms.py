@@ -36,12 +36,12 @@ CallProductFormSet = inlineformset_factory(
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ("__all__")
+        fields = ("institution", "call",)
 
 class OrderedProductForm(forms.ModelForm):
     class Meta:
         model = OrderedProduct
-        fields= ("__all__")
+        fields= ("call_product", "ordered_quantity",)
 
 OrderedProductFormSet = inlineformset_factory(
     Order, OrderedProduct, form = OrderedProductForm,

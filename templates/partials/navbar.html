@@ -1,9 +1,11 @@
-<a href="{% url 'institution-list' %}">Instituições</a>
-<a href="{% url 'product-list' %}">Produtos</a>
-<a href="{% url 'user-list' %}">Usuários</a>
-<a href="{% url 'call-list' %}">Chamadas</a>
-<a href="{% url 'order-list'%}">Pedidos</a>
-{% if user.is_authenticated %}
-{{request.user}}
-<form action="{% url "logout" %}" method="post">{% csrf_token %}<button type="submit">Logout</button></form>
-{% endif %}
+<div class="container my-3">
+  <a href="{% url 'institution-list' %}">Instituições</a>
+  <a href="{% url 'product-list' %}">Produtos</a>
+  <a href="{% url 'user-list' %}">Usuários</a>
+  <a href="{% url 'call-list' %}">Chamadas</a>
+  <a href="{% url 'order-list'%}">Pedidos</a>
+  {% if user.is_authenticated %}
+  {{request.user}} - {{request.user.institution}}
+  <form class="btn" action="{% url "logout" %}" method="post">{% csrf_token %}<button type="submit">Logout</button></form>
+  {% endif %}
+</div>

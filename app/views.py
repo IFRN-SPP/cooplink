@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.http import JsonResponse
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -120,7 +121,6 @@ class UserDelete(AjaxDeleteView):
 
 
 #CRUD CHAMADA
-
 class CallList(LoginRequiredMixin, ListView):
     model= Call
     template_name = 'call/list.html'
@@ -137,8 +137,6 @@ class CallDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('call-list')
 
 # CRUD Chamada Function Based Views
-
-
 @login_required
 def CallCreate(request):
     # se o metodo for GET (deseja adcionar um produto)
@@ -238,8 +236,11 @@ def OrderList(request):
     context = {'order_list': order}
     return render(request, 'order/list.html', context)
 
+# Create para Admin
 @login_required
-def OrderCreate(request):
+def OrderCreateAdmin(request):
+    template_name = 'order/create-admin.html'
+
     if request.method == 'GET':
         form = OrderForm()
         form_product_factory = OrderedProductFormSet
@@ -249,7 +250,7 @@ def OrderCreate(request):
             'form_product': form_product
         } 
         
-        return render(request, 'order/create.html', context)
+        return render(request, template_name, context)
     
 
     if request.method == 'POST':
@@ -258,8 +259,9 @@ def OrderCreate(request):
         form_product = form_product_factory(request.POST)
 
         if form.is_valid() and form_product.is_valid():
+            user = request.user
+            form.instance.user = user # request.user como autor do pedido
             order = form.save()
-            form.save() 
             form_product.instance = order 
             form_product.save()
             
@@ -269,8 +271,73 @@ def OrderCreate(request):
                 'form': form,
                 'form_product': form_product,
             }
-            return render(request, 'order/create.html', context)
+            return render(request, template_name, context)    
+
+# função para atualizar dinamicamente o select de call no form   
+def get_calls(request):
+    if request.method == 'GET':
+        institution_id = request.GET.get('institution_id')
+        # pega o id da instituição do form e relaciona as chamadas ativas
+        calls = Call.objects.filter(institution_id=institution_id, active=True)
+        # cria o dict com as chamadas ativas e o id delas
+        calls_dict = [{'id': call.id, 'text': str(call)} for call in calls]
+        return JsonResponse({'calls': calls_dict})
+    else:
+        return JsonResponse({'error': 'Invalid request'})
+
+# função para atualizar dinamicamente o select de call_product no form inline  
+def get_products(request):
+    if request.method == 'GET':
+        call_id = request.GET.get('call_id')
+        # pega o id da chamada do form e relaciona aos seus produtos
+        products = CallProduct.objects.filter(call_id=call_id)
+        # dict com os produtos da chamada e  id's
+        products_dict = [{'id': product.id, 'text': str(product)} for product in products]
+        return JsonResponse({'products': products_dict})
+    else:
+        return JsonResponse({'error': 'Invalid request'})
+    
+# Create para Usuário Comum
+def OrderCreate(request):
+    template_name = 'order/create.html'
+    # busco as info com base no request.user
+    user = request.user
+    institution = user.institution
+    call = Call.objects.filter(active=True, institution=institution.pk).first()
+    
+    if request.method == 'GET':
+        form_product_factory = OrderedProductFormSet
+        form_product = form_product_factory()
+        context = {
+            'call': call, 
+            'form_product': form_product
+        } 
         
+        return render(request, template_name, context)
+    
+    if request.method == 'POST':
+        form_product_factory = OrderedProductFormSet
+        form_product = form_product_factory(request.POST)
+
+        if form_product.is_valid():
+            # crio o pedido
+            order = Order.objects.create(
+                user=user,
+                institution=institution,
+                call=call
+            )
+
+            form_product.instance = order 
+            form_product.save()
+            
+            return redirect('order-list') 
+        else:
+            context = {
+                'call': call,
+                'form_product': form_product,
+            }
+            return render(request, template_name, context)    
+
 @login_required
 def OrderDetail(request, pk):
     order = get_object_or_404(Order, pk=pk)

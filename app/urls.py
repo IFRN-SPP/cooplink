@@ -44,8 +44,12 @@ urlpatterns = [
 
     # CRUD Pedidos e Produtos dos pedidos
     path('pedidos/', OrderList, name= 'order-list'),
-    path('cadastrar/pedido/', OrderCreate, name= 'create-order'),
+    path('cadastrar/pedido/', OrderCreate, name='create-order'),
+    path('administacao/cadastrar/pedido/', OrderCreateAdmin, name= 'create-order-admin'),
     path('detalhar/<int:pk>/pedido/', OrderDetail, name='detail-order'),
-    path('deletar/<int:pk>/pedido/', OrderDelete, name='delete-order')
+    path('deletar/<int:pk>/pedido/', OrderDelete, name='delete-order'),
+    # view para chamadas ajax 
+    path('get_products/', get_products, name='get_products'),
+    path('get_calls/', get_calls, name='get_calls'),
 
 ]

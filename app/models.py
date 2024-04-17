@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 class Institution(models.Model):
     name = models.CharField(max_length=100)
-    cnpj = models.CharField(max_length=50)
+    cnpj = models.CharField(max_length=14)
 
     def __str__(self):
         return self.name
@@ -25,8 +25,12 @@ class Call(models.Model):
         return f'Chamada - {self.number}'
 
 class Product(models.Model):
+    CHOICES = [
+        ('KG', 'KG'),
+        ('UNI', 'UNI'),
+    ]
     name = models.CharField(max_length=100)
-    unit = models.CharField(max_length=50)
+    unit = models.CharField(max_length=3, choices=CHOICES)
 
     def __str__(self):
         return self.name
@@ -57,9 +61,17 @@ class Order(models.Model):
         return f'{self.user} - {self.institution} - {self.call.number}'
 
 class OrderedProduct(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    call_product = models.ForeignKey(CallProduct, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=0) 
+    CHOICES = [
+        ('parcial', 'Parcial'),
+        ('available', 'Disponível'),
+        ('denied', 'Negado'),
+    ]
+
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='call_products')
+    call_product = models.ForeignKey(CallProduct, on_delete=models.CASCADE, related_name='order')
+    ordered_quantity = models.IntegerField(default=0) 
+    available_quantity = models.IntegerField(null=True)
+    status = models.CharField(max_length=10, choices=CHOICES, default='available')
 
     def __str__(self):
         return f'({self.order}) ({self.call_product}) ({self.quantity})'
