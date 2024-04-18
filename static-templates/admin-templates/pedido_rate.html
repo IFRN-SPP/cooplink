@@ -81,7 +81,8 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">PRODUTOS</th>
-                                            <th scope="col">QUANTIDADE</th>
+                                            <th scope="col">QUANTIDADE PEDIDA</th>
+                                            <th scope="col">QUANTIDADE DISPONÍVEL</th>
                                             <th scope="col">SALDO ATUAL DA CHAMADA</th>
                                             <th scope="col">SITUAÇÃO</th>
                                         </tr>
@@ -91,20 +92,24 @@
                                         <tr>
                                             <!-- Produto -->
                                             <th>
-                                                <p>Produto 001</p>
+                                                <p>Abacaxi</p>
                                             </th>
-                                            <!-- Quantidade -->
+                                            <!-- Quantidade pedida -->
                                             <td>
                                                 <input type="number" name="quantidade" class="input-control">
                                                 <label for="quantidade" class="form-label">KG</label>
                                             </td>
+
+                                            <!-- Quantidade disponível -->
+                                            <td>90 KG</td>
+
                                             <!-- Saldo atual da chamada -->
                                             <td>
                                                 <p>40 KG</p>
                                             </td>
                                             <!-- Situação -->
                                             <td>
-                                                <select name="situacao" class="form-select">
+                                                <select name="situacao" class="form-select" required>
                                                     <option selected disabled hidden></option>
                                                     <option value="disponivel"> Disponível </option>
                                                     <option value="parcialmente">Parcialmente</option>
@@ -117,19 +122,23 @@
                                         <tr>
                                             <!-- Produto -->
                                             <th>
-                                                <p>Produto 002</p>
+                                                <p>Coentro</p>
                                             </th>
-                                            <!-- Quantidade -->
+                                            <!-- Quantidade pedida -->
                                             <td>
                                                 <input type="number" name="quantidade" class="input-control">
                                                 <label for="quantidade" class="form-label">UNI</label>
                                             </td>
+
+                                            <!-- Quantidade disponível -->
+                                            <td>300 UNI</td>
+
                                             <!-- Saldo atual da chamada -->
                                             <td>
                                                 <p>0 UNI</p>
                                             </td>
                                             <td>
-                                                <select name="situacao" class="form-select">
+                                                <select name="situacao" class="form-select" required>
                                                     <option selected disabled hidden></option>
                                                     <option value="disponivel"> Disponível </option>
                                                     <option value="parcialmente">Parcialmente</option>
@@ -142,19 +151,23 @@
                                         <tr>
                                             <!-- Produto -->
                                             <th>
-                                                <p>Produto 003</p>
+                                                <p>Acerola</p>
                                             </th>
                                             <!-- Quantidade -->
                                             <td>
                                                 <input type="number" name="quantidade" class="input-control">
                                                 <label for="quantidade" class="form-label">KG</label>
                                             </td>
+
+                                            <!-- Quantidade disponível -->
+                                            <td>600 KG</td>
+
                                             <!-- Saldo atual da chamada -->
                                             <td>
                                                 <p>200 KG</p>
                                             </td>
                                             <td>
-                                                <select name="situacao" class="form-select">
+                                                <select name="situacao" class="form-select" required>
                                                     <option selected disabled hidden></option>
                                                     <option value="disponivel"> Disponível </option>
                                                     <option value="parcialmente">Parcialmente</option>
@@ -166,8 +179,8 @@
 
                                 </table>
                                 <div class="d-flex align-items-baseline justify-content-end mt-5 gap-5">
-                                    <button class="btn btn-success px-5" type="submit">OK</button>
-                                    <button class="btn btn-danger px-5" type="submit">NEGAR</button>
+                                    <button class="btn btn-success px-5" type="submit">ACEITAR PEDIDO</button>
+                                    <button class="btn btn-danger px-5" type="submit">NEGAR PEDIDO</button>
                                 </div>
 
                             </form>

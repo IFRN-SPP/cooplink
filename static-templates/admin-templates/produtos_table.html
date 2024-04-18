@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - início</title>
+    <title>Gerenciar produtos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../style.css">
@@ -100,7 +100,8 @@
 
                                                         <div class="form-group">
                                                             <label for="unidade" class="form-label">Unidade: </label>
-                                                            <select name="unidade" class="form-select">
+                                                            <select name="unidade" class="form-select" required>
+                                                                <option selected disabled hidden></option>
                                                                 <option value="kg">KG</option>
                                                                 <option value="uni">UNI</option>
                                                             </select>
