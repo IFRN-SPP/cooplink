@@ -74,7 +74,8 @@
                                     <div class="my-3 d-flex align-items-baseline gap-2">
                                         <label for="instituicao">INSTITUIÇÃO:</label>
 
-                                        <select name="instituicao" class="form-select">
+                                        <select name="instituicao" class="form-select" required>
+                                            <option selected disabled hidden></option>
                                             <option value="IFRN">IFRN</option>
                                         </select>
                                     </div>
@@ -87,14 +88,14 @@
                                 <div class="content-header d-flex align-items-baseline">
                                     <p>INÍCIO: </p>
                                     <div class="mx-3">
-                                        <input type="date" name="inicio" class="form-control">
+                                        <input type="date" name="inicio" class="form-control" required>
                                     </div>
                                 </div>
 
                                 <div class="content-header d-flex align-items-baseline">
                                     <p>TÉRMINO: </p>
                                     <div class="mx-3">
-                                        <input type="date" name="termino" class="form-control">
+                                        <input type="date" name="termino" class="form-control" required>
                                     </div>
                                 </div>
 
@@ -112,21 +113,22 @@
                                         <tr>
                                             <!-- Produto -->
                                             <th>
-                                                <select name="produto" class="form-select">
+                                                <select name="produto" class="form-select" required>
+                                                    <option selected disabled hidden></option>
                                                     <option value="abacaxi">Abacaxi</option>
                                                     <option value="acerola">Acerola</option>
                                                 </select>
                                             </th>
                                             <!-- Saldo -->
                                             <td>
-                                                <input type="number" name="saldo" class="input-control">
+                                                <input type="number" name="saldo" class="input-control" required>
                                                 <label for="saldo" class="form-label">KG</label>
                                             </td>
 
                                             <!-- Preço -->
                                             <td>
                                                 <label for="preco" class="form-label">R$</label>
-                                                <input type="number" name="preco" class="input-control">
+                                                <input type="number" name="preco" class="input-control" required>
                                             </td>
                                             <td>
                                                 <button class="btn btn-danger"> <i class="bi bi-dash-circle"></i>
@@ -137,20 +139,21 @@
                                         <tr>
                                             <!-- Produto -->
                                             <th>
-                                                <select name="produto" class="form-select">
+                                                <select name="produto" class="form-select" required>
+                                                    <option selected disabled hidden></option>
                                                     <option value="abacaxi">Abacaxi</option>
                                                     <option value="acerola">Acerola</option>
                                                 </select>
                                             </th>
                                             <!-- Saldo -->
                                             <td>
-                                                <input type="number" name="saldo" class="input-control">
+                                                <input type="number" name="saldo" class="input-control" required> 
                                                 <label for="saldo" class="form-label">KG</label>
                                             </td>
                                             <!-- Preço -->
                                             <td>
                                                 <label for="preco" class="form-label">R$</label>
-                                                <input type="number" name="preco" class="input-control">
+                                                <input type="number" name="preco" class="input-control" required>
                                             </td>
                                             <td>
                                                 <button class="btn btn-danger"> <i class="bi bi-dash-circle"></i>
@@ -169,8 +172,8 @@
 
                                 </table>
                                 <div class="d-flex align-items-baseline justify-content-end mt-5 gap-5">
-
-                                    <button class="btn btn-danger" type="submit">Cadastrar chamada</button>
+                                    <a class="btn btn-danger" href="chamadas_table.html">CANCELAR</a>
+                                    <button class="btn btn-success" type="submit">CADASTRAR CHAMADA</button>
                                 </div>
                             </form>
                         </div>
