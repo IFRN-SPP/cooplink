@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .ajax import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView
 from .registration import ConfirmPasswordMixin
-from .forms import InstitutionForm, ProductForm, UserCreateForm, UserUpdateForm, SetPasswordForm, PermissionForm, CallProductForm, CallForm, CallProductFormSet, OrderForm, OrderedProductFormSet
+from .forms import InstitutionForm, ProductForm, UserCreateForm, UserUpdateForm, SetPasswordForm, PermissionForm, CallProductForm, CallForm, CallProductFormSet, OrderForm, OrderedProductFormSet, OrderedProductForm
 from .models import *
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
@@ -355,6 +355,52 @@ def OrderDelete(request, pk):
         order.delete()
         return redirect('order-list') 
     return render(request, 'order/delete.html', {'order': order})
+
+# deleta os produtos dos pedidos
+@login_required
+def OrderedProductDelete(request, pk):
+    ordered_product = get_object_or_404(OrderedProduct, pk=pk)
+    if request.method == 'POST':
+        ordered_product.delete()
+        return redirect('detail-order', pk= ordered_product.order.pk) # retorna para a página da chamada
+    return render(request, 'ordered_product/delete.html', {'ordered_product':  ordered_product})
+
+@login_required
+def OrderedProductUpdate(request, pk):
+    # pego a pk do pedido, na qual quero editar os produtos
+    order = get_object_or_404(Order, pk=pk)
+
+    if request.method == 'GET':
+        # obtém todos os produtos relacionados ao pedido
+        products = OrderedProduct.objects.filter(order=order)
+        form_product_factory = OrderedProductFormSet
+        form_product = form_product_factory(instance=order, queryset=products)
+        context = {
+            'order': order,
+            'form_product': form_product,
+        }
+        return render(request, 'ordered_product/update.html', context)
+
+    # Se o método for POST, processa os dados submetidos
+    if request.method == 'POST':
+        form = OrderedProductForm(request.POST, instance=order)
+        form_product_factory = OrderedProductFormSet 
+        form_product = form_product_factory(request.POST, instance=order)
+
+        if form_product.is_valid():
+            # deleta os produtos que foram excluidos
+            for form in form_product.deleted_forms:
+                if form.instance.pk:
+                    form.instance.delete()
+            form_product.save()
+            return redirect('detail-order', pk=order.pk)  # Redireciona para a página do pedido
+        else:
+            context = {
+                'order': order,
+                'form': form,
+                'form_product': form_product,
+            }
+            return render(request, 'ordered_product/update.html', context)
 
 
 

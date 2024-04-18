@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Produtos das Chamadas{% endblock title %}
+{% block title %}Excluir Pedido{% endblock title %}
 
 {% block content %}
     <div class="container justify-content-center">
-        <h3>Excluir Produto da Chamada</h3>
+        <h3>Excluir Pedido</h3>
         <p class="lead">Confirme para excluir o registro definitivamente.</p>
 
         <hr>
@@ -12,7 +12,7 @@
         <form action="" method="POST">
             {% csrf_token %}
 
-            <p>Deseja excluir este produto? <b>{{ order }}</b>?</p>
+            <p>Deseja excluir este pedido? <b>{{ order }}</b>?</p>
 
             <button type="submit" class="btn btn-danger">Excluir</button>
         </form>

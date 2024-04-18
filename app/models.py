@@ -74,5 +74,5 @@ class OrderedProduct(models.Model):
     status = models.CharField(max_length=10, choices=CHOICES, default='available')
 
     def __str__(self):
-        return f'({self.order}) ({self.call_product}) ({self.quantity})'
+        return f'({self.order}) ({self.call_product}) ({self.ordered_quantity})'
     

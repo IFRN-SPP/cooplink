@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Produtos do Pedido{% endblock title %}
+
+{% block content %}
+    <div class="container justify-content-center">
+        <h3>Excluir Produto do Pedido</h3>
+        <p class="lead">Confirme para excluir o registro definitivamente.</p>
+
+        <hr>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            <p>Deseja excluir este produto? <b>{{ ordered_product }}</b>?</p>
+
+            <button type="submit" class="btn btn-danger">Excluir</button>
+        </form>
+
+    </div>
+{% endblock content %}
