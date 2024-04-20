@@ -5,9 +5,14 @@
 {% block content %}
 <div class="container justify-content-center">
     <h1>Pedido {{order.pk}}</h1>
-    <p>Autor: {{ order.user }}</p>
     <p>Situação do pedido: {{order.status}}</p>
-    <p>Instituição: {{ order.institution }}</p>
+    <p>Feito em: {{ order.timestamp}}</p>
+    
+        {% if user.is_staff %}
+            <p>Autor: {{ order.user }}</p>
+            <p>Instituição: {{ order.institution }}</p>
+            <a href="#" class='btn btn-info btn-sm' >Avaliar pedido</a>   
+        {% endif %}
 
     <div class="table-responsive">
         <table class="table table-striped">
@@ -15,8 +20,12 @@
                 <tr>
                     <th>Produto</th>
                     <th>Quantidade Pedida</th>
+
+                    {% if user.is_staff %}
+                        <th>Saldo Atual da Chamada</th>
+                    {% endif %}
                     <th>Situação</th>
-                    <th>Deletar?</th>
+                    
                 </tr>
             </thead>
 
@@ -25,23 +34,22 @@
                     <tr>
                         <td>{{ object.call_product }}</td>
                         <td>{{ object.ordered_quantity }}</td>
-                        <td>{{ object.status }}</td>
-                        <td>
-                            <a href="{% url "delete-ordered-product" object.pk %}" class='btn btn-danger'>x</a>
-                        </td>
-
+                        {% if user.is_staff %}
+                            <td>{{object.call_product.balance}}</td>
+                        {% endif %}
+                        <td>{{ object.status }}</td>   
                     </tr>
                 {% endfor %}
 
             </tbody>
         </table>
     </div>
-  
 
+    <div>
+        {% if not user.is_staff %}
+            Ao receber seu pedido, confirme a entrega. <a href="#" class='btn btn-success btn-sm'>Confirmar entrega</a>
+        {% endif %}
+    </div>
 </div>
-
-
-
-
 
 {% endblock content %}
