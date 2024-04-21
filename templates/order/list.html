@@ -59,7 +59,7 @@
                                         {% endif %}
 
                                         {% if user.is_staff %}
-                                            <a href="#" class='btn btn-info btn-sm'>Avaliar pedido</a>
+                                            <a href="{% url 'evaluate-order' object.pk %}" class='btn btn-info btn-sm'>Avaliar pedido</a>
                                         {% endif %}
                                         
                                     </td>

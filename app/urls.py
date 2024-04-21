@@ -52,6 +52,9 @@ urlpatterns = [
     path("produtos-pedido/delete/<int:pk>/",  OrderedProductDelete, name="delete-ordered-product"),
     path("produtos-pedido/update/<int:pk>/", OrderedProductUpdate, name="update-ordered-product"),
 
+    # avaliar pedido
+    path('avaliar/pedido/<int:pk>/', EvaluateOrder, name='evaluate-order'),
+
     # view para chamadas ajax 
     path('get_products/', get_products, name='get_products'),
     path('get_calls/', get_calls, name='get_calls'),

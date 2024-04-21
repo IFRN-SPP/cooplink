@@ -402,5 +402,22 @@ def OrderedProductUpdate(request, pk):
             }
             return render(request, 'ordered_product/update.html', context)
 
+# Avaliar pedido
 
+def EvaluateOrder (request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    products = OrderedProduct.objects.filter(order=order)
+    if request.method =='GET':
+        context = {
+            'order': order, 
+            'products': products,
+        }
+        return render(request, 'order/evaluate-order.html', context)
+    
+    # if request.method == 'POST':
+    #     # form_product_factory = OrderedProductFormSet
+    #     # form_product = form_product_factory(request.POST)
 
+    #     # if form_product.is_valid():
+
+  

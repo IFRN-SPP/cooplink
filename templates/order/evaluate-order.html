@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Avaliar Pedido {% endblock title %}
+
+{% block content %}
+<div class="container justify-content-center">
+    <h1>Avaliar Pedido {{order.pk}} - {{order.call }}</h1>
+    <p>Autor: {{order.user}}</p>
+    <p>Instituição: {{order.institution}}</p>
+    
+    <form method='POST' > 
+        {% csrf_token %}
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Quantidade Pedida</th>
+                        <th>Saldo Atual da Chamada</th>
+                        <th>Situação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in products  %}
+                        <tr>
+                            <td>{{ object.call_product }}</td>
+                            <td>{{ object.ordered_quantity }}</td>
+                            <td>{{ object.call_product.balance }}</td>
+                            <td>
+                                <select name="#">
+                                    <option value="available">Disponível</option>
+                                    <option value="parcial">Parcial</option>
+                                    <option value="denied">Negado</option>
+                                </select> 
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <button type='submit' class="btn btn-success">OK</button>
+        <button class='btn btn-danger'>Negar Pedido</button>
+    </form>
+</div>
+
+
+
+{% endblock content %}
