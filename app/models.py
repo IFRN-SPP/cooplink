@@ -48,6 +48,7 @@ class Order(models.Model):
     CHOICES = [
         ('pending', 'Pendente'),
         ('approved', 'Aprovado'),
+        ('denied', 'Negado'),
         ('delivered', 'Entregue'),
     ]
 
