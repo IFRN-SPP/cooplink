@@ -8,7 +8,7 @@
     <p>Autor: {{order.user}}</p>
     <p>Instituição: {{order.institution}}</p>
     
-    <form method='POST' > 
+    <form  method='POST' action='' > 
         {% csrf_token %}
 
         <div class="table-responsive">
@@ -22,17 +22,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for object in products  %}
+                    {% for object in products %}
                         <tr>
                             <td>{{ object.call_product }}</td>
                             <td>{{ object.ordered_quantity }}</td>
                             <td>{{ object.call_product.balance }}</td>
                             <td>
-                                <select name="#">
-                                    <option value="available">Disponível</option>
-                                    <option value="parcial">Parcial</option>
-                                    <option value="denied">Negado</option>
-                                </select> 
+                                <select name="product_status_{{ object.pk }}">
+                                    <option value="available" {% if object.status == available%}selected{% endif %}>Available</option>
+                                    <option value="parcial" {% if object.status == parcial %}selected{% endif %}>Parcial</option>
+                                    <option value="denied"{% if object.status == denied %}selected{% endif %}>Denied</option>
+                                </select>
                             </td>
                         </tr>
                     {% endfor %}
@@ -41,10 +41,8 @@
         </div>
 
         <button type='submit' class="btn btn-success">OK</button>
-        <button class='btn btn-danger'>Negar Pedido</button>
+        <a href="{% url "denied-order" order.pk %}"class='btn btn-danger' >Negar Pedido</a>
     </form>
 </div>
-
-
-
 {% endblock content %}
+

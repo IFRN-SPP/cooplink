@@ -405,19 +405,42 @@ def OrderedProductUpdate(request, pk):
 # Avaliar pedido
 
 def EvaluateOrder (request, pk):
+    #pego a pk e seus produtos
     order = get_object_or_404(Order, pk=pk)
     products = OrderedProduct.objects.filter(order=order)
-    if request.method =='GET':
+    
+    if request.method =='GET': #caso for get apenas renderizo
         context = {
             'order': order, 
             'products': products,
         }
         return render(request, 'order/evaluate-order.html', context)
     
-    # if request.method == 'POST':
-    #     # form_product_factory = OrderedProductFormSet
-    #     # form_product = form_product_factory(request.POST)
+    if request.method == 'POST': #se for post
+        for product in products: #para produto em produtos do pedido 
+            new_status = request.POST.get(f'product_status_{product.pk}') #recupero o valor que foi selecionado 
+            if new_status is not None: #se não for None, significa que tem um novo status
+                product.status = new_status
+                product.save()
+        order.status = 'approved'
+        order.save()
+        return redirect('detail-order', pk=order.pk)
+    
+def EvaluateOrderDenied(request,pk):
+    order = get_object_or_404(Order, pk=pk)
 
-    #     # if form_product.is_valid():
+    if request.method == 'POST':
+        order.status = 'denied'
+        order.save()
+        return redirect('detail-order', pk= order.pk) 
+    return render(request, 'order/denied.html', {'order':  order })
+    
+        
 
+
+    
+
+
+    
+    
   

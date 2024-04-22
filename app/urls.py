@@ -54,6 +54,7 @@ urlpatterns = [
 
     # avaliar pedido
     path('avaliar/pedido/<int:pk>/', EvaluateOrder, name='evaluate-order'),
+    path('negar/pedido/<int:pk>/',EvaluateOrderDenied, name='denied-order'),
 
     # view para chamadas ajax 
     path('get_products/', get_products, name='get_products'),

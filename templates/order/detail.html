@@ -11,7 +11,10 @@
         {% if user.is_staff %}
             <p>Autor: {{ order.user }}</p>
             <p>Instituição: {{ order.institution }}</p>
-            <a href="#" class='btn btn-info btn-sm' >Avaliar pedido</a>   
+            {% if order.status == 'pending' %}
+                <a href="{% url 'evaluate-order' order.pk %}" class='btn btn-info btn-sm' >Avaliar pedido</a>   
+            {% endif %}
+            
         {% endif %}
 
     <div class="table-responsive">
@@ -47,7 +50,7 @@
 
     <div>
 
-        {% if order.user == user %}
+        {% if order.user == user and order.status == 'approved' %}
             Ao receber seu pedido, confirme a entrega. <a href="#" class='btn btn-success btn-sm'>Confirmar entrega</a>
         {% endif %}
        

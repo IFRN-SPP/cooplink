@@ -58,7 +58,7 @@
                                             <a href="{% url "update-ordered-product" object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar pedido</a>
                                         {% endif %}
 
-                                        {% if user.is_staff %}
+                                        {% if user.is_staff and object.status == 'pending' %}
                                             <a href="{% url 'evaluate-order' object.pk %}" class='btn btn-info btn-sm'>Avaliar pedido</a>
                                         {% endif %}
                                         
