@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Produtos do Pedido{% endblock title %}
+
+{% block content %}
+    <div class="container justify-content-center">
+        <h3>Editar Produtos do Pedido</h3>
+        <p class="lead">Preencha todos os campos obrigatórios:</p>
+
+        <hr>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            <h3>{{order.institution}} - {{order.call}}  </h3> <!--({% if call.active %}ATIVO{% else %}FECHADA{% endif %})-->
+
+            {{ form_product.management_form}} 
+            
+            {% for form in form_product %}
+            <div class='inlineform'>
+                <hr>
+                {{ form }}
+                {% comment %} permite que o form seja deletado caso esteja no bd {% endcomment %}
+                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                
+            </div>
+               
+            {% endfor %}
+
+            <hr>
+
+            <button type="submit" class="btn btn-primary ">Cadastrar</button>
+        </form>
+
+    
+    </div>
+
+{% endblock content %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(function() {
+            $('.inlineform').formset({
+                prefix: '{{ form_product.prefix }}',
+                addText: '<button type="submit" class="btn btn-success btn-sm">+</button>',
+                deleteText: '<button type="submit" class="btn btn-danger btn-sm">x</button>',
+                hideLastAddForm: true,
+            });
+        })
+    </script>
+{% endblock script %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Negar Pedido{% endblock title %}
+
+{% block content %}
+    <div class="container justify-content-center">
+        <h3>Negar Pedido</h3>
+        <p class="lead">Confirme para negar o registro definitivamente.</p>
+
+        <hr>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            <p>Deseja negar este pedido? <b>{{ order }}</b>?</p>
+
+            <button type="submit" class="btn btn-danger">Negar</button>
+        </form>
+
+    </div>
+{% endblock content %}

@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import inlineformset_factory
-from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
+from django.contrib.auth.forms import UserCreationForm
 
 from django.contrib.auth.hashers import check_password
 from django.utils import timezone

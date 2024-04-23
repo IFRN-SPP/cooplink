@@ -5,8 +5,17 @@
 {% block content %}
 <div class="container justify-content-center">
     <h1>Pedido {{order.pk}}</h1>
-    <p>Autor: {{ order.user }}</p>
-    <p>Instituição: {{ order.institution }}</p>
+    <p>Situação do pedido: {{order.status}}</p>
+    <p>Feito em: {{ order.timestamp}}</p>
+    
+        {% if user.is_staff %}
+            <p>Autor: {{ order.user }}</p>
+            <p>Instituição: {{ order.institution }}</p>
+            {% if order.status == 'pending' %}
+                <a href="{% url 'evaluate-order' order.pk %}" class='btn btn-info btn-sm' >Avaliar pedido</a>   
+            {% endif %}
+            
+        {% endif %}
 
     <div class="table-responsive">
         <table class="table table-striped">
@@ -14,7 +23,12 @@
                 <tr>
                     <th>Produto</th>
                     <th>Quantidade Pedida</th>
+
+                    {% if user.is_staff %}
+                        <th>Saldo Atual da Chamada</th>
+                    {% endif %}
                     <th>Situação</th>
+                    
                 </tr>
             </thead>
 
@@ -23,24 +37,25 @@
                     <tr>
                         <td>{{ object.call_product }}</td>
                         <td>{{ object.ordered_quantity }}</td>
-                        <td>{{ object.status }}</td>
-
+                        {% if user.is_staff %}
+                            <td>{{object.call_product.balance}}</td>
+                        {% endif %}
+                        <td>{{ object.status }}</td>   
                     </tr>
-                {% comment %} {% empty %}
-                    <tr>
-                        <td colspan="4">Nenhum produto até o momento</td>
-                    </tr> {% endcomment %}
                 {% endfor %}
 
             </tbody>
         </table>
     </div>
-  
 
+    <div>
+
+        {% if order.user == user and order.status == 'approved' %}
+            Ao receber seu pedido, confirme a entrega. <a href="#" class='btn btn-success btn-sm'>Confirmar entrega</a>
+        {% endif %}
+       
+           
+    </div>
 </div>
-
-
-
-
 
 {% endblock content %}

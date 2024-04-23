@@ -8,38 +8,63 @@
         <a href="{% url 'index' %}">index</a>
         <br>
 
-        <a href="{% url 'create-order-admin' %}" class="btn btn-warning btn-sm">Cadastrar Pedido (Admin)</a>
-        <br>
-        <a href="{% url 'create-order' %}" class="btn btn-success btn-sm">Cadastrar Pedido (Comum)</a>
+        {% if user.is_staff %}
+            <a href="{% url 'create-order-admin' %}" class="btn btn-success btn-sm">Cadastrar Pedido (Admin)</a>
+        {% else %}
+            <a href="{% url 'create-order' %}" class="btn btn-success btn-sm">Cadastrar Pedido (Comum)</a>
+        {% endif %}
+       
 
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        
                         <th>N°</th>
-                        <th>Instituição</th>
-                        <th>Situação</th>
-                        <th>Feito em</th>
-                        <th>User</th>
-                        <th>Opções</th>
+                        {% if user.is_staff %}
+                            <th>Instituição</th>
+                            <th>Situação</th>
+                            <th>Feito em</th>
+                            <th>User</th>
+                            <th>Opções</th>
+                        {% else %}
+                            <th>Situação</th>
+                            <th>Feito em</th>
+                            <th>Opções</th>
+                        {% endif %}
                     </tr>
                 </thead>
 
                 <tbody>
                     {% for object in order_list %}
-                        <tr>
-                            <td>{{ object.pk }}</td>
-                            <td>{{ object.institution }}</td>
-                            <td>{{object.status}}</td>
-                            <td>{{ object.timestamp }}</td>
-                            <td>{{ object.user }}</td>
-                            <td>
-                                <a href="{% url 'detail-order' object.pk %}" class="btn btn-primary btn-sm">Detalhar</a>
-                                <a href="{% url "delete-order" object.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
-                                <a href="#" class="btn btn-warning btn-sm" title="Editar">Editar pedido</a>
+                        {% if user.is_staff or object.user == user %}
+                                <tr>
+                                    <td>{{ object.pk }}</td>
+                                    {% if user.is_staff %}
+                                        <td>{{ object.institution }}</td>
+                                        <td>{{object.status}}</td>
+                                        <td>{{ object.timestamp }}</td>
+                                        <td>{{ object.user }}</td>
+                                    {% else %}
+                                        <td>{{object.status}}</td>
+                                        <td>{{ object.timestamp }}</td>
+                                    {% endif %}
 
-                            </td>
-                        </tr>
+                                    <td>
+                                        <a href="{% url 'detail-order' object.pk %}" class="btn btn-primary btn-sm">Detalhar</a>
+                                        <a href="{% url "delete-order" object.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
+                                    
+                                        {% if object.status == 'pending' and object.user == user %}
+                                            <a href="{% url "update-ordered-product" object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar pedido</a>
+                                        {% endif %}
+
+                                        {% if user.is_staff and object.status == 'pending' %}
+                                            <a href="{% url 'evaluate-order' object.pk %}" class='btn btn-info btn-sm'>Avaliar pedido</a>
+                                        {% endif %}
+                                        
+                                    </td>
+                                </tr>
+                        {% endif %}
                     {% empty %}
                         <tr>
                             <td colspan="4">Nenhum pedido até o momento</td>
@@ -49,8 +74,6 @@
                 </tbody>
             </table>
         </div>
-    
-
     </div>
 
 {% endblock content %}
