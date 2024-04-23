@@ -1,34 +1,55 @@
 $(function() {
-  // Função para obter produtos relacionados à chamada selecionada
   var getProducts = function() {
-    var callId = $(this).val(); // Obtenha o ID da chamada selecionada
-    // Capture todos os campos de seleção de produtos
-    var productSelects = $('[id^=id_call_products-]');
-    // Faça uma solicitação AJAX para obter os produtos relacionados à chamada selecionada
-    $.ajax({
-      url: '/get_products/', // URL da sua view para obter os produtos
-      type: 'GET',
-      data: {'call_id': callId}, // Passe o ID da chamada como parâmetro
-      success: function(data) {
-        // Limpe e atualize as opções de produtos em todos os campos de seleção
-        productSelects.each(function() {
-          var currentSelect = $(this);
-          currentSelect.empty();
-          // Adicione as opções de produtos dinamicamente
-          $.each(data.products, function(index, product) {
-            currentSelect.append($('<option>', {
-              value: product.id,
-              text: product.text,
+    var callId = $(this).val(); 
+    if (callId) {
+      var productSelects = $('.product-select select');
+      
+      productSelects.each(function() {
+        var currentSelect = $(this);
+        var selectId = currentSelect.attr('id');
+        var selectedOption = currentSelect.find('option:selected');
+        currentSelect.data(selectId + '-selected-option', selectedOption);
+      });
+    
+      $.ajax({
+        url: '/get_products/',
+        type: 'GET',
+        data: {'call_id': callId}, 
+        success: function(data) {
+          productSelects.each(function() {
+            var currentSelect = $(this);
+            currentSelect.empty();
+            
+            currentSelect.prepend($('<option>', {
+              value: '',
+              text: '---------',
+              selected: true
             }));
+          
+            $.each(data.products, function(index, product) {
+              currentSelect.append($('<option>', {
+                value: product.id,
+                text: product.text,
+              }));
+            });
+    
+            var selectId = currentSelect.attr('id');
+            if (currentSelect.data(selectId + '-selected-option')) {
+              var selectedOption = currentSelect.data(selectId + '-selected-option');
+              if (selectedOption) {
+                currentSelect.val(selectedOption.val());
+              }
+            }
           });
-        });
-      }
-    });
+        }
+      });
+    }
   };
 
   var getCalls = function() {
     var institutionId = $(this).val();
     var callSelects = $('#id_call');
+
     $.ajax({
       url: '/get_calls/',
       type: 'GET',
@@ -38,6 +59,21 @@ $(function() {
           var currentSelect = $(this);
           currentSelect.empty();
 
+          if (data.calls.length === 0) {
+            currentSelect.append($('<option>', {
+              value: '',
+              text: 'Sem chamadas',
+              selected: true
+            }));
+          }
+          else {
+            currentSelect.prepend($('<option>', {
+              value: '',
+              text: '---------',
+              selected: true
+            }));
+          }
+
           $.each(data.calls, function(index, call) {
             currentSelect.append($('<option>', {
               value: call.id,
@@ -46,24 +82,45 @@ $(function() {
           });
         });
 
-       getProducts.call($('#id_call'))
+        if (data.calls.length > 0) {
+          getProducts.call($('#id_call'));
+      }
+      }
+    });
+  };
+
+  var getBalance = function() {
+    var productSelect = $(this); 
+    var productRow = productSelect.closest('.inlineform'); 
+    var productBalance = productRow.find('.product-balance'); 
+    var productId = productSelect.val(); 
+    
+    $.ajax({
+      url: '/get_balance/', 
+      type: 'GET',
+      data: {'product_id': productId},
+      success: function(data) {
+        productBalance.text(data.balance)
       }
     });
   };
 
   $('#id_institution').on('change', getCalls);
-  // Adicione um evento de mudança a todos os campos de seleção da chamada
-  $('#id_call').on('change', getProducts);
-  // Evento de clique no botão "Adicionar linha"
+
+  $('#id_call').on('change', getProducts)
+  
+  $(document).on('change', '[id$="call_product"]', getBalance);
+
   $('.add-row').click(function() {
     var callId = $('#id_call').val();
-    // Se um valor estiver selecionado na chamada, chame a função para obter produtos
-    if (callId) { getProducts.call($('#id_call')) }
+    if (callId) {
+      getProducts.call($('#id_call'))
+    }
   });
 
   if ($('[name="user_call"]').length){
     $(document).ready(function() {
-      getProducts.call($('#id_call'))
+      getProducts.call($('[name="user_call"]'))
     })
   }
 

@@ -17,16 +17,31 @@
             {% if form_product %}
                 <h3>Produtos da Chamada</h3>
                 {{ form_product.management_form}} 
-                
-                {% for form in form_product %}
-                    <div class='inlineform'>
-                        <hr>
-                        {{ form }}
-                    </div>
-                {% endfor %}
+                <div class="table-responsive">
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <td>Produtos</td>
+                                <td>Preço (R$)</td>
+                                <td>Saldo do Produto</td>
+                                <td>Apagar</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                        {% for form in form_product %}
+                            <tr class='inlineform'>
+                                <td>{{ form.product }}</td>
+                                <td>{{ form.price }}</td>
+                                <td>{{ form.balance }}</td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                    </table>    
+                </div>
             
             {% endif %}
-            <hr>
 
             <button type="submit" class="btn btn-primary">Cadastrar</button>
         </form>

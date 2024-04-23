@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
 from ..forms import OrderForm, OrderedProductFormSet, OrderedProductForm
-from ..models import Call, CallProduct, Order, OrderedProduct
+from ..models import Call, CallProduct, Order, OrderedProduct, Product
 
 # CRUD Pedidos
 
@@ -18,67 +18,95 @@ def OrderList(request):
 @login_required
 def OrderCreateAdmin(request):
     template_name = 'order/create-admin.html'
+    context = {}
 
     if request.method == 'GET':
         form = OrderForm()
-        form_product_factory = OrderedProductFormSet
-        form_product = form_product_factory()
-        context = {
-            'form':form, 
-            'form_product': form_product
-        } 
+        form_product = OrderedProductFormSet()
+        
+        context['form'] = form 
+        context['form_product'] = form_product
         
         return render(request, template_name, context)
-    
 
     if request.method == 'POST':
         form = OrderForm(request.POST) 
-        form_product_factory = OrderedProductFormSet
-        form_product = form_product_factory(request.POST)
+        form_product = OrderedProductFormSet(request.POST)
 
         if form.is_valid() and form_product.is_valid():
             user = request.user
-            form.instance.user = user # request.user como autor do pedido
+            form.instance.user = user
             order = form.save()
             form_product.instance = order 
             form_product.save()
             
             return redirect('order-list') 
+        
         else:
-            context = {
-                'form': form,
-                'form_product': form_product,
-            }
+            context['form'] = form 
+            context['form_product'] = form_product
+
             return render(request, template_name, context)    
 
 # função para atualizar dinamicamente o select de call no form   
 def get_calls(request):
+    data = {}
+
     if request.method == 'GET':
         institution_id = request.GET.get('institution_id')
-        # pega o id da instituição do form e relaciona as chamadas ativas
-        calls = Call.objects.filter(institution_id=institution_id, active=True)
-        # cria o dict com as chamadas ativas e o id delas
+
+        if institution_id == '':
+            calls = Call.objects.all()
+        else:
+            calls = Call.objects.filter(institution_id=institution_id, active=True)
+
         calls_dict = [{'id': call.id, 'text': str(call)} for call in calls]
-        return JsonResponse({'calls': calls_dict})
+        data['calls'] = calls_dict
+
     else:
-        return JsonResponse({'error': 'Invalid request'})
+        data['error'] = 'Invalid request'
+    
+    return JsonResponse(data)
 
 # função para atualizar dinamicamente o select de call_product no form inline  
 def get_products(request):
+    data = {}
+
     if request.method == 'GET':
         call_id = request.GET.get('call_id')
-        # pega o id da chamada do form e relaciona aos seus produtos
+        
         products = CallProduct.objects.filter(call_id=call_id)
-        # dict com os produtos da chamada e  id's
         products_dict = [{'id': product.id, 'text': str(product)} for product in products]
-        return JsonResponse({'products': products_dict})
-    else:
-        return JsonResponse({'error': 'Invalid request'})
+        data['products'] = products_dict
     
+    else:
+        data['error'] = 'Invalid request'
+        
+    return JsonResponse(data)
+    
+# função para atualizar o saldo do produto
+def get_balance(request):
+    data = {}
+
+    if request.method == 'GET':
+        product_id = request.GET.get('product_id')
+
+        call_product = CallProduct.objects.get(id=product_id)
+        product = Product.objects.get(id=call_product.product.id)
+
+        balance = f'{call_product.balance} {product.unit}'
+        data['balance'] = balance
+    
+    else:
+        data['error'] = 'Invalid request'
+
+    return JsonResponse(data)
+
 # Create para Usuário Comum
 def OrderCreate(request):
     template_name = 'order/create.html'
-    # busco as info com base no request.user
+    context = {}
+
     user = request.user
     institution = user.institution
     call = Call.objects.filter(active=True, institution=institution.pk).first()
@@ -86,10 +114,9 @@ def OrderCreate(request):
     if request.method == 'GET':
         form_product_factory = OrderedProductFormSet
         form_product = form_product_factory()
-        context = {
-            'call': call, 
-            'form_product': form_product
-        } 
+        
+        context['call'] = call
+        context['form_product'] = form_product
         
         return render(request, template_name, context)
     
@@ -98,7 +125,6 @@ def OrderCreate(request):
         form_product = form_product_factory(request.POST)
 
         if form_product.is_valid():
-            # crio o pedido
             order = Order.objects.create(
                 user=user,
                 institution=institution,
@@ -109,11 +135,11 @@ def OrderCreate(request):
             form_product.save()
             
             return redirect('order-list') 
+        
         else:
-            context = {
-                'call': call,
-                'form_product': form_product,
-            }
+            context['call'] = call
+            context['form_product'] = form_product
+
             return render(request, template_name, context)    
 
 @login_required

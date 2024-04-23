@@ -2,7 +2,7 @@ from django.urls import path, include
 from django.contrib.auth.views import LoginView, LogoutView
 
 from .views import index
-from .order.views import get_calls, get_products
+from .order.views import get_calls, get_products, get_balance
 
 from .institution import urls as institution
 from .user import urls as user
@@ -28,5 +28,6 @@ urlpatterns = [
     # view para chamadas ajax 
     path('get_products/', get_products, name='get_products'),
     path('get_calls/', get_calls, name='get_calls'),
+    path('get_balance/', get_balance, name='get_balance'),
 
 ]

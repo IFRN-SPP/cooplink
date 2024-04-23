@@ -11,15 +11,32 @@
             {{ form.as_p}}
 
             {% if form_product %}
+            {{ form_product.management_form }}
                 <h3>Produtos do Pedidos</h3>
-                {{ form_product.management_form}} 
-                
-                {% for form in form_product %}
-                    <div class='inlineform'>
-                        <hr>
-                        {{ form }}
-                    </div>
-                {% endfor %}
+                <div class="table-responsive">
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <td>Produtos</td>
+                                <td>Quantidade</td>
+                                <td>Saldo do Produto</td>
+                                <td>Apagar</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                        {% for form in form_product %}
+                            <tr class='inlineform ' id="form-row-{{ form.prefix }}">
+                                <td class='product-select'>{{ form.call_product }}</td>
+                                
+                                <td>{{ form.ordered_quantity }}</td>
+                                <td  class="product-balance"> </td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                    </table>    
+                </div>
 
             {% endif %}
             <hr>

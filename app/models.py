@@ -71,7 +71,7 @@ class OrderedProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='call_products')
     call_product = models.ForeignKey(CallProduct, on_delete=models.CASCADE, related_name='order')
     ordered_quantity = models.IntegerField(default=0) 
-    available_quantity = models.IntegerField(null=True)
+    available_quantity = models.IntegerField(null=True, blank=True)
     status = models.CharField(max_length=10, choices=CHOICES, default='available')
 
     def __str__(self):
