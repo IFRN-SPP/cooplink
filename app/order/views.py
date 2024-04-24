@@ -10,9 +10,13 @@ from ..models import Call, CallProduct, Order, OrderedProduct, Product
 
 @login_required
 def OrderList(request):
+    template_name =  'order/list.html'
+    context = {}
+    
     order = Order.objects.all()
-    context = {'order_list': order}
-    return render(request, 'order/list.html', context)
+    context['order_list'] = order
+
+    return render(request, template_name, context)
 
 # Create para Admin
 @login_required
@@ -103,6 +107,7 @@ def get_balance(request):
     return JsonResponse(data)
 
 # Create para Usuário Comum
+@login_required
 def OrderCreate(request):
     template_name = 'order/create.html'
     context = {}
@@ -112,8 +117,7 @@ def OrderCreate(request):
     call = Call.objects.filter(active=True, institution=institution.pk).first()
     
     if request.method == 'GET':
-        form_product_factory = OrderedProductFormSet
-        form_product = form_product_factory()
+        form_product = OrderedProductFormSet()
         
         context['call'] = call
         context['form_product'] = form_product
@@ -121,8 +125,7 @@ def OrderCreate(request):
         return render(request, template_name, context)
     
     if request.method == 'POST':
-        form_product_factory = OrderedProductFormSet
-        form_product = form_product_factory(request.POST)
+        form_product = OrderedProductFormSet(request.POST)
 
         if form_product.is_valid():
             order = Order.objects.create(
@@ -130,7 +133,6 @@ def OrderCreate(request):
                 institution=institution,
                 call=call
             )
-
             form_product.instance = order 
             form_product.save()
             
@@ -144,97 +146,138 @@ def OrderCreate(request):
 
 @login_required
 def OrderDetail(request, pk):
+    template_name = 'order/detail.html'
+    context = {}
+
     order = get_object_or_404(Order, pk=pk)
     products = OrderedProduct.objects.filter(order=order)
-    context = {
-        'order': order, 
-        'products': products,
-    }
-    return render(request, 'order/detail.html', context)
 
-# deleta os pedidos, não os produtos dos pedidos em especifico
+    context['order'] = order
+    context['products'] = products
+
+    return render(request,template_name, context)
+
+# Delete de Pedido
+@login_required
 def OrderDelete(request, pk):
     order = get_object_or_404(Order, pk=pk)
+
     if request.method == 'POST':
         order.delete()
         return redirect('order-list') 
+    
     return render(request, 'order/delete.html', {'order': order})
 
 # deleta os produtos dos pedidos
 @login_required
 def OrderedProductDelete(request, pk):
+    template_name = 'ordered_product/delete.html'
+    context = {}
+
     ordered_product = get_object_or_404(OrderedProduct, pk=pk)
+    context['ordered_product'] = ordered_product
+
     if request.method == 'POST':
+        order = ordered_product.order
         ordered_product.delete()
-        return redirect('detail-order', pk= ordered_product.order.pk) # retorna para a página da chamada
-    return render(request, 'ordered_product/delete.html', {'ordered_product':  ordered_product})
+
+        return redirect('detail-order', pk=order.pk)
+        
+    return render(request, template_name, context)
 
 @login_required
 def OrderedProductUpdate(request, pk):
-    # pego a pk do pedido, na qual quero editar os produtos
+    template_name = 'ordered_product/update.html'
+    context = {}
+
     order = get_object_or_404(Order, pk=pk)
 
     if request.method == 'GET':
-        # obtém todos os produtos relacionados ao pedido
         products = OrderedProduct.objects.filter(order=order)
-        form_product_factory = OrderedProductFormSet
-        form_product = form_product_factory(instance=order, queryset=products)
-        context = {
-            'order': order,
-            'form_product': form_product,
-        }
-        return render(request, 'ordered_product/update.html', context)
+        form_product = OrderedProductFormSet(instance=order, queryset=products)
+        
+        context['order'] = order
+        context['form_product'] = form_product
+        
+        return render(request, template_name, context)
 
-    # Se o método for POST, processa os dados submetidos
     if request.method == 'POST':
         form = OrderedProductForm(request.POST, instance=order)
-        form_product_factory = OrderedProductFormSet 
-        form_product = form_product_factory(request.POST, instance=order)
+        form_product= OrderedProductFormSet(request.POST, instance=order)
 
         if form_product.is_valid():
-            # deleta os produtos que foram excluidos
             for form in form_product.deleted_forms:
                 if form.instance.pk:
                     form.instance.delete()
+
             form_product.save()
-            return redirect('detail-order', pk=order.pk)  # Redireciona para a página do pedido
+
+            return redirect('detail-order', pk=order.pk) 
+        
         else:
-            context = {
-                'order': order,
-                'form': form,
-                'form_product': form_product,
-            }
-            return render(request, 'ordered_product/update.html', context)
+            context['order'] = order
+            context['form'] = form
+            context['form_product'] = form_product
+
+            return render(request, template_name, context)
 
 # Avaliar pedido
-
+@login_required
 def EvaluateOrder(request, pk):
-    #pego a pk e seus produtos
+    template_name = 'order/evaluate-order.html'
+    context = {}
+
     order = get_object_or_404(Order, pk=pk)
     products = OrderedProduct.objects.filter(order=order)
     
-    if request.method =='GET': #caso for get apenas renderizo
-        context = {
-            'order': order, 
-            'products': products,
-        }
-        return render(request, 'order/evaluate-order.html', context)
+    if request.method =='GET': 
+        context['order'] = order
+        context['products'] = products
+
+        return render(request, template_name, context)
     
-    if request.method == 'POST': #se for post
-        for product in products: #para produto em produtos do pedido 
-            new_status = request.POST.get(f'product_status_{product.pk}') #recupero o valor que foi selecionado 
-            if new_status is not None: #se não for None, significa que tem um novo status
-                product.status = new_status
-                product.save()
+    if request.method == 'POST': 
+        for product in products:  
+            form_status = request.POST.get(f'product_status_{product.pk}')  
+            form_available_quantity = request.POST.get(f'product_available_quantity_{product.pk}')
+            
+            if form_status:
+                product.status = form_status
+
+            product_balance = int(product.call_product.balance)
+            if product.status == 'available':
+                product_ordered_quantity = int(product.ordered_quantity)
+                product.call_product.balance = product_balance - product_ordered_quantity
+
+            if product.status == 'parcial':
+                if not form_available_quantity:
+                    # se não tiver a quantidade parcial volta para o form
+                    return redirect('evaluate-order', pk=order.pk)
+
+                product.available_quantity = int(form_available_quantity)
+                product.call_product.balance = product_balance - product.available_quantity
+    
+            if product.status == 'denied':
+                pass
+
+            product.call_product.save()
+            product.save()
+
         order.status = 'approved'
         order.save()
         return redirect('detail-order', pk=order.pk)
-    
+
+@login_required
 def EvaluateOrderDenied(request,pk):
+    template_name = 'order/denied.html'
+    context = {}
+
     order = get_object_or_404(Order, pk=pk)
+    context['order'] = order
 
     if request.method == 'POST':
         order.status = 'denied'
         order.save()
         return redirect('detail-order', pk= order.pk) 
-    return render(request, 'order/denied.html', {'order':  order })
+    
+    return render(request, template_name, context)

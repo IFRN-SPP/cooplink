@@ -23,6 +23,7 @@
                 <tr>
                     <th>Produto</th>
                     <th>Quantidade Pedida</th>
+                    <th>Quantidade Disponivel</th>
 
                     {% if user.is_staff %}
                         <th>Saldo Atual da Chamada</th>
@@ -37,6 +38,7 @@
                     <tr>
                         <td>{{ object.call_product }}</td>
                         <td>{{ object.ordered_quantity }}</td>
+                        <td>{{ object.available_quantity }}</td>
                         {% if user.is_staff %}
                             <td>{{object.call_product.balance}}</td>
                         {% endif %}

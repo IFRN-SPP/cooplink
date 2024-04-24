@@ -17,31 +17,56 @@
                     <tr>
                         <th>Produto</th>
                         <th>Quantidade Pedida</th>
+                        <th>Quantidade Disponivel</th>
                         <th>Saldo Atual da Chamada</th>
                         <th>Situação</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for object in products %}
-                        <tr>
-                            <td>{{ object.call_product }}</td>
-                            <td>{{ object.ordered_quantity }}</td>
-                            <td>{{ object.call_product.balance }}</td>
-                            <td>
-                                <select name="product_status_{{ object.pk }}">
-                                    <option value="available" {% if object.status == available%}selected{% endif %}>Available</option>
-                                    <option value="parcial" {% if object.status == parcial %}selected{% endif %}>Parcial</option>
-                                    <option value="denied"{% if object.status == denied %}selected{% endif %}>Denied</option>
-                                </select>
-                            </td>
-                        </tr>
-                    {% endfor %}
+                    <tr>
+                        <td>{{ object.call_product }}</td>
+                        <td>{{ object.ordered_quantity }}</td>
+                        <td>
+                            <input type="number" name="product_available_quantity_{{ object.pk }}" id="id_product_available_quantity_{{ object.pk }}" placeholder="Se Parcial">
+                        </td>
+                        <td>{{ object.call_product.balance }}</td>
+                        <td>
+                            <select name="product_status_{{ object.pk }}">
+                                <option value="available" {% if object.status == available%}selected{% endif %}>Disponivel</option>
+                                <option value="parcial" {% if object.status == parcial %}selected{% endif %}>Parcial</option>
+                                <option value="denied" {% if object.status == denied %}selected{% endif %}>Negado</option>
+                            </select>
+                        </td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
 
-        <button type='submit' class="btn btn-success">OK</button>
         <a href="{% url "denied-order" order.pk %}"class='btn btn-danger' >Negar Pedido</a>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirm-modal">   
+            Aprovar Pedido
+        </button>
+  
+    <div class="modal fade" id="confirm-modal">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar Avaliação</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            Tem certeza que deseja aprovar o <strong>Pedido {{order.pk}} - {{order.call}}?</strong>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success">Confirmar</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
     </form>
 </div>
 {% endblock content %}
