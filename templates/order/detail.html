@@ -23,7 +23,12 @@
                 <tr>
                     <th>Produto</th>
                     <th>Quantidade Pedida</th>
-                    <th>Quantidade Disponivel</th>
+                    {% for object in products %}
+                        {% if not object.available_quantity == None %}
+                            <th>Quantidade Disponivel</th>
+                        {% endif %}
+                    {% endfor %}
+
 
                     {% if user.is_staff %}
                         <th>Saldo Atual da Chamada</th>
@@ -38,7 +43,10 @@
                     <tr>
                         <td>{{ object.call_product }}</td>
                         <td>{{ object.ordered_quantity }}</td>
-                        <td>{{ object.available_quantity }}</td>
+                        {% if not object.available_quantity == None %}
+                            <td>{{ object.available_quantity }}</td>
+                        {% endif %}
+                        
                         {% if user.is_staff %}
                             <td>{{object.call_product.balance}}</td>
                         {% endif %}
@@ -53,7 +61,7 @@
     <div>
 
         {% if order.user == user and order.status == 'approved' %}
-            Ao receber seu pedido, confirme a entrega. <a href="#" class='btn btn-success btn-sm'>Confirmar entrega</a>
+            Ao receber seu pedido, confirme a entrega. <a href="{% url 'order-delivered' order.pk %}" class='btn btn-success btn-sm'>Confirmar entrega</a>
         {% endif %}
        
            

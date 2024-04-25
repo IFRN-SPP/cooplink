@@ -281,3 +281,18 @@ def EvaluateOrderDenied(request,pk):
         return redirect('detail-order', pk= order.pk) 
     
     return render(request, template_name, context)
+
+@login_required
+def OrderDelivered(request,pk):
+    template_name = 'order/delivered.html'
+    context = {}
+
+    order = get_object_or_404(Order, pk=pk)
+    context['order'] = order
+
+    if request.method == 'POST':
+        order.status = 'delivered'
+        order.save()
+        return redirect('detail-order', pk= order.pk) 
+    
+    return render(request, template_name, context)

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Confirmar Entrega{% endblock title %}
+
+{% block content %}
+    <div class="container justify-content-center">
+        <h3>Confirmar Entrega</h3>
+        <p class="lead">Ao confirmar, você estará garantindo que a entrega foi definida.</p>
+
+        <hr>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            <p>Confirmar entrega?<br>
+                <b>Pedido {{ order.pk }}</b><br>
+                <b>Feito em: {{order.timestamp}}</b><br>
+            </p>
+
+            <button type="submit" class="btn btn-primary">Confirmar</button>
+            <p class='text-muted'>Ao clicar no botão de confirmação, a ação será irreversível.</p>
+        </form>
+
+    </div>
+{% endblock content %}

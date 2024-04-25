@@ -9,6 +9,7 @@ from .views import (
   OrderedProductUpdate,
   EvaluateOrder,
   EvaluateOrderDenied,
+  OrderDelivered,
 )
 
 # Adicione suas URLs aqui
@@ -25,4 +26,6 @@ urlpatterns = [
     # avaliar pedido
     path('<int:pk>/avaliar/', EvaluateOrder, name='evaluate-order'),
     path('<int:pk>/negar/',EvaluateOrderDenied, name='denied-order'),
+    # confirmação de entrega
+    path('<int:pk>/confirmar-entrega/',OrderDelivered, name='order-delivered'),
 ]
