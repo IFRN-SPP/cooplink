@@ -23,13 +23,7 @@
                 <tr>
                     <th>Produto</th>
                     <th>Quantidade Pedida</th>
-                    {% for object in products %}
-                        {% if not object.available_quantity == None %}
-                            <th>Quantidade Disponivel</th>
-                        {% endif %}
-                    {% endfor %}
-
-
+                    <th>Quantidade Disponivel</th>
                     {% if user.is_staff %}
                         <th>Saldo Atual da Chamada</th>
                     {% endif %}
@@ -43,10 +37,8 @@
                     <tr>
                         <td>{{ object.call_product }}</td>
                         <td>{{ object.ordered_quantity }}</td>
-                        {% if not object.available_quantity == None %}
-                            <td>{{ object.available_quantity }}</td>
-                        {% endif %}
-                        
+                        <td>{{ object.available_quantity }}</td>
+                       
                         {% if user.is_staff %}
                             <td>{{object.call_product.balance}}</td>
                         {% endif %}
