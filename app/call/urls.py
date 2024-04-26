@@ -4,7 +4,7 @@ from .views import CallList, CallCreate, CallDetail, CallUpdate, CallDelete, Cal
 # Adicione suas URLs aqui
 urlpatterns = [
     # CRUD Call 
-    path('', CallList.as_view(), name= 'call-list'),
+    path('', CallList, name= 'call-list'),
     path('cadastrar/', CallCreate, name='create-call'),
     path('<int:pk>/detalhar/', CallDetail, name='detail-call'),
     path('<int:pk>/atualizar/', CallUpdate.as_view(), name='update-call'),

@@ -5,16 +5,19 @@
 {% block content %}
     <div class="container justify-content-center">
         <h1>Chamadas</h1>
-        <a href="{% url 'index' %}">index</a>
         <br>
+        {% if user.is_staff %}
         <a href="{% url 'create-call' %}" class="btn btn-success">Cadastrar Chamada</a>
+        {% endif %}
 
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Número</th>
+                        {% if user.is_staff %}
                         <th>Instituição</th>
+                        {% endif %}
                         <th>Início</th>
                         <th>Término</th>
                         <th>Situação</th>
@@ -23,19 +26,22 @@
                 </thead>
 
                 <tbody>
-                    {% for object in object_list %}
+                    {% for object in calls %}
                         <tr>
                             <td>{{ object.number }}</td>
+                            {% if user.is_staff %}
                             <td>{{ object.institution }}</td>
+                            {% endif %}
                             <td>{{ object.start }}</td>
                             <td>{{ object.end }}</td>
                             <td>{{ object.active }}</td>
                             <td>
                                 <a href="{% url "detail-call" object.pk %}" class="btn btn-primary btn-sm">Detalhar</a>
+                                {% if user.is_staff %}
                                 <a href="{% url 'update-call' object.pk %}" class="btn btn-warning btn-sm" title="Editar">E</a>
                                 <a href="{% url 'delete-call' object.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
-                                <a href="{% url 'update-call-product' object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar produtos</a>
-
+                                <a href="{% url 'update-call-product' object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar produtos</a>                                
+                                {% endif %}
                             </td>
                         </tr>
                     {% empty %}

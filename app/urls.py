@@ -1,7 +1,7 @@
 from django.urls import path, include
 from django.contrib.auth.views import LoginView, LogoutView
 
-from .views import index
+from .views import index, index_admin
 from .order.views import get_calls, get_products, get_balance
 
 from .institution import urls as institution
@@ -13,6 +13,7 @@ from .order import urls as order
 # Adicione suas URLs aqui
 urlpatterns = [
     path("", index, name="index"),
+    path("administacao/", index_admin, name="index-admin"),
 
     # Autenticação
     path("login/", LoginView.as_view(), name="login"),

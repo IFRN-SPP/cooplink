@@ -4,9 +4,10 @@ from django.urls import reverse_lazy
 from ..forms import InstitutionForm
 from ..models import Institution
 from ..utils.ajax import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView 
+from ..utils.mixins import StaffRequiredMixin
 
 # CRUD INSTITUIÇÃO
-class InstitutionList(LoginRequiredMixin, AjaxListView):
+class InstitutionList(LoginRequiredMixin, StaffRequiredMixin, AjaxListView):
     model = Institution
     template_name = 'institution/list.html'
     partial_list = 'partials/institution/list.html'

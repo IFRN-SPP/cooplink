@@ -25,7 +25,7 @@
                 <tbody>
                     {% for object in products %}
                     <tr>
-                        <td>{{ object.call_product }}</td>
+                        <td>{{ object.call_product.product }}</td>
                         <td>{{ object.ordered_quantity }}</td>
                         <td>
                             <input type="number" name="product_available_quantity_{{ object.pk }}" id="id_product_available_quantity_{{ object.pk }}" placeholder="Se Parcial, informe..">

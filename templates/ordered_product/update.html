@@ -14,18 +14,31 @@
 
             <h3>{{order.institution}} - {{order.call}}  </h3> <!--({% if call.active %}ATIVO{% else %}FECHADA{% endif %})-->
 
-            {{ form_product.management_form}} 
-            
-            {% for form in form_product %}
-            <div class='inlineform'>
-                <hr>
-                {{ form }}
-                {% comment %} permite que o form seja deletado caso esteja no bd {% endcomment %}
-                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                
-            </div>
-               
-            {% endfor %}
+            {{ form_product.management_form }}
+                <h3>Produtos do Pedidos</h3>
+                <div class="table-responsive">
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <td>Produtos</td>
+                                <td>Quantidade</td>
+                                <td>Saldo do Produto</td>
+                                <td>Apagar</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                        {% for form in form_product %}
+                            <tr class='inlineform ' id="form-row-{{ form.prefix }}">
+                                <td class='product-select'>{{ form.call_product }}</td>
+                                <td>{{ form.ordered_quantity }}</td>
+                                <td  class="product-balance"> {{form.instance.call_product.balance}} {{form.instance.call_product.product.unit}}</td>
+                                <td>{% if form.instance %}{{form.DELETE}}{% endif %}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>    
+                </div>
 
             <hr>
 
@@ -44,7 +57,6 @@
                 prefix: '{{ form_product.prefix }}',
                 addText: '<button type="submit" class="btn btn-success btn-sm">+</button>',
                 deleteText: '<button type="submit" class="btn btn-danger btn-sm">x</button>',
-                hideLastAddForm: true,
             });
         })
     </script>

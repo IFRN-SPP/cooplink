@@ -4,9 +4,10 @@ from django.urls import reverse_lazy
 from ..forms import ProductForm
 from ..models import Product
 from ..utils.ajax import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView 
+from ..utils.mixins import StaffRequiredMixin
 
 # CRUD PRODUTOS
-class ProductList(LoginRequiredMixin, AjaxListView):
+class ProductList(LoginRequiredMixin, StaffRequiredMixin, AjaxListView):
     model = Product
     template_name = 'product/list.html'
     partial_list = 'partials/product/list.html'

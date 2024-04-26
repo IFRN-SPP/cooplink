@@ -3,31 +3,46 @@ from django.urls import reverse_lazy
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages import constants
+from django.contrib import messages
 
 from ..forms import  CallProductForm, CallForm, CallProductFormSet
-from ..models import Call, CallProduct
+from ..models import Call, CallProduct, Institution
+from ..utils.decorators import staff_required
+from ..utils.mixins import StaffRequiredMixin
 
 from django.views.generic.edit import UpdateView, DeleteView
-from django.views.generic.list import ListView
 
 #CRUD CHAMADA
-class CallList(LoginRequiredMixin, ListView):
-    model= Call
+@login_required
+def CallList(request):
     template_name = 'call/list.html'
+    context = {}
+    user = request.user
 
-class CallUpdate(LoginRequiredMixin, UpdateView):
+    calls = Call.objects.all()
+    if not user.is_staff:
+        calls = Call.objects.filter(institution=user.institution)
+
+    context['calls'] = calls
+    return render(request, template_name, context)
+
+
+class CallUpdate(LoginRequiredMixin, StaffRequiredMixin, UpdateView):
     model = Call
     fields = ['number', 'institution', 'start','end', 'active']
     template_name = 'call/create.html'
     success_url = reverse_lazy('call-list')
 
-class CallDelete(LoginRequiredMixin, DeleteView):
+
+class CallDelete(LoginRequiredMixin, StaffRequiredMixin, DeleteView):
     model= Call
     template_name = 'call/delete.html'
     success_url = reverse_lazy('call-list')
 
 # CRUD Chamada Function Based Views
 @login_required
+@staff_required
 def CallCreate(request):
     # se o metodo for GET (deseja adcionar um produto)
     if request.method == 'GET':
@@ -61,6 +76,7 @@ def CallCreate(request):
         
 
 @login_required
+@staff_required
 def CallProductUpdate(request, pk):
     # pego a pk da call, na qual quero editar os produtos
     call = get_object_or_404(Call, pk=pk)
@@ -100,8 +116,16 @@ def CallProductUpdate(request, pk):
 
 @login_required
 def CallDetail(request, pk):
+    user = request.user
+
     call = get_object_or_404(Call, pk=pk)
     products = CallProduct.objects.filter(call=call)
+    institution = get_object_or_404(Institution, pk=call.institution.pk)
+
+    if (not user.is_staff) and (institution != user.institution):
+        messages.add_message(request, constants.WARNING, "Você não tem acesso a essa página.")
+        return redirect('index')
+    
     context = {
         'call': call, 
         'products': products,
@@ -110,6 +134,7 @@ def CallDetail(request, pk):
 
 
 @login_required
+@staff_required
 def CallProductDelete(request, pk):
     call_product = get_object_or_404(CallProduct, pk=pk)
     if request.method == 'POST':

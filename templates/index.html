@@ -1,9 +1,84 @@
 {% extends 'base.html' %}
-
 {% block title %}Index{% endblock title %}
-
 {% block content %}
 <div class="container">
-    <h1>INDEX</h1>
+    <hr>
+    <h1>Pedidos da Instituição</h1>
+    <a href="{% url 'order-list' %}" >Ver Pedidos</a>
+    <br>
+    <a href="{% url 'create-order' %}" class="btn btn-success btn-sm">Cadastrar Pedido</a>
+       
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Situação</th>
+                    <th>Autor</th>
+                    <th>Feito em</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for object in orders %}
+                    <tr>
+                        <td>{{ object.pk }}</td>
+                        <td>{{ object.status }}</td>
+                        <td>{{ object.user }}</td>
+                        <td>{{ object.timestamp }}</td>
+
+                        <td>
+                            <a href="{% url 'detail-order' object.pk %}" class="btn btn-primary btn-sm">Detalhar</a>
+                            {% if not object.status == 'approved' or object.status == 'delivered' %}
+                                <a href="{% url "delete-order" object.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
+                            {% endif %}
+                            
+                            {% if object.status == 'pending' %}
+                                <a href="{% url "update-ordered-product" object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar pedido</a>
+                            {% endif %}
+                            
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">Nenhum pedido até o momento</td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+    <hr>
+
+    {% if call %}
+    <h1> Chamada Atual - {{call.number}}</h1>
+    <a href="{% url 'call-list' %}">Minhas Chamadas</a>
+    <a href="{% url 'detail-call' call.id %}">Ver essa chamada</a>
+    <p>INICIO: {{call.start}}</p>
+    <p>TERMINO: {{call.end}}</p>
+    <table class="table table-striped">
+        <thead>
+          <th>Produto</th>
+          <th>Saldo</th>
+          <th>Unidade</th>
+          <th>Preço</th>
+        </thead>
+        <tbody>
+      {% for product in products %}
+          <tr>
+            <td>{{product.product}}</td>
+            <td>{{product.balance}}</td>
+            <td>{{product.product.unit}}</td>
+            <td>{{product.price}}</td>
+          </tr>
+      {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+    <h2>Sem Chamada Ativa</h2>
+    <a href="{% url 'call-list' %}">Minhas Chamadas</a>
+    {% endif %}
 </div>
 {% endblock content %}

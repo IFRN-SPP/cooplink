@@ -7,15 +7,14 @@
     <h1>Pedido {{order.pk}}</h1>
     <p>Situação do pedido: {{order.status}}</p>
     <p>Feito em: {{ order.timestamp}}</p>
+    <p>Por: {{ order.user}}</p>
     
-        {% if user.is_staff %}
-            <p>Autor: {{ order.user }}</p>
-            <p>Instituição: {{ order.institution }}</p>
-            {% if order.status == 'pending' %}
-                <a href="{% url 'evaluate-order' order.pk %}" class='btn btn-info btn-sm' >Avaliar pedido</a>   
-            {% endif %}
-            
+    {% if user.is_staff %}
+        <p>Instituição: {{ order.institution }}</p>
+        {% if order.status == 'pending' %}
+            <a href="{% url 'evaluate-order' order.pk %}" class='btn btn-info btn-sm' >Avaliar pedido</a>   
         {% endif %}
+    {% endif %}
 
     <div class="table-responsive">
         <table class="table table-striped">
@@ -24,9 +23,7 @@
                     <th>Produto</th>
                     <th>Quantidade Pedida</th>
                     <th>Quantidade Disponivel</th>
-                    {% if user.is_staff %}
-                        <th>Saldo Atual da Chamada</th>
-                    {% endif %}
+                    <th>Saldo Atual da Chamada</th>
                     <th>Situação</th>
                     
                 </tr>
@@ -37,11 +34,14 @@
                     <tr>
                         <td>{{ object.call_product }}</td>
                         <td>{{ object.ordered_quantity }}</td>
-                        <td>{{ object.available_quantity }}</td>
-                       
-                        {% if user.is_staff %}
-                            <td>{{object.call_product.balance}}</td>
-                        {% endif %}
+                        <td>
+                            {% if object.available_quantity %}
+                            {{ object.available_quantity }}
+                            {% else %}
+                            <i>Quant. Pedida</i>
+                            {% endif %}
+                        </td>
+                        <td>{{object.call_product.balance}} {{object.call_product.product.unit}}</td>
                         <td>{{ object.status }}</td>   
                     </tr>
                 {% endfor %}
@@ -52,7 +52,7 @@
 
     <div>
 
-        {% if order.user == user and order.status == 'approved' %}
+        {% if order.status == 'approved' %}
             Ao receber seu pedido, confirme a entrega. <a href="{% url 'order-delivered' order.pk %}" class='btn btn-success btn-sm'>Confirmar entrega</a>
         {% endif %}
        

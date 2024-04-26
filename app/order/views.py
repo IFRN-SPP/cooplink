@@ -4,7 +4,11 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
 from ..forms import OrderForm, OrderedProductFormSet, OrderedProductForm
-from ..models import Call, CallProduct, Order, OrderedProduct, Product
+from ..models import Call, CallProduct, Order, OrderedProduct, Product, Institution
+from ..utils.decorators import staff_required, confirm_password, order_owner, order_evaluated
+
+from django.contrib.messages import constants
+from django.contrib import messages
 
 # CRUD Pedidos
 
@@ -12,14 +16,19 @@ from ..models import Call, CallProduct, Order, OrderedProduct, Product
 def OrderList(request):
     template_name =  'order/list.html'
     context = {}
-    
+    user = request.user
+
     order = Order.objects.all()
+    if not user.is_staff:
+        order = Order.objects.filter(institution=user.institution)
+
     context['order_list'] = order
 
     return render(request, template_name, context)
 
 # Create para Admin
 @login_required
+@staff_required
 def OrderCreateAdmin(request):
     template_name = 'order/create-admin.html'
     context = {}
@@ -148,17 +157,24 @@ def OrderCreate(request):
 def OrderDetail(request, pk):
     template_name = 'order/detail.html'
     context = {}
+    user = request.user
 
     order = get_object_or_404(Order, pk=pk)
     products = OrderedProduct.objects.filter(order=order)
+    institution = get_object_or_404(Institution, pk=order.call.institution.pk)
+    
+    if (not user.is_staff) and (user.institution != institution):
+        messages.add_message(request, constants.WARNING, "Você não tem acesso a esse Pedido.")
+        return redirect('order-list')
 
     context['order'] = order
     context['products'] = products
-
     return render(request,template_name, context)
 
 # Delete de Pedido
 @login_required
+@order_owner
+@order_evaluated
 def OrderDelete(request, pk):
     order = get_object_or_404(Order, pk=pk)
 
@@ -170,6 +186,8 @@ def OrderDelete(request, pk):
 
 # deleta os produtos dos pedidos
 @login_required
+@order_owner
+@order_evaluated
 def OrderedProductDelete(request, pk):
     template_name = 'ordered_product/delete.html'
     context = {}
@@ -186,6 +204,8 @@ def OrderedProductDelete(request, pk):
     return render(request, template_name, context)
 
 @login_required
+@order_owner
+@order_evaluated
 def OrderedProductUpdate(request, pk):
     template_name = 'ordered_product/update.html'
     context = {}
@@ -223,6 +243,8 @@ def OrderedProductUpdate(request, pk):
 
 # Avaliar pedido
 @login_required
+@staff_required
+@order_evaluated
 def EvaluateOrder(request, pk):
     template_name = 'order/evaluate-order.html'
     context = {}
@@ -251,7 +273,7 @@ def EvaluateOrder(request, pk):
 
             if product.status == 'parcial':
                 if not form_available_quantity:
-                    # se não tiver a quantidade parcial volta para o form
+                    messages.add_message(request, constants.WARNING, f"Adicione a quantidade parcial disponível em {product.call_product.product}")
                     return redirect('evaluate-order', pk=order.pk)
 
                 product.available_quantity = int(form_available_quantity)
@@ -265,9 +287,13 @@ def EvaluateOrder(request, pk):
 
         order.status = 'approved'
         order.save()
+
+        messages.add_message(request, constants.SUCCESS, f"Pedido avaliado com sucesso!")
         return redirect('detail-order', pk=order.pk)
 
 @login_required
+@staff_required
+@order_evaluated
 def EvaluateOrderDenied(request,pk):
     template_name = 'order/denied.html'
     context = {}
@@ -283,6 +309,8 @@ def EvaluateOrderDenied(request,pk):
     return render(request, template_name, context)
 
 @login_required
+@order_owner
+@confirm_password
 def OrderDelivered(request,pk):
     template_name = 'order/delivered.html'
     context = {}
