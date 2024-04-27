@@ -1,14 +1,10 @@
 from django.urls import path, include
 from django.contrib.auth.views import LoginView, LogoutView
 
-from .views import index, index_admin
-from .order.views import get_calls, get_products, get_balance
+from .views.index import index, index_admin
+from .views.order import get_calls, get_products, get_balance
 
-from .institution import urls as institution
-from .user import urls as user
-from .product import urls as product
-from .call import urls as call
-from .order import urls as order
+from .routes import institution, user, product, call, order
 
 # Adicione suas URLs aqui
 urlpatterns = [

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import InstitutionList, InstitutionCreate, InstitutionUpdate, InstitutionDelete
+from app.views.institution import InstitutionList, InstitutionCreate, InstitutionUpdate, InstitutionDelete
 
 # Adicione suas URLs aqui
 urlpatterns = [

@@ -3,9 +3,9 @@ from django.http import JsonResponse
 
 from django.contrib.auth.decorators import login_required
 
-from ..forms import OrderForm, OrderedProductFormSet, OrderedProductForm
-from ..models import Call, CallProduct, Order, OrderedProduct, Product, Institution
-from ..utils.decorators import staff_required, confirm_password, order_owner, order_evaluated
+from app.forms import OrderForm, OrderedProductFormSet, OrderedProductForm
+from app.models import Call, CallProduct, Order, OrderedProduct, Product, Institution
+from app.utils.decorators import staff_required, confirm_password, order_owner, order_evaluated
 
 from django.contrib.messages import constants
 from django.contrib import messages
@@ -23,7 +23,6 @@ def OrderList(request):
         order = Order.objects.filter(institution=user.institution)
 
     context['order_list'] = order
-
     return render(request, template_name, context)
 
 # Create para Admin
@@ -39,12 +38,13 @@ def OrderCreateAdmin(request):
         
         context['form'] = form 
         context['form_product'] = form_product
-        
         return render(request, template_name, context)
 
     if request.method == 'POST':
         form = OrderForm(request.POST) 
         form_product = OrderedProductFormSet(request.POST)
+        context['form'] = form 
+        context['form_product'] = form_product
 
         if form.is_valid() and form_product.is_valid():
             user = request.user
@@ -55,11 +55,7 @@ def OrderCreateAdmin(request):
             
             return redirect('order-list') 
         
-        else:
-            context['form'] = form 
-            context['form_product'] = form_product
-
-            return render(request, template_name, context)    
+        return render(request, template_name, context)       
 
 # função para atualizar dinamicamente o select de call no form   
 def get_calls(request):
@@ -120,22 +116,16 @@ def get_balance(request):
 def OrderCreate(request):
     template_name = 'order/create.html'
     context = {}
-
     user = request.user
+
     institution = user.institution
     call = Call.objects.filter(active=True, institution=institution.pk).first()
+    context['call'] = call
     
-    if request.method == 'GET':
-        form_product = OrderedProductFormSet()
-        
-        context['call'] = call
-        context['form_product'] = form_product
-        
-        return render(request, template_name, context)
+    form_product = OrderedProductFormSet(request.POST or None)
+    context['form_product'] = form_product
     
     if request.method == 'POST':
-        form_product = OrderedProductFormSet(request.POST)
-
         if form_product.is_valid():
             order = Order.objects.create(
                 user=user,
@@ -147,11 +137,7 @@ def OrderCreate(request):
             
             return redirect('order-list') 
         
-        else:
-            context['call'] = call
-            context['form_product'] = form_product
-
-            return render(request, template_name, context)    
+    return render(request, template_name, context)    
 
 @login_required
 def OrderDetail(request, pk):
@@ -241,6 +227,7 @@ def OrderedProductUpdate(request, pk):
 
             return render(request, template_name, context)
 
+
 # Avaliar pedido
 @login_required
 @staff_required
@@ -255,7 +242,6 @@ def EvaluateOrder(request, pk):
     if request.method =='GET': 
         context['order'] = order
         context['products'] = products
-
         return render(request, template_name, context)
     
     if request.method == 'POST': 
@@ -273,7 +259,7 @@ def EvaluateOrder(request, pk):
 
             if product.status == 'parcial':
                 if not form_available_quantity:
-                    messages.add_message(request, constants.WARNING, f"Adicione a quantidade parcial disponível em {product.call_product.product}")
+                    messages.add_message(request, constants.WARNING, f"Adicione a quantidade parcial disponível ao Produto {product.call_product.product}")
                     return redirect('evaluate-order', pk=order.pk)
 
                 product.available_quantity = int(form_available_quantity)

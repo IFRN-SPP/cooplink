@@ -3,10 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 from django.contrib.auth.forms import SetPasswordForm
-from ..forms import UserCreateForm, UserUpdateForm, PermissionForm
-from ..models import UserProfile
-from ..utils.ajax import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView
-from ..utils.mixins import ConfirmPasswordMixin, StaffRequiredMixin
+from app.forms import UserCreateForm, UserUpdateForm, PermissionForm
+from app.models import UserProfile
+from app.utils.ajax import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView
+from app.utils.mixins import ConfirmPasswordMixin, StaffRequiredMixin
 
 from django.views.generic.edit import UpdateView, FormView
 
@@ -26,7 +26,6 @@ class UserUpdate(AjaxUpdateView):
     template_name =  'partials/user/update.html'
     success_url = reverse_lazy('user-list')
 
-# View para Admin mudar senha do usuário
 class UserUpdatePassword(StaffRequiredMixin, ConfirmPasswordMixin, FormView):
     form_class = SetPasswordForm
     template_name = 'user/change-password.html'
@@ -45,8 +44,7 @@ class UserUpdatePassword(StaffRequiredMixin, ConfirmPasswordMixin, FormView):
         kwargs['user'] = user
         return kwargs
 
-# View para Admin mudar permissão do usuário
-class UserUpdatePermission(StaffRequiredMixin ,ConfirmPasswordMixin, UpdateView):
+class UserUpdatePermission(StaffRequiredMixin, ConfirmPasswordMixin, UpdateView):
     model = UserProfile
     form_class = PermissionForm
     template_name = 'user/change-permission.html'

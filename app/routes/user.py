@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import UserList, UserCreate, UserUpdate, UserDelete, UserUpdatePassword, UserUpdatePermission
+from app.views.user import UserList, UserCreate, UserUpdate, UserDelete, UserUpdatePassword, UserUpdatePermission
 
 # Adicione suas URLs aqui
 urlpatterns = [

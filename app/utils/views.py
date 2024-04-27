@@ -1,5 +1,5 @@
 from django.views.generic.edit import UpdateView
-from ..forms import ConfirmPasswordForm
+from app.forms import ConfirmPasswordForm
 
 # View de confirmação de Senha
 class ConfirmPasswordView(UpdateView):

@@ -7,10 +7,9 @@ from django.contrib import messages
 from django.shortcuts import redirect, get_object_or_404
 
 from .views import ConfirmPasswordView
-from ..models import Order, Institution
+from app.models import Order, Institution
 
 # Crie seus decorators aqui
-
 def confirm_password(func):
     """
     Decorator for check if the user is logged in and prompt for password confirmation

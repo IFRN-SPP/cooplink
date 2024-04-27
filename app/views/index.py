@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .utils.decorators import staff_required
-from .models import Order, Call, CallProduct
+from app.utils.decorators import staff_required
+from app.models import Order, Call, CallProduct
 
 # Create your views here.
 @login_required
@@ -18,9 +18,9 @@ def index(request):
     call= Call.objects.filter(active=True, institution=user.institution).first()
     products = CallProduct.objects.filter(call=call)
 
+    context['orders'] = orders
     context['call'] = call
     context['products'] = products
-    context['orders'] = orders
     return render(request, template_name, context)
 
 @login_required

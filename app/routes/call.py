@@ -1,5 +1,13 @@
 from django.urls import path
-from .views import CallList, CallCreate, CallDetail, CallUpdate, CallDelete, CallProductDelete, CallProductUpdate
+from app.views.call import (
+    CallList, 
+    CallCreate, 
+    CallDetail, 
+    CallUpdate, 
+    CallDelete, 
+    CallProductDelete, 
+    CallProductUpdate
+)
 
 # Adicione suas URLs aqui
 urlpatterns = [

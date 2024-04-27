@@ -1,10 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
-from ..forms import InstitutionForm
-from ..models import Institution
-from ..utils.ajax import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView 
-from ..utils.mixins import StaffRequiredMixin
+from app.forms import InstitutionForm
+from app.models import Institution
+from app.utils.ajax import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView 
+from app.utils.mixins import StaffRequiredMixin
 
 # CRUD INSTITUIÇÃO
 class InstitutionList(LoginRequiredMixin, StaffRequiredMixin, AjaxListView):
