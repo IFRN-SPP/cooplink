@@ -44,34 +44,21 @@
             </table>
         </div>
 
-       
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#denied-modal">   
+            Negar Pedido
+        </button>
+        
         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirm-modal">   
             Aprovar Pedido
         </button>
-        <a href="{% url "denied-order" order.pk %}"class='btn btn-danger' >Negar Pedido</a>
-  
-    <div class="modal fade" id="confirm-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
 
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmar Avaliação</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
+        {% include "partials/modal.html" with modal_id="confirm-modal" modal_title="Negar Pedido" modal_text="<h5>Tem certeza que deseja aprovar esse Pedido?</h5>" btn_text="Confirmar" btn_class="btn-success"%}
 
-                <div class="modal-body">
-                    Tem certeza que deseja aprovar o <strong>Pedido {{order.pk}} - {{order.call}}?</strong>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Confirmar</button>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-
+    </form>
+    
+    <form action="{% url 'denied-order' order.pk %}" method="post">
+        {% csrf_token %}
+        {% include "partials/modal.html" with modal_id="denied-modal" modal_title="Confirmar Avaliação" modal_text="<h5>Tem certeza que deseja <strong>NEGAR</strong> esse Pedido?</h5>" btn_text="Negar" btn_class="btn-danger"%}
     </form>
 </div>
 {% endblock content %}

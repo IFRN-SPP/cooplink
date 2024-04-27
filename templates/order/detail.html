@@ -21,6 +21,7 @@
             <thead>
                 <tr>
                     <th>Produto</th>
+                    <th>Preço</th>
                     <th>Quantidade Pedida</th>
                     <th>Quantidade Disponivel</th>
                     <th>Saldo Atual da Chamada</th>
@@ -32,17 +33,28 @@
             <tbody>
                 {% for object in products %}
                     <tr>
-                        <td>{{ object.call_product }}</td>
+                        <td>{{ object.call_product.product }}</td>
+                        <td>{{ object.call_product.price }}</td>
                         <td>{{ object.ordered_quantity }}</td>
                         <td>
-                            {% if object.available_quantity %}
-                            {{ object.available_quantity }}
+                            {% if order.status != 'pending' %}
+                                {% if object.available_quantity %}
+                                {{ object.available_quantity }}
+                                {% elif object.status == 'denied' %}
+                                <i>Produto Negado</i>
+                                {% else %}
+                                <i>Quant. Pedida</i>
+                                {% endif %}
                             {% else %}
-                            <i>Quant. Pedida</i>
+                            Ainda não avaliado
                             {% endif %}
                         </td>
                         <td>{{object.call_product.balance}} {{object.call_product.product.unit}}</td>
+                        {% if order.status != 'pending' %}
                         <td>{{ object.status }}</td>   
+                        {% else %}
+                        <td>-------</td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
 
@@ -51,12 +63,9 @@
     </div>
 
     <div>
-
         {% if order.status == 'approved' %}
             Ao receber seu pedido, confirme a entrega. <a href="{% url 'order-delivered' order.pk %}" class='btn btn-success btn-sm'>Confirmar entrega</a>
-        {% endif %}
-       
-           
+        {% endif %}  
     </div>
 </div>
 

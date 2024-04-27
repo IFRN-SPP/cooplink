@@ -11,9 +11,9 @@
 
         <form action="" method="POST">
             {% csrf_token %}
+            <input type="hidden" name="user_call" id="id_call" value="{{order.call.pk}}">
 
-            <h3>{{order.institution}} - {{order.call}}  </h3> <!--({% if call.active %}ATIVO{% else %}FECHADA{% endif %})-->
-
+            <h3>{{order.institution}} - {{order.call}}</h3> 
             {{ form_product.management_form }}
                 <h3>Produtos do Pedidos</h3>
                 <div class="table-responsive">
@@ -34,6 +34,7 @@
                                 <td class='product-select'>{{ form.call_product }}</td>
                                 <td>{{ form.ordered_quantity }}</td>
                                 <td  class="product-balance"> {{form.instance.call_product.balance}} {{form.instance.call_product.product.unit}}</td>
+                                <td class="d-none">{{form.id}}</td>
                                 <td>{% if form.instance %}{{form.DELETE}}{% endif %}</td>
                             </tr>
                         {% endfor %}
@@ -45,7 +46,6 @@
             <button type="submit" class="btn btn-primary ">Cadastrar</button>
         </form>
 
-    
     </div>
 
 {% endblock content %}
@@ -60,4 +60,5 @@
             });
         })
     </script>
+    <script src="{% static 'js/get_products.js' %}"></script>
 {% endblock script %}
