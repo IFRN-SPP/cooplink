@@ -121,11 +121,16 @@ def OrderCreate(request):
     institution = user.institution
     call = Call.objects.filter(active=True, institution=institution.pk).first()
     context['call'] = call
-    
-    form_product = OrderedProductFormSet(request.POST or None)
-    context['form_product'] = form_product
+
+    if call == None:
+        messages.add_message(request, constants.ERROR, f"{institution} não possui uma Chamada ATIVA para Pedidos.")
+        return redirect('index')
+
+    if request.method == 'GET':
+        form_product = OrderedProductFormSet()
     
     if request.method == 'POST':
+        form_product = OrderedProductFormSet(request.POST)
         if form_product.is_valid():
             order = Order.objects.create(
                 user=user,
@@ -137,7 +142,8 @@ def OrderCreate(request):
             
             return redirect('order-list') 
         
-    return render(request, template_name, context)    
+    context['form_product'] = form_product
+    return render(request, template_name, context)      
 
 @login_required
 def OrderDetail(request, pk):
