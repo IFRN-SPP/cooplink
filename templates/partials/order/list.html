@@ -1,0 +1,27 @@
+{% for object in orders %}
+<tr>
+    <td>{{ object.pk }}</td>
+    {% if user.is_staff %}
+    <td>{{ object.institution }}</td>
+    {% endif %}
+    <td>{{ object.user }}</td>
+    <td>{{object.status}}</td>
+    <td>{{ object.timestamp }}</td>
+
+    <td>
+      <a href="{% url 'detail-order' object.pk %}" class="btn btn-primary btn-sm">Detalhar</a>
+      
+      {% if object.status == 'pending' %}
+        <a href="{% url "update-ordered-product" object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar pedido</a>
+        <a data-url="{% url "js-delete-order" object.pk %}" class="js-delete btn btn-danger btn-sm" title="Excluir">X</a>
+        {% if user.is_staff %}
+            <a href="{% url 'evaluate-order' object.pk %}" class='btn btn-info btn-sm'>Avaliar pedido</a>
+        {% endif %}
+      {% endif %}
+    </td>
+</tr>
+{% empty %}
+  <tr>
+      <td colspan="4">Nenhum pedido até o momento</td>
+  </tr>
+{% endfor %}

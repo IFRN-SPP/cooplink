@@ -15,11 +15,11 @@ from app.views.order import (
 # Adicione suas URLs aqui
 urlpatterns = [
     # CRUD Pedidos e Produtos dos pedidos
-    path('', OrderList, name= 'order-list'),
+    path('', OrderList.as_view(), name= 'order-list'),
     path('cadastrar/', OrderCreate, name='create-order'),
     path('administacao/cadastrar/', OrderCreateAdmin, name= 'create-order-admin'),
     path('<int:pk>/detalhar/', OrderDetail, name='detail-order'),
-    path('<int:pk>/deletar/', OrderDelete, name='delete-order'),
+    path('js/<int:pk>/deletar/', OrderDelete.as_view(), name='js-delete-order'),
     # deleta os produtos que estão nos pedidos
     path("<int:pk>/deletar/produtos/",  OrderedProductDelete, name="delete-ordered-product"),
     path("<int:pk>/atualizar/produtos/", OrderedProductUpdate, name="update-ordered-product"),

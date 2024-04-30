@@ -15,16 +15,21 @@ class UserList(LoginRequiredMixin, StaffRequiredMixin, AjaxListView):
     model = UserProfile
     template_name = 'user/list.html'
     partial_list = 'partials/user/list.html'
+    paginate_by = 6
 
 class UserCreate(AjaxCreateView):
     form_class = UserCreateForm
     template_name = 'partials/user/create.html'
     success_url = reverse_lazy('user-list')
+    message = "Usuário ADICIONADO com sucesso!"
+    message_class = "alert-success"
 
 class UserUpdate(AjaxUpdateView):
     form_class = UserUpdateForm
     template_name =  'partials/user/update.html'
     success_url = reverse_lazy('user-list')
+    message = "Usuário ATUALIZADO com sucesso!"
+    message_class = "alert-success"
 
 class UserUpdatePassword(StaffRequiredMixin, ConfirmPasswordMixin, FormView):
     form_class = SetPasswordForm
@@ -65,3 +70,6 @@ class UserDelete(AjaxDeleteView):
     model = UserProfile
     template_name =  'partials/user/delete.html'
     success_url = reverse_lazy('user-list')
+    message = "Usuário DELETADO com sucesso!"
+    message_class = "alert-primary"
+

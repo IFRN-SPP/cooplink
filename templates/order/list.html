@@ -3,62 +3,43 @@
 {% block title %}Pedidos{% endblock title %}
 
 {% block content %}
-    <div class="container justify-content-center">
-        <h1>Pedidos</h1>
-        {% if user.is_staff %}
-            <a href="{% url 'create-order-admin' %}" class="btn btn-success btn-sm">Cadastrar Pedido</a>
-        {% else %}
-            <a href="{% url 'create-order' %}" class="btn btn-success btn-sm">Cadastrar Pedido</a>
-        {% endif %}
-       
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>N°</th>
-                        {% if user.is_staff %}
-                        <th>Instituição</th>
-                        {% endif %}
-                        <th>User</th>
-                        <th>Situação</th>
-                        <th>Feito em</th>
-                        <th>Opções</th>
-                    </tr>
-                </thead>
+    
+{% include "partials/modal-form.html" %}
 
-                <tbody>
-                    {% for object in order_list %}
-                    <tr>
-                        <td>{{ object.pk }}</td>
-                        {% if user.is_staff %}
-                        <td>{{ object.institution }}</td>
-                        {% endif %}
-                        <td>{{ object.user }}</td>
-                        <td>{{object.status}}</td>
-                        <td>{{ object.timestamp }}</td>
+<div class="container justify-content-center">
+    <h1>Pedidos</h1>
+    {% if user.is_staff %}
+        <a href="{% url 'create-order-admin' %}" class="btn btn-success btn-sm">Cadastrar Pedido</a>
+    {% else %}
+        <a href="{% url 'create-order' %}" class="btn btn-success btn-sm">Cadastrar Pedido</a>
+    {% endif %}
+    
+    <div class="table-responsive">
+        <table id="partial-table" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    {% if user.is_staff %}
+                    <th>Instituição</th>
+                    {% endif %}
+                    <th>User</th>
+                    <th>Situação</th>
+                    <th>Feito em</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
 
-                        <td>
-                            <a href="{% url 'detail-order' object.pk %}" class="btn btn-primary btn-sm">Detalhar</a>
-                            
-                            {% if object.status == 'pending'%}
-                                <a href="{% url "update-ordered-product" object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar pedido</a>
-                                <a href="{% url "delete-order" object.pk %}" class="btn btn-danger btn-sm" title="Excluir">X</a>
-                                {% if user.is_staff%}
-                                    <a href="{% url 'evaluate-order' object.pk %}" class='btn btn-info btn-sm'>Avaliar pedido</a>
-                                {% endif %}
-                            {% endif %}
+            <tbody style="height: 50vh;">
+                {% include "partials/order/list.html" %}
+            </tbody>
+        </table>
+        
+        {% include "partials/pagination.html" %}
 
-                        </td>
-                    </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="4">Nenhum pedido até o momento</td>
-                        </tr>
-                    {% endfor %}
-
-                </tbody>
-            </table>
-        </div>
     </div>
+</div>
 
 {% endblock content %}
+{% block script %}
+<script src="{% static 'js/jquery.ajax.js' %}"></script>
+{% endblock script %}

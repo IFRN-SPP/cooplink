@@ -1,25 +1,21 @@
-{% comment %} GENERIC FORM {% endcomment %}
 
-{% csrf_token %}
+<div class="modal-header">
+  <h4 class="modal-title">{{ title }}</h4>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
 
-  <div class="modal-header">
-    <h4 class="modal-title">{{ title }}</h4>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-  </div>
+<div class="modal-body">
+{% if modal_form %}
+  <h5>Preencha os campos obrigatórios.</h5>
+  {{ form.as_p }}
 
-  <div class="modal-body">
-  {% if modal_form %}
-    <h5>Preencha os campos obrigatórios.</h5>
-    {{ form.as_p }}
-  
-  {% elif modal_delete %}
-    <p>Deletar: <strong>{{ object }}</strong>?</p>
+{% elif modal_delete %}
+  <h5>Deletar: {{ object }}?</h5>
 
-  {% endif %}
-  </div>
+{% endif %}
+</div>
 
-  <div class="modal-footer">
-    <button type="submit" class="btn {{ button_class }}">{{ button_text }}</button>
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-  </div>
-</form>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+  <button type="submit" class="btn {{ button_class }}">{{ button_text }}</button>
+</div>

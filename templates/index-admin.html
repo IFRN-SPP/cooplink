@@ -34,7 +34,6 @@
                         
                         {% if object.status == 'pending'%}
                             <a href="{% url "update-ordered-product" object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar pedido</a>
-                            <a href="{% url "delete-order" object.pk %}" class="btn btn-danger btn-sm" title="Excluir">X</a>
                             <a href="{% url 'evaluate-order' object.pk %}" class='btn btn-info btn-sm'>Avaliar pedido</a>
                         {% endif %}
 
@@ -78,7 +77,6 @@
                         <td>
                             <a href="{% url "detail-call" object.pk %}" class="btn btn-primary btn-sm">Detalhar</a>
                             <a href="{% url 'update-call' object.pk %}" class="btn btn-warning btn-sm" title="Editar">E</a>
-                            <a href="{% url 'delete-call' object.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
                             <a href="{% url 'update-call-product' object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar produtos</a>                                
                         </td>
                     </tr>

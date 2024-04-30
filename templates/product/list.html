@@ -3,13 +3,7 @@
 {% block title %}Produtos{% endblock title %}
 {% block content %}
 
-<div class="modal fade" id="modal-form">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      
-    </div>
-  </div>
-</div>
+{% include "partials/modal-form.html" %}
 
 <div class="container justify-content-center">
 
@@ -24,14 +18,16 @@
       <th>Nome</th>
       <th>Unidade</th>
     </thead>
-    <tbody>
+    <tbody style="height: 50vh;">
       {% include 'partials/product/list.html' %}
     </tbody>
   </table>
+
+  {% include "partials/pagination.html" %}
 
 </div>
 
 {% endblock content %}
 {% block script %}
-<script src="{% static 'js/event.js' %}"></script>
+<script src="{% static 'js/jquery.ajax.js' %}"></script>
 {% endblock script %}

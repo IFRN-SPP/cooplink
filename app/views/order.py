@@ -1,29 +1,47 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from django.http import JsonResponse
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from app.forms import OrderForm, OrderedProductFormSet, OrderedProductForm
 from app.models import Call, CallProduct, Order, OrderedProduct, Product, Institution
+from app.utils.ajax import AjaxListView, AjaxDeleteView
+from app.utils.mixins import StaffRequiredMixin
 from app.utils.decorators import staff_required, confirm_password, order_owner, order_evaluated
 
 from django.contrib.messages import constants
 from django.contrib import messages
 
 # CRUD Pedidos
+class OrderList(LoginRequiredMixin, AjaxListView):
+    model = Order
+    template_name = 'order/list.html'
+    partial_list = 'partials/order/list.html'
+    paginate_by = 6
+    object_list = 'orders'
 
-@login_required
-def OrderList(request):
-    template_name =  'order/list.html'
-    context = {}
-    user = request.user
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Order.objects.all()
+        if not user.is_staff:
+            queryset = Order.objects.filter(institution=user.institution)
+        return queryset
 
-    order = Order.objects.all()
-    if not user.is_staff:
-        order = Order.objects.filter(institution=user.institution)
 
-    context['order_list'] = order
-    return render(request, template_name, context)
+# @login_required
+# def OrderList(request):
+#     template_name =  'order/list.html'
+#     context = {}
+#     user = request.user
+
+#     order = Order.objects.all()
+#     if not user.is_staff:
+#         order = Order.objects.filter(institution=user.institution)
+
+#     context['order_list'] = order
+#     return render(request, template_name, context)
 
 # Create para Admin
 @login_required
@@ -164,17 +182,11 @@ def OrderDetail(request, pk):
     return render(request,template_name, context)
 
 # Delete de Pedido
-@login_required
-@order_owner
-@order_evaluated
-def OrderDelete(request, pk):
-    order = get_object_or_404(Order, pk=pk)
+class OrderDelete(LoginRequiredMixin, StaffRequiredMixin, AjaxDeleteView):
+    model= Order
+    template_name = 'partials/order/delete.html'
+    success_url = reverse_lazy('order-list')
 
-    if request.method == 'POST':
-        order.delete()
-        return redirect('order-list') 
-    
-    return render(request, 'order/delete.html', {'order': order})
 
 # deleta os produtos dos pedidos
 @login_required

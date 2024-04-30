@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages import constants
 from django.contrib import messages
 
+from app.utils.ajax import AjaxListView, AjaxDeleteView
 from app.forms import CallForm, CallProductFormSet, CallActiveForm
 from app.models import Call, CallProduct, Institution
 from app.utils.decorators import staff_required
@@ -14,19 +15,20 @@ from app.utils.mixins import StaffRequiredMixin
 from django.views.generic.edit import UpdateView, DeleteView
 
 #CRUD CHAMADA
-@login_required
-def CallList(request):
+class CallList(LoginRequiredMixin, AjaxListView):
+    model = Call
     template_name = 'call/list.html'
-    context = {}
-    user = request.user
+    partial_list = 'partials/call/list.html'
+    paginate_by = 6
+    object_list = 'calls'
 
-    calls = Call.objects.all()
-    if not user.is_staff:
-        calls = Call.objects.filter(institution=user.institution)
-
-    context['calls'] = calls
-    return render(request, template_name, context)
-
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Call.objects.all()
+        if not user.is_staff:
+            queryset = Call.objects.filter(institution=user.institution)
+        return queryset
+    
 
 class CallUpdate(LoginRequiredMixin, StaffRequiredMixin, UpdateView):
     model = Call
@@ -65,9 +67,9 @@ def CallUpdateActive(request, pk):
     return render(request, template_name, context)
 
 
-class CallDelete(LoginRequiredMixin, StaffRequiredMixin, DeleteView):
+class CallDelete(LoginRequiredMixin, StaffRequiredMixin, AjaxDeleteView):
     model= Call
-    template_name = 'call/delete.html'
+    template_name = 'partials/call/delete.html'
     success_url = reverse_lazy('call-list')
 
 

@@ -3,13 +3,7 @@
 {% block title %}Instituições{% endblock title %}
 {% block content %}
 
-<div class="modal fade" id="modal-form">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      
-    </div>
-  </div>
-</div>
+{% include "partials/modal-form.html" %}
 
 <div class="container justify-content-center">
 
@@ -18,20 +12,22 @@
   <br>
   <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-institution' %}">Cadastrar Instituição</button>
   
-  <table id="partial-table" class="table">
+  <table id="partial-table" class="table ">
     <thead>
       <th>PK</th>
       <th>Nome</th>
       <th>CNPJ</th>
     </thead>
-    <tbody>
+    <tbody style="height: 50vh;">
       {% include 'partials/institution/list.html' %}
     </tbody>
   </table>
+
+  {% include "partials/pagination.html" %}
 
 </div>
 
 {% endblock content %}
 {% block script %}
-<script src="{% static 'js/event.js' %}"></script>
+<script src="{% static 'js/jquery.ajax.js' %}"></script>
 {% endblock script %}

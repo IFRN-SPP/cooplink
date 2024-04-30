@@ -5,11 +5,9 @@ $(function(){
             url: btn.attr("data-url"),
             type: 'get',
             dataType: 'json',
-            beforeSend: function(){
-                $("#modal-form").modal("show");
-            },
             success: function(data){
                 $("#modal-form .modal-content").html(data.html_form);
+                $("#modal-form").modal("show");
             }
         });
     };
@@ -27,9 +25,18 @@ $(function(){
                         loadList(data.success_url)
                     }
                     $("#modal-form").modal("hide");
-                    if(data.success_message){
-                        addMessage(data.success_message)
+                    if(data.message){
+                        console.log(data.message)
+                        if(data.message_class) {
+                            addMessage(data.message, data.message_class)
+                        } else {
+                            addMessage(data.message)
+                        }
                     }
+                }
+                else if (data.protected_error){
+                    $("#modal-form").modal("hide");
+                    addMessage(data.message, data.message_class)
                 }
                 else{
                     $("#modal-form .modal-content").html(data.html_form)
@@ -44,7 +51,6 @@ $(function(){
             type: "get",
             url: url,
             dataType: "json",
-            headers: { 'header': 'ajax' },
             success: function(data) {
                 $('#partial-table tbody').html(data.html_list);
                 if (data.html_pagination) {
@@ -64,8 +70,8 @@ $(function(){
             data: form.serialize(),
             type: form.attr("method"),
             dataType: 'json',
-            headers:{ 'header': 'ajax'},
             success: function(data){
+                console.log(data)
                 $('#partial-table tbody').html(data.html_list);
                 if (data.html_pagination){
                     $('#partial-page').html(data.html_pagination);
@@ -80,8 +86,7 @@ $(function(){
         $.ajax({
             url: url,
             type: 'get',
-            dataType: 'json',    
-            headers: {'header': 'ajax'},
+            dataType: 'json',
             success: function(data){
                 $("#partial-table tbody").html(data.html_list);
                 if(data.html_pagination){
@@ -92,8 +97,8 @@ $(function(){
         return false
     };
  
-    function addMessage(text){
-        var alert = $('<div class="alert alert-warning alert-dismissible fade show fw-bold" role="alert">' + text + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+    function addMessage(text, messageClass){
+        var alert = $('<div class="alert ' + messageClass + ' alert-dismissible fade show fw-bold" role="alert">' + text + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
 
         if ($('#message').length) {$('#message').append(alert)}
     }
