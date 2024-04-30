@@ -34,13 +34,20 @@
                             {% endif %}
                             <td>{{ object.start }}</td>
                             <td>{{ object.end }}</td>
-                            <td>{{ object.active }}</td>
                             <td>
-                                <a href="{% url "detail-call" object.pk %}" class="btn btn-primary btn-sm">Detalhar</a>
+                            {% if object.active %}
+                                <div class="text-success">ATIVA</div>
+                            {% else %}
+                                <div class="text-warning">INATIVA</div>
+                            {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url "detail-call" object.pk %}" class="btn btn-primary btn-sm" title="Detalhar">Detalhar</a>
                                 {% if user.is_staff %}
                                 <a href="{% url 'update-call' object.pk %}" class="btn btn-warning btn-sm" title="Editar">E</a>
-                                <a href="{% url 'delete-call' object.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
                                 <a href="{% url 'update-call-product' object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar produtos</a>                                
+                                <a href="{% url 'update-call-active' object.pk %}" class="btn btn-info btn-sm" title="Alterar Situação">Situação</a>
+                                <a href="{% url 'delete-call' object.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
                                 {% endif %}
                             </td>
                         </tr>

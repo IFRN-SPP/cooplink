@@ -4,6 +4,7 @@ from app.views.call import (
     CallCreate, 
     CallDetail, 
     CallUpdate, 
+    CallUpdateActive,
     CallDelete, 
     CallProductDelete, 
     CallProductUpdate
@@ -16,6 +17,7 @@ urlpatterns = [
     path('cadastrar/', CallCreate, name='create-call'),
     path('<int:pk>/detalhar/', CallDetail, name='detail-call'),
     path('<int:pk>/atualizar/', CallUpdate.as_view(), name='update-call'),
+    path('<int:pk>/atualizar/situacao/', CallUpdateActive, name='update-call-active'),
     path('<int:pk>/deletar/', CallDelete.as_view(), name='delete-call'),
 
     # CRUD Call Product 

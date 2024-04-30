@@ -22,6 +22,11 @@ class CallForm(forms.ModelForm):
         model = Call
         fields = ("__all__")
 
+class CallActiveForm(forms.ModelForm):
+    class Meta:
+        model = Call
+        fields = ("active",)
+
 class CallProductForm(forms.ModelForm):
     class Meta:
         model = CallProduct

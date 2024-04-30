@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages import constants
 from django.contrib import messages
 
-from app.forms import CallForm, CallProductFormSet
+from app.forms import CallForm, CallProductFormSet, CallActiveForm
 from app.models import Call, CallProduct, Institution
 from app.utils.decorators import staff_required
 from app.utils.mixins import StaffRequiredMixin
@@ -33,6 +33,36 @@ class CallUpdate(LoginRequiredMixin, StaffRequiredMixin, UpdateView):
     fields = ['number', 'institution', 'start','end']
     template_name = 'call/create.html'
     success_url = reverse_lazy('call-list')
+
+
+@login_required
+@staff_required
+def CallUpdateActive(request, pk):
+    template_name = 'call/change-active.html'
+    context = {}
+    call = get_object_or_404(Call, pk=pk)
+    context['call'] = call
+
+    if request.method == 'GET':
+        initial = {'active': not call.active}
+        form = CallActiveForm(initial=initial)
+
+    if request.method == 'POST':
+        form = CallActiveForm(request.POST, instance=call)
+        if form.is_valid(): 
+            form.save()
+            if form.cleaned_data['active']:
+                messages.success(request, f'A {call} agora está ATIVA!')
+            else:
+                messages.warning(request, f'A {call} agora está INATIVA!')
+            return redirect('call-list')
+        
+        if form.errors:
+            messages.warning(request, f'Existe outra Chamada ATIVA de {call.institution}! Desative a outra chamada antes de ativar a {call}')
+            return redirect('call-list')
+
+    context['form'] = form
+    return render(request, template_name, context)
 
 
 class CallDelete(LoginRequiredMixin, StaffRequiredMixin, DeleteView):

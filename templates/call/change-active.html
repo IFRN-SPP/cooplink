@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Situaçao da Chamada{% endblock title %}
+{% block navbar %}{% endblock navbar %}
+{% block content %}
+<div class="container">
+  <h1>MUDAR SITUAÇÃO DA CHAMADA </h1>
+  <hr>
+  <p class="lead">Confirme para mudar a situação da {{ call }}</p>
+  <form action="{% url "update-call-active" call.pk %}" method="post">
+  {% csrf_token %}
+  
+  {% if call.active %}
+  <h3>Alterar a {{call}} para <span class="text-warning">INATIVA</span>?</h3>
+  {% else %}
+  <h3>Alterar a {{call}} para <span class="text-success">ATIVA</span>?</h3>
+  {% endif %}
+
+  <div class="d-none">{{form.as_p}}</div>
+  <hr>
+  
+  <a href="{% url "call-list" %}" class="btn btn-danger">Cancelar</a>
+  <button class="btn btn-success" type="submit">Confirmar</button>
+  </form>
+</div>
+{% endblock %}

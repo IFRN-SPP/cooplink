@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
 
 class Institution(models.Model):
@@ -23,7 +24,20 @@ class Call(models.Model):
 
     def __str__(self):
         return f'Chamada - {self.number}'
-
+    
+    def clean(self):
+        if self.active:
+            active_calls = Call.objects.filter(institution=self.institution, active=True)
+            if self.pk:
+                active_calls = active_calls.exclude(pk=self.pk)
+            if active_calls.exists():
+                raise ValidationError("Já existe uma chamada ativa para esta instituição.")
+    
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+        
+        
 class Product(models.Model):
     CHOICES = [
         ('KG', 'KG'),
