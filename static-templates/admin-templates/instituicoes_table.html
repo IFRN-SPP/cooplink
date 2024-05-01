@@ -102,13 +102,13 @@
                                                         <div class="form-group">
                                                             <label for="cnpj" class="form-label">CNPJ:</label>
                                                             <input type="text" id="cnpj" name="cnpj"
-                                                                class="form-control" required>
+                                                                class="cnpj-mask form-control" required>
                                                         </div>
 
                                                         <div class="form-group">
                                                             <label for="responsavel" class="form-label">Responsável:
                                                             </label>
-                                                            <select name="responsavel" class="form-select" required>
+                                                            <select name="responsavel" class="form-select cursor-pointer" required>
                                                                 <option selected disabled hidden></option>
                                                                 <option value="kg">Ana</option>
                                                                 <option value="uni">Pedro</option>
@@ -121,7 +121,7 @@
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-danger"
                                                         data-bs-dismiss="modal">Cancelar</button>
-                                                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                                                    <button type="submit" class="btn btn-success">Cadastrar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -142,7 +142,7 @@
                                 <tbody class="table-group-divider">
                                     <tr>
                                         <td>IFRN SPP</td>
-                                        <td>00000000</td>
+                                        <td>00.000.000/0000-00</td>
                                         <td>Pedro</td>
                                         <td>
                                             <!-- Dropdown menu -->
@@ -189,6 +189,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+    
+    <script src="../jquery.masks.js"></script>
     <script src="../script.js"></script>
 
 </body>

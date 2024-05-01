@@ -56,6 +56,14 @@ body {
     border: 1px #dee2e6 solid;
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.cursor-pointer:hover {
+    border: #000 1px solid;
+}
+
 
 /* SIDEBAR */
 
