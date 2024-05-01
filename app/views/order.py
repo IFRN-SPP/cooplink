@@ -182,7 +182,7 @@ def OrderDetail(request, pk):
     return render(request,template_name, context)
 
 # Delete de Pedido
-class OrderDelete(LoginRequiredMixin, StaffRequiredMixin, AjaxDeleteView):
+class OrderDelete(LoginRequiredMixin, AjaxDeleteView):
     model= Order
     template_name = 'partials/order/delete.html'
     success_url = reverse_lazy('order-list')

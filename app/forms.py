@@ -21,6 +21,22 @@ class CallForm(forms.ModelForm):
     class Meta:
         model = Call
         fields = ("__all__")
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get("start")
+        end_date = cleaned_data.get("end")
+        current_date = timezone.now().date()
+        
+        if start_date and end_date:
+            #se  data de inicio for maior ou igual a de fim = erro
+            if start_date >= end_date:
+                raise forms.ValidationError("A data de início deve ser anterior à data de término.")
+            # se data final é menor ou igual a atual = erro
+            elif end_date <= current_date:
+                current_date_formatted = current_date.strftime('%d/%m/%Y')
+                raise forms.ValidationError(f'A data de término deve ser maior que a data atual: {current_date_formatted}')
+        return cleaned_data
 
 class CallActiveForm(forms.ModelForm):
     class Meta:
