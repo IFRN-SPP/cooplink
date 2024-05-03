@@ -2,11 +2,13 @@
 
 <tr>
     <td>{{ object.number }}</td>
+    
     {% if user.is_staff %}
-    <td>{{ object.institution }}</td>
+        <td>{{ object.institution }}</td>
     {% endif %}
     <td>{{ object.start }}</td>
     <td>{{ object.end }}</td>
+
     <td>
     {% if object.active %}
         <div class="badge text-bg-success">ATIVA</div>
@@ -14,15 +16,17 @@
         <div class="badge text-bg-warning">INATIVA</div>
     {% endif %}
     </td>
+
     <td>
       <a href="{% url "detail-call" object.pk %}" class="btn btn-primary btn-sm" title="Detalhar">Detalhar</a>
       {% if user.is_staff %}
-      <a href="{% url 'update-call' object.pk %}" class="btn btn-warning btn-sm" title="Editar">E</a>
-      <a href="{% url 'update-call-product' object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar produtos</a>                                
-      <a href="{% url 'update-call-active' object.pk %}" class="btn btn-info btn-sm" title="Alterar Situação">Situação</a>
-      <a data-url="{% url 'js-delete-call' object.pk %}" class="js-delete btn btn-danger btn-sm" title="Excluir">x</a>
+        <a href="{% url 'update-call' object.pk %}" class="btn btn-warning btn-sm" title="Editar">E</a>
+        <a href="{% url 'update-call-product' object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar produtos</a>                                
+        <a href="{% url 'update-call-active' object.pk %}" class="btn btn-info btn-sm" title="Alterar Situação">Situação</a>
+        <a data-url="{% url 'js-delete-call' object.pk %}" class="js-delete btn btn-danger btn-sm" title="Excluir">x</a>
       {% endif %}
     </td>
+
 </tr>
 {% empty %}
 <tr>

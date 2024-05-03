@@ -4,15 +4,22 @@
 {% block content %}
 <div class="container justify-content-center">
   <h1>Chamada {{call.number}}</h1>
-  <a href="{% url "call-list" %}">Chamadas</a>
-  <hr>
-  <a href="{% url "update-call" call.pk %}" class="btn btn-success">Editar Chamada</a>
-  <hr>
-  <p>Instiuição: {{call.institution}}</p>
+
+  {% if user.is_staff %}
+    <hr>
+      <a href="{% url "call-list"  %}"  class="btn btn-info btn-sm ">Chamadas</a>
+      <a href="{% url "update-call" call.pk %}" class="btn btn-warning btn-sm ">Editar Chamada</a>
+    <hr>
+  {% endif %}
+
+  <p>Instituição: {{call.institution}}</p>
   <p>Inicio: {{call.start}}</p>
   <p>Termino: {{call.end}}</p>
+
+  {% if user.is_staff %}
+    <a href="{% url "update-call-product" call.pk %}" class="btn btn-warning btn-sm">Editar Produtos</a>
+  {% endif %}
   
-  <a href="{% url "update-call-product" call.pk %}" class="btn btn-warning btn-sm">Editar Produtos</a>
   
   <table class="table table-striped">
     <thead>
@@ -20,7 +27,10 @@
       <th>Saldo</th>
       <th>Unidade</th>
       <th>Preço</th>
-      <th>Deletar?</th>
+      {% if user.is_staff %}
+        <th>Deletar?</th>
+      {% endif %}
+    
     </thead>
     <tbody>
   {% for product in products %}
@@ -29,9 +39,12 @@
         <td>{{product.balance}}</td>
         <td>{{product.product.unit}}</td>
         <td>{{product.price}}</td>
-        <td>
-          <a href="{% url 'delete-call-product' product.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
-        </td>
+        {% if user.is_staff %}
+          <td>
+            <a href="{% url 'delete-call-product' product.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
+          </td>
+        {% endif %}
+        
       </tr>
   {% endfor %}
     </tbody>

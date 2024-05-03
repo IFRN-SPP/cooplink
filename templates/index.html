@@ -30,10 +30,12 @@
 
                         <td>
                             <a href="{% url 'detail-order' object.pk %}" class="btn btn-primary btn-sm">Detalhar</a>
-                            {% if object.status == 'pending' or object.status == 'denied' %}
-                                <a href="{% url "js-delete-order" object.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
+                            {% if order.user == user %}
+                                {% if object.status == 'pending' or object.status == 'denied' %}
+                                    <a href="{% url "js-delete-order" object.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
+                                {% endif %}
                             {% endif %}
-                            
+                           
                             {% if object.status == 'pending' %}
                                 <a href="{% url "update-ordered-product" object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar pedido</a>
                             {% endif %}

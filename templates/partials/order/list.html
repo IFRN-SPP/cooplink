@@ -12,12 +12,25 @@
       <a href="{% url 'detail-order' object.pk %}" class="btn btn-primary btn-sm">Detalhar</a>
       
       {% if object.status == 'pending' %}
-        <a href="{% url "update-ordered-product" object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar pedido</a>
-        <a data-url="{% url "js-delete-order" object.pk %}" class="js-delete btn btn-danger btn-sm" title="Excluir">X</a>
-        {% if user.is_staff %}
-            <a href="{% url 'evaluate-order' object.pk %}" class='btn btn-info btn-sm'>Avaliar pedido</a>
+
+        {% if object.user == user %}
+          <a href="{% url "update-ordered-product" object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar pedido</a>
+          <a data-url="{% url "js-delete-order" object.pk %}" class="js-delete btn btn-danger btn-sm" title="Excluir">x</a>
         {% endif %}
+
+        {% if user.is_staff %}
+          <a href="{% url 'evaluate-order' object.pk %}" class='btn btn-info btn-sm'>Avaliar pedido</a>
+        {% endif %}
+
       {% endif %}
+
+      <!-- admin ter o direito de deletar um pedido que foi negado -->
+      {% if object.status == 'denied' %}
+        {% if user.is_staff %}
+          <a data-url="{% url "js-delete-order" object.pk %}" class="js-delete btn btn-danger btn-sm" title="Excluir">x</a>
+        {% endif %} 
+      {% endif %}
+
     </td>
 </tr>
 {% empty %}

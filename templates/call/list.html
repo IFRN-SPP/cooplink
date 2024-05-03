@@ -8,7 +8,15 @@
 {% include "partials/modal-form.html" %}
 
 <div class="container justify-content-center">
-    <h1>Chamadas</h1>
+  
+
+    {% if user.is_staff %}
+        <h1>Chamadas</h1>
+    {% else %}
+        <h1>Minhas Chamadas</h1>
+    {% endif %}
+
+
     <br>
     {% if user.is_staff %}
     <a href="{% url 'create-call' %}" class="btn btn-success">Cadastrar Chamada</a>
@@ -29,7 +37,7 @@
                 </tr>
             </thead>
 
-            <tbody style="height: 50vh;">
+            <tbody style="height: 30vh;">
                 {% include "partials/call/list.html" %}
             </tbody>
         </table>
