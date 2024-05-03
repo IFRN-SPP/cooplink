@@ -1,4 +1,5 @@
 {% load static %}
+{% load ajax_tags %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -18,7 +19,7 @@
   <!-- MENSAGENS -->
   <div class="container">
     {% include "partials/messages.html" %}
-    <div id="message"></div>
+    <div id="{% message_id %}"></div>
   </div>
   <!-- CONTEUDO -->
   {% block content %}{% endblock content %} 

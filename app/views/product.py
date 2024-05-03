@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 
 from app.forms import ProductForm
 from app.models import Product
-from app.utils.ajax import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView 
+from ajax.views import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView 
 from app.utils.mixins import StaffRequiredMixin
 
 from django.contrib.messages import constants

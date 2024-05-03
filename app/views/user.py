@@ -3,12 +3,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 from django.contrib.auth.forms import SetPasswordForm
+from django.views.generic.edit import UpdateView, FormView
+
 from app.forms import UserCreateForm, UserUpdateForm, PermissionForm
 from app.models import UserProfile
-from app.utils.ajax import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView
 from app.utils.mixins import ConfirmPasswordMixin, StaffRequiredMixin
 
-from django.views.generic.edit import UpdateView, FormView
+from ajax.views import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView
 
 # CRUD USUARIO
 class UserList(LoginRequiredMixin, StaffRequiredMixin, AjaxListView):

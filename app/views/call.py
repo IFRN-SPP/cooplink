@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages import constants
 from django.contrib import messages
 
-from app.utils.ajax import AjaxListView, AjaxDeleteView
+from ajax.views import AjaxListView, AjaxDeleteView
 from app.forms import CallForm, CallProductFormSet, CallActiveForm
 from app.models import Call, CallProduct, Institution
 from app.utils.decorators import staff_required

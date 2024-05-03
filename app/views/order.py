@@ -2,17 +2,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 
+from django.contrib import messages
+from django.contrib.messages import constants
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from app.forms import OrderForm, OrderedProductFormSet, OrderedProductForm
 from app.models import Call, CallProduct, Order, OrderedProduct, Product, Institution
-from app.utils.ajax import AjaxListView, AjaxDeleteView
-from app.utils.mixins import StaffRequiredMixin
 from app.utils.decorators import staff_required, confirm_password, order_owner, order_evaluated
 
-from django.contrib.messages import constants
-from django.contrib import messages
+from ajax.views import AjaxListView, AjaxDeleteView
+from ajax.utils import is_ajax
 
 # CRUD Pedidos
 class OrderList(LoginRequiredMixin, AjaxListView):
@@ -29,19 +29,6 @@ class OrderList(LoginRequiredMixin, AjaxListView):
             queryset = Order.objects.filter(institution=user.institution)
         return queryset
 
-
-# @login_required
-# def OrderList(request):
-#     template_name =  'order/list.html'
-#     context = {}
-#     user = request.user
-
-#     order = Order.objects.all()
-#     if not user.is_staff:
-#         order = Order.objects.filter(institution=user.institution)
-
-#     context['order_list'] = order
-#     return render(request, template_name, context)
 
 # Create para Admin
 @login_required
@@ -79,7 +66,7 @@ def OrderCreateAdmin(request):
 def get_calls(request):
     data = {}
 
-    if request.method == 'GET':
+    if request.method == 'GET' and is_ajax(request):
         institution_id = request.GET.get('institution_id')
 
         if institution_id == '':
@@ -91,7 +78,8 @@ def get_calls(request):
         data['calls'] = calls_dict
 
     else:
-        data['error'] = 'Invalid request'
+        messages.warning(request, "Algum erro aconteceu") 
+        return redirect('index')
     
     return JsonResponse(data)
 
@@ -99,7 +87,7 @@ def get_calls(request):
 def get_products(request):
     data = {}
 
-    if request.method == 'GET':
+    if request.method == 'GET' and is_ajax(request):
         call_id = request.GET.get('call_id')
         
         products = CallProduct.objects.filter(call_id=call_id)
@@ -107,7 +95,8 @@ def get_products(request):
         data['products'] = products_dict
     
     else:
-        data['error'] = 'Invalid request'
+        messages.warning(request, "Algum erro aconteceu")
+        return redirect('index')
         
     return JsonResponse(data)
     
@@ -115,7 +104,7 @@ def get_products(request):
 def get_balance(request):
     data = {}
 
-    if request.method == 'GET':
+    if request.method == 'GET' and is_ajax(request):
         product_id = request.GET.get('product_id')
 
         call_product = CallProduct.objects.get(id=product_id)
@@ -125,7 +114,8 @@ def get_balance(request):
         data['balance'] = balance
     
     else:
-        data['error'] = 'Invalid request'
+        messages.warning(request, "Algum erro aconteceu")
+        return redirect('index')
 
     return JsonResponse(data)
 

@@ -6,8 +6,8 @@ $(function(){
             type: 'get',
             dataType: 'json',
             success: function(data){
-                $("#modal-form .modal-content").html(data.html_form);
-                $("#modal-form").modal("show");
+                $("#ajax-modal .modal-content").html(data.html_form);
+                $("#ajax-modal").modal("show");
             }
         });
     };
@@ -24,22 +24,20 @@ $(function(){
                     if(data.success_url){
                         loadList(data.success_url)
                     }
-                    $("#modal-form").modal("hide");
+                    $("#ajax-modal").modal("hide");
                     if(data.message){
-                        console.log(data.message)
                         if(data.message_class) {
                             addMessage(data.message, data.message_class)
                         } else {
                             addMessage(data.message)
                         }
                     }
-                }
-                else if (data.protected_error){
-                    $("#modal-form").modal("hide");
+                } else if (data.protected_error){
+                    $("#ajax-modal").modal("hide");
                     addMessage(data.message, data.message_class)
                 }
                 else{
-                    $("#modal-form .modal-content").html(data.html_form)
+                    $("#ajax-modal .modal-content").html(data.html_form)
                 }
             }
         });
@@ -52,12 +50,12 @@ $(function(){
             url: url,
             dataType: "json",
             success: function(data) {
-                $('#partial-table tbody').html(data.html_list);
+                $('#ajax-table tbody').html(data.html_list);
                 if (data.html_pagination) {
-                    $('#partial-page').html(data.html_pagination);
+                    $('#ajax-pagination').html(data.html_pagination);
                 }
-                if ($('#filter-form').length > 0){
-                    $('#filter-form')[0].reset()
+                if ($('#ajax-filter').length > 0){
+                    $('#ajax-filter')[0].reset()
                 }
             }
         });
@@ -71,10 +69,9 @@ $(function(){
             type: form.attr("method"),
             dataType: 'json',
             success: function(data){
-                console.log(data)
-                $('#partial-table tbody').html(data.html_list);
+                $('#ajax-table tbody').html(data.html_list);
                 if (data.html_pagination){
-                    $('#partial-page').html(data.html_pagination);
+                    $('#ajax-pagination').html(data.html_pagination);
                 }
             }
         });
@@ -86,11 +83,11 @@ $(function(){
         $.ajax({
             url: url,
             type: 'get',
-            dataType: 'json',
+            dataType: 'json',    
             success: function(data){
-                $("#partial-table tbody").html(data.html_list);
+                $("#ajax-table tbody").html(data.html_list);
                 if(data.html_pagination){
-                    $("#partial-page").html(data.html_pagination);
+                    $("#ajax-pagination").html(data.html_pagination);
                 }
             }
         });
@@ -100,27 +97,27 @@ $(function(){
     function addMessage(text, messageClass){
         var alert = $('<div class="alert ' + messageClass + ' alert-dismissible fade show fw-bold" role="alert">' + text + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
 
-        if ($('#message').length) {$('#message').append(alert)}
+        if ($('#ajax-message').length) {$('#ajax-message').append(alert)}
     }
 
     // CREATE
     $(".js-create").click(loadForm);
-    $("#modal-form").on("submit", ".js-create-form", saveForm);
+    $("#ajax-modal").on("submit", ".js-create-form", saveForm);
 
     // UPDATE
-    $("#partial-table").on("click", ".js-update", loadForm);
-    $("#modal-form").on("submit", ".js-update-form", saveForm);
+    $("#ajax-table").on("click", ".js-update", loadForm);
+    $("#ajax-modal").on("submit", ".js-update-form", saveForm);
 
     // DELETE
-    $("#partial-table").on("click", ".js-delete", loadForm);
-    $("#modal-form").on("submit", ".js-delete-form", saveForm); 
+    $("#ajax-table").on("click", ".js-delete", loadForm);
+    $("#ajax-modal").on("submit", ".js-delete-form", saveForm); 
     
     // PAGINATION
-    $("#partial-page").on("click", ".js-link", paginatation);
+    $("#ajax-pagination").on("click", ".js-link", paginatation);
 
     // FILTER
-    $("#filter-form").on("input", filter);
-    $("#filter-form").on("submit", filter);
+    $("#ajax-filter").on("input", filter);
+    $("#ajax-filter").on("submit", filter);
 
     // BTN RESET FILTER 
     $('.btn-reset').on("click", function() {

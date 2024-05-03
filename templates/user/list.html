@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load ajax_tags %}
 {% block title %}Usuários{% endblock title %}
 {% block content %}
 
@@ -12,14 +13,8 @@
   <br>
   <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-user' %}">Cadastrar Usuário</button>
   <br>
-  {% for msg in messages %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      {{msg}}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  {% endfor %}
   
-  <table id="partial-table"  class="table">
+  <table id="{% table_id %}"  class="table">
     <thead>
       <th>PK</th>
       <th>Username</th>

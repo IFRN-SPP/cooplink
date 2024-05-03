@@ -3,8 +3,9 @@ from django.urls import reverse_lazy
 
 from app.forms import InstitutionForm
 from app.models import Institution
-from app.utils.ajax import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView 
 from app.utils.mixins import StaffRequiredMixin
+
+from ajax.views import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView 
 
 # CRUD INSTITUIÇÃO
 class InstitutionList(LoginRequiredMixin, StaffRequiredMixin, AjaxListView):

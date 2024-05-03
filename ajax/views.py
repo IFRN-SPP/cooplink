@@ -3,6 +3,7 @@ from django.db.models import ProtectedError
 from django.http import JsonResponse
 from django.views import View
 
+from .utils import is_ajax
 from .mixins import AjaxResponseMixin, FormResponseMixin, DeleteReponseMixin
 
 class AjaxListView(View, AjaxResponseMixin):
@@ -18,7 +19,7 @@ class AjaxListView(View, AjaxResponseMixin):
         context['user'] = request.user
         context[f'{self.object_list}'] = object_list
 
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        if is_ajax(request):
             return self.ajax_response(object_list=object_list, context=context, paginate_by=self.paginate_by)
 
         else:
@@ -60,7 +61,7 @@ class AjaxCreateView(AjaxFormView):
     View to create a new object using AJAX.
     """
     def get(self, request, *args, **kwargs):
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        if is_ajax(request):
             return super().get(request, *args, **kwargs)
     
         return redirect(self.success_url)
@@ -76,7 +77,7 @@ class AjaxUpdateView(AjaxFormView):
         model = self.form_class._meta.model
         instance = get_object_or_404(model, pk=pk)
         form = self.form_class(instance=instance)
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        if is_ajax(request):
             return self.render_form(form)
         
         return redirect(self.success_url)
@@ -93,7 +94,7 @@ class AjaxDeleteView(View, DeleteReponseMixin):
     """
     def get(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(self.model, pk=pk)
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        if is_ajax(request):
             return self.render_form(instance)
         
         return redirect(self.success_url)

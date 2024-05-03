@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load ajax_tags %}
 {% block title %}Chamadas{% endblock title %}
 
 {% block content %}
@@ -13,8 +14,8 @@
     <a href="{% url 'create-call' %}" class="btn btn-success">Cadastrar Chamada</a>
     {% endif %}
 
-    <div class="table-responsive">
-        <table id="partial-table" class="table table-striped">
+    <div class="teabl-responsive">
+        <table id="{% table_id %}" class="table table-striped">
             <thead>
                 <tr>
                     <th>Número</th>
