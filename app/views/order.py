@@ -262,6 +262,10 @@ def EvaluateOrder(request, pk):
 
             product_balance = int(product.call_product.balance)
             if product.status == 'available':
+                if form_available_quantity:
+                    messages.add_message(request, constants.WARNING, f'Se o produto {product.call_product.product} está disponivel, remova a quantidade parcial.')
+                    return redirect('evaluate-order', pk=order.pk)
+
                 product_ordered_quantity = int(product.ordered_quantity)
                 product.call_product.balance = product_balance - product_ordered_quantity
 
