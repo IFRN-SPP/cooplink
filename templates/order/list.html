@@ -10,7 +10,7 @@
     <h1>Pedidos</h1>
     {% if user.is_staff %}
         <a href="{% url 'create-order-admin' %}" class="btn btn-success btn-sm">Cadastrar Pedido</a>
-        <a href="{% url 'week-relatory' %}">Relátorio Semanal</a>
+        <a href="{% url 'week-relatory' %}" target="_blank">Relátorio Semanal</a>
     {% else %}
         <a href="{% url 'create-order' %}" class="btn btn-success btn-sm">Cadastrar Pedido</a>
     {% endif %}

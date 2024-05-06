@@ -10,6 +10,7 @@ from app.views.order import (
   EvaluateOrder,
   EvaluateOrderDenied,
   OrderDelivered,
+  OrderRelatory,
 )
 
 # Adicione suas URLs aqui
@@ -28,4 +29,5 @@ urlpatterns = [
     path('<int:pk>/negar/',EvaluateOrderDenied, name='denied-order'),
     # confirmação de entrega
     path('<int:pk>/confirmar-entrega/',OrderDelivered, name='order-delivered'),
+    path('<int:pk>/relatorio/', OrderRelatory, name='order-relatory'),
 ]

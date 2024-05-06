@@ -25,8 +25,8 @@
     }
     itens th, itens td{
       padding: 4px; 
-      text-align: center; 
-      border: 1px solid #ddd; 
+      text-align: center;
+      border: 1.5px solid #000; 
     }
     
   </style>
@@ -43,19 +43,20 @@
       </div>
   
       <!-- HTML Content -->
-      <div style="border: 2px solid #aaa; text-align:center;">
-        <h1 style="font-size: 14px; font-weight: 600; padding: 10px;">
+      <div style="border: 1.5px solid #000; text-align:center;">
+        <h1 style="font-size: 16px; font-weight: 600; padding: 10px;">
           RELATÓRIO SEMANAL DE &nbsp;{{monday|date:"SHORT_DATE_FORMAT"}}&nbsp; A &nbsp;{{friday|date:"SHORT_DATE_FORMAT"}}&nbsp;
         </h1>
       </div>
 
       <itens>
         <h2>PRODUTOS TOTAIS</h2>
+        {% if total_products.items %}
         <table>
           <thead>
             <tr>
-              <th style="background-color: #ddd;">Produto</th>
-              <th style="background-color: #ddd;">Quantidade</th>
+              <th style="background-color: #ddd">PRODUTO</th>
+              <th style="background-color: #ddd">QUANTIDADE</th>
             </tr>
           </thead>
           <tbody>
@@ -67,6 +68,9 @@
             {% endfor %}
           </tbody>
         </table>
+        {% else %}
+        <i>&nbsp;SEM PRODUTOS</i>
+        {% endif %}
       </itens>
 
       <h2>INSTITUIÇÕES</h2>
@@ -77,8 +81,8 @@
         <table>
           <thead>
             <tr>
-              <th style="background-color: #ddd;">Produto</th>
-              <th style="background-color: #ddd;">Quantidade</th>
+              <th style="background-color: #ddd">PRODUTO</th>
+              <th style="background-color: #ddd">QUANTIDADE</th>
             </tr>
           </thead>
           <tbody>
@@ -98,6 +102,8 @@
           </tbody>
         </table>
         <br>
+        {% empty %}
+        <i>&nbsp;SEM INSTITUIÇÔES</i>
         {% endfor %}
       </itens>
 

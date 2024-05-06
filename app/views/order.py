@@ -1,6 +1,7 @@
+from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 
 from django.contrib import messages
 from django.contrib.messages import constants
@@ -10,6 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from app.forms import OrderForm, OrderedProductFormSet, OrderedProductForm
 from app.models import Call, CallProduct, Order, OrderedProduct, Product, Institution
 from app.utils.decorators import staff_required, confirm_password, order_owner, order_evaluated
+from app.utils.functions import render_to_pdf
 
 from ajax.views import AjaxListView, AjaxDeleteView
 from ajax.utils import is_ajax
@@ -322,3 +324,24 @@ def OrderDelivered(request,pk):
         return redirect('detail-order', pk= order.pk) 
     
     return render(request, template_name, context)
+
+@login_required
+@staff_required
+def OrderRelatory(request, pk):
+    template_name = "pdf/order-relatory.html"
+    data = {}
+    order = get_object_or_404(Order, pk=pk)
+    products = OrderedProduct.objects.filter(order=order)
+
+    if not order.status == ('approved' or 'delivered'):
+        messages.warning(request, "Não é possível gerar o relatório de um Pedido que não foi aprovado ou entregue")
+        return redirect('detail-order', pk)
+
+    data['order'] = order
+    data['products'] = products
+    today = timezone.now().date()
+    data['today'] = today
+
+    if request.method == 'GET':
+        pdf = render_to_pdf(template_name, data)
+        return HttpResponse(pdf, content_type='application/pdf')

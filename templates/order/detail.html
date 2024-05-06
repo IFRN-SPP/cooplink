@@ -13,6 +13,8 @@
         <p>Instituição: {{ order.institution }}</p>
         {% if order.status == 'pending' %}
             <a href="{% url 'evaluate-order' order.pk %}" class='btn btn-info btn-sm' >Avaliar pedido</a>   
+        {% elif order.status == 'approved' or order.status == 'delivered' %}
+            <a href="{% url 'order-relatory' order.pk %}" target="_blank" class='btn btn-info btn-sm' >Gerar Termo de Recebimento</a>   
         {% endif %}
     {% endif %}
 

@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
+from decimal import Decimal
 
 class Institution(models.Model):
     name = models.CharField(max_length=100, verbose_name="Nome da Instituição")
@@ -97,6 +98,15 @@ class Order(models.Model):
     class Meta:
         ordering = ['-timestamp']
 
+    @property
+    def get_total_price(self):
+        total_price = Decimal(0)
+        if self.id:
+            products = OrderedProduct.objects.filter(order=self.id)
+            for product in products:
+                total_price += product.get_quantity_price
+        return total_price or None
+
 
 class OrderedProduct(models.Model):
     CHOICES = [
@@ -117,3 +127,13 @@ class OrderedProduct(models.Model):
     class Meta:
         ordering = ['-id']
     
+    @property
+    def get_quantity_price(self):
+        quantity_price = None  
+        if self.call_product and (self.ordered_quantity or self.available_quantity):
+            price = Decimal(self.call_product.price)
+            quantity = Decimal(self.ordered_quantity) 
+            if self.available_quantity:
+                quantity = Decimal(self.available_quantity)
+            quantity_price = price*quantity
+        return quantity_price
