@@ -1,7 +1,7 @@
 from django.urls import path, include
 from django.contrib.auth.views import LoginView, LogoutView
 
-from .views.index import index, index_admin, week_relatory
+from .views.index import index, index_admin
 from .views.order import get_calls, get_products, get_balance
 
 from .routes import institution, user, product, call, order
@@ -10,8 +10,6 @@ from .routes import institution, user, product, call, order
 urlpatterns = [
     path("", index, name="index"),
     path("administracao/", index_admin, name="index-admin"),
-
-    path("pedidos/relatorio-semanal/", week_relatory, name="week-relatory"),
 
     # Autenticação
     path("login/", LoginView.as_view(), name="login"),

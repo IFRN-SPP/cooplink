@@ -59,7 +59,7 @@ def get_week_end(monday):
     return end_of_week
 
 
-def get_relatory_orders(week_start, week_end):
+def get_report_orders(week_start, week_end):
     """
     Gets approved or delivered orders within a certain time interval.
 

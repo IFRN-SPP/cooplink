@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from app.forms import OrderForm, OrderedProductFormSet, OrderedProductForm
 from app.models import Call, CallProduct, Order, OrderedProduct, Product, Institution
 from app.utils.decorators import staff_required, confirm_password, order_owner, order_evaluated
-from app.utils.functions import render_to_pdf
+from app.utils.functions import render_to_pdf, get_report_orders, calculate_total_products, get_week_end, get_week_start
 
 from ajax.views import AjaxListView, AjaxDeleteView
 from ajax.utils import is_ajax
@@ -354,8 +354,8 @@ def OrderDelivered(request, pk):
 
 @login_required
 @staff_required
-def OrderRelatory(request, pk):
-    template_name = "pdf/order-relatory.html"
+def OrderReport(request, pk):
+    template_name = "pdf/order-report.html"
     data = {}
     order = get_object_or_404(Order, pk=pk)
     products = OrderedProduct.objects.filter(order=order)
@@ -372,3 +372,27 @@ def OrderRelatory(request, pk):
     if request.method == 'GET':
         pdf = render_to_pdf(template_name, data)
         return HttpResponse(pdf, content_type='application/pdf')
+
+
+@login_required
+@staff_required
+def WeekReport(request):
+    template_name = 'pdf/week-report.html'
+    data = {}
+
+    today = timezone.now().date()
+    data['today'] = today
+    monday = get_week_start(today)
+    data['monday'] = monday
+    friday = get_week_end(monday)
+    data['friday'] = friday
+
+    orders = get_report_orders(monday, friday)
+    data['orders'] = orders
+    total_products = calculate_total_products(orders)
+    data['total_products'] = total_products
+
+    if request.method == 'GET':
+        pdf = render_to_pdf(template_name, data)
+        return HttpResponse(pdf, content_type='application/pdf')
+

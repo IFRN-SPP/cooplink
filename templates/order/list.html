@@ -14,7 +14,7 @@
         <div>
           {% if user.is_staff %}
             <a href="{% url 'create-order-admin' %}" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i> Novo pedido</a>
-            <a href="{% url 'week-relatory' %}" class="btn btn-warning btn-sm" target="_blank"><i class="bi bi-newspaper"></i> Relátorio Semanal</a>
+            <a href="{% url 'week-report' %}" class="btn btn-warning btn-sm" target="_blank"><i class="bi bi-newspaper"></i> Relátorio Semanal</a>
           {% else %}
             <a href="{% url 'create-order' %}" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i> Novo pedido</a>
           {% endif %}
