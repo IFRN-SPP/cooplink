@@ -3,72 +3,75 @@
 {% block title %} Pedido {% endblock title %}
 
 {% block content %}
-<div class="container justify-content-center">
-    <h1>Pedido {{order.pk}}</h1>
-    <p>Situação do pedido: {{order.status}}</p>
-    <p>Feito em: {{ order.timestamp}}</p>
-    <p>Por: {{ order.user}}</p>
-    
-    {% if user.is_staff %}
-        <p>Instituição: {{ order.institution }}</p>
-        {% if order.status == 'pending' %}
-            <a href="{% url 'evaluate-order' order.pk %}" class='btn btn-info btn-sm' >Avaliar pedido</a>   
-        {% elif order.status == 'approved' or order.status == 'delivered' %}
-            <a href="{% url 'order-relatory' order.pk %}" target="_blank" class='btn btn-info btn-sm' >Gerar Termo de Recebimento</a>   
-        {% endif %}
-    {% endif %}
 
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Produto</th>
-                    <th>Preço</th>
-                    <th>Quantidade Pedida</th>
-                    <th>Quantidade Disponivel</th>
-                    <th>Saldo Atual da Chamada</th>
-                    <th>Situação</th>
-                    
-                </tr>
-            </thead>
+    {% include 'partials/sidebar_template_1.html' %}
+        <div class="container justify-content-center">
+            <h1>Pedido {{order.pk}}</h1>
+            <p>Situação do pedido: {{order.status}}</p>
+            <p>Feito em: {{ order.timestamp}}</p>
+            <p>Por: {{ order.user}}</p>
+            
+            {% if user.is_staff %}
+                <p>Instituição: {{ order.institution }}</p>
+                {% if order.status == 'pending' %}
+                    <a href="{% url 'evaluate-order' order.pk %}" class='btn btn-info btn-sm' >Avaliar pedido</a>   
+                {% elif order.status == 'approved' or order.status == 'delivered' %}
+                    <a href="{% url 'order-relatory' order.pk %}" target="_blank" class='btn btn-info btn-sm' >Gerar Termo de Recebimento</a>   
+                {% endif %}
+            {% endif %}
 
-            <tbody>
-                {% for object in products %}
-                    <tr>
-                        <td>{{ object.call_product.product }}</td>
-                        <td>{{ object.call_product.price }}</td>
-                        <td>{{ object.ordered_quantity }}</td>
-                        <td>
-                            {% if order.status != 'pending' %}
-                                {% if object.available_quantity %}
-                                {{ object.available_quantity }}
-                                {% elif object.status == 'denied' %}
-                                <i>Produto Negado</i>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Preço</th>
+                            <th>Quantidade Pedida</th>
+                            <th>Quantidade Disponivel</th>
+                            <th>Saldo Atual da Chamada</th>
+                            <th>Situação</th>
+                            
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for object in products %}
+                            <tr>
+                                <td>{{ object.call_product.product }}</td>
+                                <td>{{ object.call_product.price }}</td>
+                                <td>{{ object.ordered_quantity }}</td>
+                                <td>
+                                    {% if order.status != 'pending' %}
+                                        {% if object.available_quantity %}
+                                        {{ object.available_quantity }}
+                                        {% elif object.status == 'denied' %}
+                                        <i>Produto Negado</i>
+                                        {% else %}
+                                        <i>Quant. Pedida</i>
+                                        {% endif %}
+                                    {% else %}
+                                    Ainda não avaliado
+                                    {% endif %}
+                                </td>
+                                <td>{{object.call_product.balance}} {{object.call_product.product.unit}}</td>
+                                {% if order.status != 'pending' %}
+                                <td>{{ object.status }}</td>   
                                 {% else %}
-                                <i>Quant. Pedida</i>
+                                <td>-------</td>
                                 {% endif %}
-                            {% else %}
-                            Ainda não avaliado
-                            {% endif %}
-                        </td>
-                        <td>{{object.call_product.balance}} {{object.call_product.product.unit}}</td>
-                        {% if order.status != 'pending' %}
-                        <td>{{ object.status }}</td>   
-                        {% else %}
-                        <td>-------</td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
+                            </tr>
+                        {% endfor %}
 
-            </tbody>
-        </table>
-    </div>
+                    </tbody>
+                </table>
+            </div>
 
-    <div>
-        {% if order.status == 'approved' %}
-            Ao receber seu pedido, confirme a entrega. <a href="{% url 'order-delivered' order.pk %}" class='btn btn-success btn-sm'>Confirmar entrega</a>
-        {% endif %}  
-    </div>
-</div>
+            <div>
+                {% if order.status == 'approved' %}
+                    Ao receber seu pedido, confirme a entrega. <a href="{% url 'order-delivered' order.pk %}" class='btn btn-success btn-sm'>Confirmar entrega</a>
+                {% endif %}  
+            </div>
+        </div>
+    {% include 'partials/sidebar_template_2.html' %}
 
 {% endblock content %}

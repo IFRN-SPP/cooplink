@@ -2,54 +2,57 @@
 {% load static %}
 {% block title %}Chamada {% endblock title %}
 {% block content %}
-<div class="container justify-content-center">
-  <h1>Chamada {{call.number}}</h1>
 
-  {% if user.is_staff %}
-    <hr>
-      <a href="{% url "call-list"  %}"  class="btn btn-info btn-sm ">Chamadas</a>
-      <a href="{% url "update-call" call.pk %}" class="btn btn-warning btn-sm ">Editar Chamada</a>
-    <hr>
-  {% endif %}
+{% include 'partials/sidebar_template_1.html' %}
+  <div class="container justify-content-center">
+    <h1>Chamada {{call.number}}</h1>
 
-  <p>Instituição: {{call.institution}}</p>
-  <p>Inicio: {{call.start}}</p>
-  <p>Termino: {{call.end}}</p>
+    {% if user.is_staff %}
+      <hr>
+        <a href="{% url "call-list"  %}"  class="btn btn-info btn-sm ">Chamadas</a>
+        <a href="{% url "update-call" call.pk %}" class="btn btn-warning btn-sm ">Editar Chamada</a>
+      <hr>
+    {% endif %}
 
-  {% if user.is_staff %}
-    <a href="{% url "update-call-product" call.pk %}" class="btn btn-warning btn-sm">Editar Produtos</a>
-  {% endif %}
-  
-  
-  <table class="table table-striped">
-    <thead>
-      <th>Produto</th>
-      <th>Saldo</th>
-      <th>Unidade</th>
-      <th>Preço</th>
-      {% if user.is_staff %}
-        <th>Deletar?</th>
-      {% endif %}
+    <p>Instituição: {{call.institution}}</p>
+    <p>Inicio: {{call.start}}</p>
+    <p>Termino: {{call.end}}</p>
+
+    {% if user.is_staff %}
+      <a href="{% url "update-call-product" call.pk %}" class="btn btn-warning btn-sm">Editar Produtos</a>
+    {% endif %}
     
-    </thead>
-    <tbody>
-  {% for product in products %}
-      <tr>
-        <td>{{product.product}}</td>
-        <td>{{product.balance}}</td>
-        <td>{{product.product.unit}}</td>
-        <td>{{product.price}}</td>
+    
+    <table class="table table-striped">
+      <thead>
+        <th>Produto</th>
+        <th>Saldo</th>
+        <th>Unidade</th>
+        <th>Preço</th>
         {% if user.is_staff %}
-          <td>
-            <a href="{% url 'delete-call-product' product.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
-          </td>
+          <th>Deletar?</th>
         {% endif %}
-        
-      </tr>
-  {% endfor %}
-    </tbody>
-  </table>
+      
+      </thead>
+      <tbody>
+    {% for product in products %}
+        <tr>
+          <td>{{product.product}}</td>
+          <td>{{product.balance}}</td>
+          <td>{{product.product.unit}}</td>
+          <td>{{product.price}}</td>
+          {% if user.is_staff %}
+            <td>
+              <a href="{% url 'delete-call-product' product.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
+            </td>
+          {% endif %}
+          
+        </tr>
+    {% endfor %}
+      </tbody>
+    </table>
 
-</div>
+  </div>
+{% include 'partials/sidebar_template_2.html' %}
 
 {% endblock %}

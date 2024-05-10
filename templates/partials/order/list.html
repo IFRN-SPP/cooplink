@@ -1,40 +1,58 @@
 {% for object in orders %}
-<tr>
+  <tr>
     <td>{{ object.pk }}</td>
     {% if user.is_staff %}
-    <td>{{ object.institution }}</td>
+      <td>{{ object.institution }}</td>
     {% endif %}
     <td>{{ object.user }}</td>
-    <td>{{object.status}}</td>
+    <td>{{ object.status }}</td>
     <td>{{ object.timestamp }}</td>
 
     <td>
-      <a href="{% url 'detail-order' object.pk %}" class="btn btn-primary btn-sm">Detalhar</a>
-      
-      {% if object.status == 'pending' %}
+      <!-- Dropdown menu -->
+      <div class="dropdown">
+        <button class="btn btn-success" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></button>
 
-        {% if object.user == user %}
-          <a href="{% url "update-ordered-product" object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar pedido</a>
-          <a data-url="{% url "js-delete-order" object.pk %}" class="js-delete btn btn-danger btn-sm" title="Excluir">x</a>
-        {% endif %}
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item" href="{% url 'detail-order' object.pk %}"><i class="bi bi-eye-fill"></i> Detalhar</a>
+          </li>
 
-        {% if user.is_staff %}
-          <a href="{% url 'evaluate-order' object.pk %}" class='btn btn-info btn-sm'>Avaliar pedido</a>
-        {% endif %}
+          {% if object.status == 'pending' %}
+            {% if object.user == user %}
+              <li>
+                <a class="js-delete dropdown-item" data-url="{% url 'js-delete-order' object.pk %}"><i class="bi bi-trash3-fill"></i> Excluir</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{% url 'update-ordered-product' object.pk %}" title="Editar"><i class="bi bi-pencil-fill"></i> Editar pedido</a>
+              </li>
+            {% endif %}
 
-      {% endif %}
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
 
-      <!-- admin ter o direito de deletar um pedido que foi negado -->
-      {% if object.status == 'denied' %}
-        {% if user.is_staff %}
-          <a data-url="{% url "js-delete-order" object.pk %}" class="js-delete btn btn-danger btn-sm" title="Excluir">x</a>
-        {% endif %} 
-      {% endif %}
+            {% if user.is_staff %}
+              <li>
+                <a class="dropdown-item" href="{% url 'evaluate-order' object.pk %}"><i class="bi bi-star-fill"></i> Avaliar</a>
+              </li>
+            {% endif %}
+          {% endif %}
 
+          <!-- admin ter o direito de deletar um pedido que foi negado -->
+          {% if object.status == 'denied' %}
+            {% if user.is_staff %}
+              <li>
+                <a class="js-delete dropdown-item" data-url="{% url 'js-delete-order' object.pk %}"><i class="bi bi-trash3-fill"></i> Excluir</a>
+              </li>
+            {% endif %}
+          {% endif %}
+        </ul>
+      </div>
     </td>
-</tr>
+  </tr>
 {% empty %}
   <tr>
-      <td colspan="4">Nenhum pedido até o momento</td>
+    <td colspan="4">Nenhum pedido até o momento</td>
   </tr>
 {% endfor %}

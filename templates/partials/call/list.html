@@ -1,35 +1,57 @@
 {% for object in calls %}
-
-<tr>
+  <tr>
     <td>{{ object.number }}</td>
-    
+
     {% if user.is_staff %}
-        <td>{{ object.institution }}</td>
+      <td>{{ object.institution }}</td>
     {% endif %}
     <td>{{ object.start }}</td>
     <td>{{ object.end }}</td>
 
     <td>
-    {% if object.active %}
+      {% if object.active %}
         <div class="badge text-bg-success">ATIVA</div>
-    {% else %}
+      {% else %}
         <div class="badge text-bg-warning">INATIVA</div>
-    {% endif %}
-    </td>
-
-    <td>
-      <a href="{% url "detail-call" object.pk %}" class="btn btn-primary btn-sm" title="Detalhar">Detalhar</a>
-      {% if user.is_staff %}
-        <a href="{% url 'update-call' object.pk %}" class="btn btn-warning btn-sm" title="Editar">E</a>
-        <a href="{% url 'update-call-product' object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar produtos</a>                                
-        <a href="{% url 'update-call-active' object.pk %}" class="btn btn-info btn-sm" title="Alterar Situação">Situação</a>
-        <a data-url="{% url 'js-delete-call' object.pk %}" class="js-delete btn btn-danger btn-sm" title="Excluir">x</a>
       {% endif %}
     </td>
 
-</tr>
+    <td>
+      <!-- Dropdown menu -->
+      <div class="dropdown">
+        <button class="btn btn-success" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></button>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="{% url 'detail-call' object.pk %}" class="dropdown-item" title="Detalhar"><i class="bi bi-eye-fill"></i> Detalhar</a>
+          </li>
+
+          {% if user.is_staff %}
+            <li>
+              <a class="dropdown-item" href="{% url 'update-call' object.pk %}" title="Editar"><i class="bi bi-pencil-fill"></i> Editar chamada</a>
+            </li>
+
+            <li>
+              <a class="dropdown-item" href="{% url 'update-call-product' object.pk %}" title="Editar"><i class="bi bi-pencil-fill"></i> Editar produtos</a>
+            </li>
+
+            <li>
+              <a class="dropdown-item" href="{% url 'update-call-active' object.pk %}" title="Alterar Situação"><i class="bi bi-arrow-repeat"></i> Alterar situação</a>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+
+            <li>
+              <a data-url="{% url 'js-delete-call' object.pk %}" class="js-delete dropdown-item" title="Excluir"><i class="bi bi-trash3-fill"></i> Excluir</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </td>
+  </tr>
 {% empty %}
-<tr>
+  <tr>
     <td colspan="6">Nenhuma chamada até o momento</td>
-</tr>
+  </tr>
 {% endfor %}

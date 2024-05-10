@@ -1,73 +1,51 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load ajax_tags %}
-{% block title %}Pedidos{% endblock title %}
+{% block title %}
+  Pedidos
+{% endblock %}
 {% block content %}
-    
-{% include "partials/modal-form.html" %}
+  {% include 'partials/modal-form.html' %}
 
-<div class="wrapper">
-    <!-- Sidebar -->
-    {% include "partials/sidebar.html" %}
+  {% include 'partials/sidebar_template_1.html' %}
+    <div class="container justify-content-center table-background">
+      <div class="content-header d-flex justify-content-between">
+        <h3 class="poppins-bold">Pedidos</h3>
+        <div>
+          {% if user.is_staff %}
+            <a href="{% url 'create-order-admin' %}" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i> Novo pedido</a>
+            <a href="{% url 'week-relatory' %}" class="btn btn-warning btn-sm" target="_blank"><i class="bi bi-newspaper"></i> Relátorio Semanal</a>
+          {% else %}
+            <a href="{% url 'create-order' %}" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i> Novo pedido</a>
+          {% endif %}
+        </div>
+      </div>
 
-    <!-- Main Component -->
-    <div class="main">
-        <nav class="navbar navbar-expand px-3 border-bottom d-flex justify-content-between">
-            <!-- Button for sidebar toggle -->
-            <button class="btn" type="button" data-bs-theme="dark">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+      <div class="table-responsive">
+        <table id="{% table_id %}" class="table table-striped mt-4">
+          <thead>
+            <tr>
+              <th>N°</th>
+              {% if user.is_staff %}
+                <th>Instituição</th>
+              {% endif %}
+              <th>User</th>
+              <th>Situação</th>
+              <th>Feito em</th>
+              <th>Opções</th>
+            </tr>
+          </thead>
 
-            <div class="d-flex align-items-baseline">
-                {% if user.is_authenticated %}                    
-                    {{request.user}} - {{request.user.institution}}
-                    
-                    <form class="btn" action="{% url "logout" %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Logout</button>
-                    </form>
-                {% endif %}
-            </div>
-        </nav>
-        <main class="content px-3 py-2">
-            <div class="container justify-content-center">
-                <h1>Pedidos</h1>
-                {% if user.is_staff %}
-                    <a href="{% url 'create-order-admin' %}" class="btn btn-success btn-sm">Cadastrar Pedido</a>
-                    <a href="{% url 'week-relatory' %}" target="_blank">Relátorio Semanal</a>
-                {% else %}
-                    <a href="{% url 'create-order' %}" class="btn btn-success btn-sm">Cadastrar Pedido</a>
-                {% endif %}
-                
-                <div class="table-responsive">
-                    <table id="{% table_id %}" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>N°</th>
-                                {% if user.is_staff %}
-                                <th>Instituição</th>
-                                {% endif %}
-                                <th>User</th>
-                                <th>Situação</th>
-                                <th>Feito em</th>
-                                <th>Opções</th>
-                            </tr>
-                        </thead>
-        
-                        <tbody style="height: 30vh;">
-                            {% include "partials/order/list.html" %}
-                        </tbody>
-                    </table>
-                    
-                    {% include "partials/pagination.html" %}
-        
-                </div>
-            </div>
-        </main>
+          <tbody style="height: 30vh;">
+            {% include 'partials/order/list.html' %}
+          </tbody>
+        </table>
+
+        {% include 'partials/pagination.html' %}
+      </div>
     </div>
-</div>
-
-{% endblock content %}
+  {% include 'partials/sidebar_template_2.html' %}
+{% endblock %}
 {% block script %}
-<script src="{% static 'js/jquery.ajax.js' %}"></script>
-{% endblock script %}
+  <script src="{% static 'js/jquery.ajax.js' %}"></script>
+{% endblock %}

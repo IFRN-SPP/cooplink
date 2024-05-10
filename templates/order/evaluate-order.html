@@ -3,63 +3,67 @@
 {% block title %} Avaliar Pedido {% endblock title %}
 
 {% block content %}
-<div class="container justify-content-center">
-    <h1>Avaliar Pedido {{order.pk}} - {{order.call }}</h1>
-    <p>Autor: {{order.user}}</p>
-    <p>Instituição: {{order.institution}}</p>
-    
-    <form  method='POST' action="{% url 'evaluate-order' order.pk %}" > 
-        {% csrf_token %}
 
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Produto</th>
-                        <th>Quantidade Pedida</th>
-                        <th>Quantidade Disponivel</th>
-                        <th>Saldo Atual da Chamada</th>
-                        <th>Situação</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for object in products %}
-                    <tr>
-                        <td>{{ object.call_product.product }}</td>
-                        <td>{{ object.ordered_quantity }}</td>
-                        <td>
-                            <input type="number" name="product_available_quantity_{{ object.pk }}" id="id_product_available_quantity_{{ object.pk }}" placeholder="Se Parcial, informe..">
-                        </td>
-                        <td>{{ object.call_product.balance }}</td>
-                        <td>
-                            <select name="product_status_{{ object.pk }}">
-                                <option value="available" {% if object.status == available%}selected{% endif %}>Disponivel</option>
-                                <option value="parcial" {% if object.status == parcial %}selected{% endif %}>Parcial</option>
-                                <option value="denied" {% if object.status == denied %}selected{% endif %}>Negado</option>
-                            </select>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+    {% include 'partials/sidebar_template_1.html' %}
+        <div class="container justify-content-center">
+            <h1>Avaliar Pedido {{order.pk}} - {{order.call }}</h1>
+            <p>Autor: {{order.user}}</p>
+            <p>Instituição: {{order.institution}}</p>
+            
+            <form  method='POST' action="{% url 'evaluate-order' order.pk %}" > 
+                {% csrf_token %}
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Quantidade Pedida</th>
+                                <th>Quantidade Disponivel</th>
+                                <th>Saldo Atual da Chamada</th>
+                                <th>Situação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for object in products %}
+                            <tr>
+                                <td>{{ object.call_product.product }}</td>
+                                <td>{{ object.ordered_quantity }}</td>
+                                <td>
+                                    <input type="number" name="product_available_quantity_{{ object.pk }}" id="id_product_available_quantity_{{ object.pk }}" placeholder="Se Parcial, informe..">
+                                </td>
+                                <td>{{ object.call_product.balance }}</td>
+                                <td>
+                                    <select name="product_status_{{ object.pk }}">
+                                        <option value="available" {% if object.status == available%}selected{% endif %}>Disponivel</option>
+                                        <option value="parcial" {% if object.status == parcial %}selected{% endif %}>Parcial</option>
+                                        <option value="denied" {% if object.status == denied %}selected{% endif %}>Negado</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#denied-modal">   
+                    Negar Pedido
+                </button>
+                
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirm-modal">   
+                    Aprovar Pedido
+                </button>
+
+                {% include "partials/modal.html" with modal_id="confirm-modal" modal_title="Negar Pedido" modal_text="<h5>Tem certeza que deseja aprovar esse Pedido?</h5>" btn_text="Confirmar" btn_class="btn-success"%}
+
+            </form>
+            
+            <form action="{% url 'denied-order' order.pk %}" method="post">
+                {% csrf_token %}
+                {% include "partials/modal.html" with modal_id="denied-modal" modal_title="Confirmar Avaliação" modal_text="<h5>Tem certeza que deseja <strong>NEGAR</strong> esse Pedido?</h5>" btn_text="Negar" btn_class="btn-danger"%}
+            </form>
         </div>
+    {% include 'partials/sidebar_template_2.html' %}
 
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#denied-modal">   
-            Negar Pedido
-        </button>
-        
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirm-modal">   
-            Aprovar Pedido
-        </button>
-
-        {% include "partials/modal.html" with modal_id="confirm-modal" modal_title="Negar Pedido" modal_text="<h5>Tem certeza que deseja aprovar esse Pedido?</h5>" btn_text="Confirmar" btn_class="btn-success"%}
-
-    </form>
-    
-    <form action="{% url 'denied-order' order.pk %}" method="post">
-        {% csrf_token %}
-        {% include "partials/modal.html" with modal_id="denied-modal" modal_title="Confirmar Avaliação" modal_text="<h5>Tem certeza que deseja <strong>NEGAR</strong> esse Pedido?</h5>" btn_text="Negar" btn_class="btn-danger"%}
-    </form>
-</div>
 {% endblock content %}
 
