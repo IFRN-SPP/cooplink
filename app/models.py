@@ -9,7 +9,7 @@ class Institution(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     class Meta:
         ordering = ['-id']
 
@@ -19,7 +19,7 @@ class UserProfile(AbstractUser):
 
     def __str__(self):
         return self.username
-    
+
     class Meta:
         ordering = ['-id']
 
@@ -29,11 +29,11 @@ class Call(models.Model):
     institution = models.ForeignKey(Institution, on_delete=models.PROTECT, verbose_name="Instituição")
     start = models.DateField(auto_now=False, auto_now_add=False, verbose_name="Data de Início")
     end = models.DateField(auto_now=False, auto_now_add=False, verbose_name="Data de Término")
-    active = models.BooleanField(default=False, verbose_name="Situção")
+    active = models.BooleanField(default=False, verbose_name="Situação")
 
     def __str__(self):
         return f'Chamada - {self.number}'
-    
+
     def clean(self):
         if self.active:
             active_calls = Call.objects.filter(institution=self.institution, active=True)
@@ -41,11 +41,11 @@ class Call(models.Model):
                 active_calls = active_calls.exclude(pk=self.pk)
             if active_calls.exists():
                 raise ValidationError("Já existe uma chamada ativa para esta instituição.")
-    
+
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)
-    
+
     class Meta:
         ordering = ['-id']
 
@@ -60,7 +60,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     class Meta:
         ordering = ['-id']
 
@@ -73,7 +73,7 @@ class CallProduct(models.Model):
 
     def __str__(self):
         return f'{self.product} {self.price} - {self.call.number}'
-    
+
     class Meta:
         ordering = ['-id']
 
@@ -94,7 +94,7 @@ class Order(models.Model):
 
     def __str__(self):
         return f'Pedido de {self.institution} ({self.call}) feito por {self.user}'
-    
+
     class Meta:
         ordering = ['-timestamp']
 
@@ -117,22 +117,22 @@ class OrderedProduct(models.Model):
 
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='call_products', verbose_name="Pedido")
     call_product = models.ForeignKey(CallProduct, on_delete=models.PROTECT, related_name='order', verbose_name="Produto da Chamada")
-    ordered_quantity = models.IntegerField(default=None, verbose_name="Quant. Pedida") 
+    ordered_quantity = models.IntegerField(default=None, verbose_name="Quant. Pedida")
     available_quantity = models.IntegerField(null=True, blank=True, verbose_name="Quant. Disponível")
-    status = models.CharField(max_length=10, choices=CHOICES, default='available', verbose_name="Situção")
+    status = models.CharField(max_length=10, choices=CHOICES, default='available', verbose_name="Situação")
 
     def __str__(self):
         return f'({self.order}) ({self.call_product}) ({self.ordered_quantity})'
-    
+
     class Meta:
         ordering = ['-id']
-    
+
     @property
     def get_quantity_price(self):
-        quantity_price = None  
+        quantity_price = None
         if self.call_product and (self.ordered_quantity or self.available_quantity):
             price = Decimal(self.call_product.price)
-            quantity = Decimal(self.ordered_quantity) 
+            quantity = Decimal(self.ordered_quantity)
             if self.available_quantity:
                 quantity = Decimal(self.available_quantity)
             quantity_price = price*quantity

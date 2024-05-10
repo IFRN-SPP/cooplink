@@ -1,5 +1,10 @@
 from django.urls import path
-from app.views.product import ProductList, ProductCreate, ProductUpdate, ProductDelete
+from app.views.product import (
+    ProductList,
+    ProductCreate,
+    ProductUpdate,
+    ProductDelete
+)
 
 # Adicione suas URLs aqui
 urlpatterns = [

@@ -7,7 +7,7 @@ from app.utils.decorators import staff_required
 from app.utils.functions import render_to_pdf, get_relatory_orders, calculate_total_products, get_week_end, get_week_start
 from app.models import Order, Call, CallProduct
 
-# Create your views here.
+
 @login_required
 def index(request):
     template_name = 'index.html'
@@ -25,6 +25,7 @@ def index(request):
     context['call'] = call
     context['products'] = products
     return render(request, template_name, context)
+
 
 @login_required
 @staff_required
@@ -56,8 +57,8 @@ def week_relatory(request):
     orders = get_relatory_orders(monday, friday)
     data['orders'] = orders
     total_products = calculate_total_products(orders)
-    data['total_products'] = total_products 
-    
+    data['total_products'] = total_products
+
     if request.method == 'GET':
         pdf = render_to_pdf(template_name, data)
         return HttpResponse(pdf, content_type='application/pdf')

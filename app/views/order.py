@@ -4,7 +4,6 @@ from django.urls import reverse_lazy
 from django.http import HttpResponse, JsonResponse
 
 from django.contrib import messages
-from django.contrib.messages import constants
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -15,6 +14,7 @@ from app.utils.functions import render_to_pdf
 
 from ajax.views import AjaxListView, AjaxDeleteView
 from ajax.utils import is_ajax
+
 
 # CRUD Pedidos
 class OrderList(LoginRequiredMixin, AjaxListView):
@@ -32,7 +32,6 @@ class OrderList(LoginRequiredMixin, AjaxListView):
         return queryset
 
 
-# Create para Admin
 @login_required
 @staff_required
 def OrderCreateAdmin(request):
@@ -42,30 +41,38 @@ def OrderCreateAdmin(request):
     if request.method == 'GET':
         form = OrderForm()
         form_product = OrderedProductFormSet()
-        
-        context['form'] = form 
+
+        context['form'] = form
         context['form_product'] = form_product
         return render(request, template_name, context)
 
     if request.method == 'POST':
-        form = OrderForm(request.POST) 
+        form = OrderForm(request.POST)
         form_product = OrderedProductFormSet(request.POST)
-        context['form'] = form 
+        context['form'] = form
         context['form_product'] = form_product
 
         if form.is_valid() and form_product.is_valid():
             user = request.user
             form.instance.user = user
             order = form.save()
-            form_product.instance = order 
+            form_product.instance = order
             form_product.save()
-            
-            return redirect('order-list') 
-        
-        return render(request, template_name, context)       
 
-# função para atualizar dinamicamente o select de call no form   
+            return redirect('order-list')
+
+        return render(request, template_name, context)
+
 def get_calls(request):
+    """
+    Returns a list of calls for a specific institution.
+
+    Args:
+        request (HttpRequest): The HttpRequest object containing the request data.
+
+    Returns:
+        dict: A dictionary containing the calls in the format {'id': call_id, 'text': call_text}.
+    """
     data = {}
 
     if request.method == 'GET' and is_ajax(request):
@@ -80,30 +87,48 @@ def get_calls(request):
         data['calls'] = calls_dict
 
     else:
-        messages.warning(request, "Algum erro aconteceu") 
+        messages.warning(request, "Algum erro aconteceu")
         return redirect('index')
-    
+
     return JsonResponse(data)
 
-# função para atualizar dinamicamente o select de call_product no form inline  
+
 def get_products(request):
+    """
+    Returns a list of products associated with a specific call.
+
+    Args:
+        request (HttpRequest): The HttpRequest object containing the request data.
+
+    Returns:
+        dict: A dictionary containing the products in the format {'id': product_id, 'text': product_text}.
+    """
     data = {}
 
     if request.method == 'GET' and is_ajax(request):
         call_id = request.GET.get('call_id')
-        
+
         products = CallProduct.objects.filter(call_id=call_id)
         products_dict = [{'id': product.id, 'text': str(product)} for product in products]
         data['products'] = products_dict
-    
+
     else:
         messages.warning(request, "Algum erro aconteceu")
         return redirect('index')
-        
+
     return JsonResponse(data)
-    
-# função para atualizar o saldo do produto
+
+
 def get_balance(request):
+    """
+    Returns the available balance of a specific product.
+
+    Args:
+        request (HttpRequest): The HttpRequest object containing the request data.
+
+    Returns:
+        str: A string representing the available balance of the product.
+    """
     data = {}
 
     if request.method == 'GET' and is_ajax(request):
@@ -114,14 +139,14 @@ def get_balance(request):
 
         balance = f'{call_product.balance} {product.unit}'
         data['balance'] = balance
-    
+
     else:
         messages.warning(request, "Algum erro aconteceu")
         return redirect('index')
 
     return JsonResponse(data)
 
-# Create para Usuário Comum
+
 @login_required
 def OrderCreate(request):
     template_name = 'order/create.html'
@@ -133,12 +158,12 @@ def OrderCreate(request):
     context['call'] = call
 
     if call == None:
-        messages.add_message(request, constants.ERROR, f"{institution} não possui uma Chamada ATIVA para Pedidos.")
+        messages.error(request, f"{institution} não possui uma Chamada ATIVA para Pedidos.")
         return redirect('index')
 
     if request.method == 'GET':
         form_product = OrderedProductFormSet()
-    
+
     if request.method == 'POST':
         form_product = OrderedProductFormSet(request.POST)
         if form_product.is_valid():
@@ -147,13 +172,14 @@ def OrderCreate(request):
                 institution=institution,
                 call=call
             )
-            form_product.instance = order 
+            form_product.instance = order
             form_product.save()
-            
-            return redirect('order-list') 
-        
+
+            return redirect('order-list')
+
     context['form_product'] = form_product
-    return render(request, template_name, context)      
+    return render(request, template_name, context)
+
 
 @login_required
 def OrderDetail(request, pk):
@@ -164,9 +190,9 @@ def OrderDetail(request, pk):
     order = get_object_or_404(Order, pk=pk)
     products = OrderedProduct.objects.filter(order=order)
     institution = get_object_or_404(Institution, pk=order.call.institution.pk)
-    
+
     if (not user.is_staff) and (user.institution != institution):
-        messages.add_message(request, constants.WARNING, "Você não tem acesso a esse Pedido.")
+        messages.warning(request, "Você não tem acesso a esse Pedido.")
         return redirect('order-list')
 
     context['order'] = order
@@ -180,7 +206,6 @@ class OrderDelete(LoginRequiredMixin, AjaxDeleteView):
     success_url = reverse_lazy('order-list')
 
 
-# deleta os produtos dos pedidos
 @login_required
 @order_owner
 @order_evaluated
@@ -196,8 +221,9 @@ def OrderedProductDelete(request, pk):
         ordered_product.delete()
 
         return redirect('detail-order', pk=order.pk)
-        
+
     return render(request, template_name, context)
+
 
 @login_required
 @order_owner
@@ -211,10 +237,10 @@ def OrderedProductUpdate(request, pk):
     if request.method == 'GET':
         products = OrderedProduct.objects.filter(order=order)
         form_product = OrderedProductFormSet(instance=order, queryset=products)
-        
+
         context['order'] = order
         context['form_product'] = form_product
-        
+
         return render(request, template_name, context)
 
     if request.method == 'POST':
@@ -228,8 +254,8 @@ def OrderedProductUpdate(request, pk):
 
             form_product.save()
 
-            return redirect('detail-order', pk=order.pk) 
-        
+            return redirect('detail-order', pk=order.pk)
+
         else:
             context['order'] = order
             context['form'] = form
@@ -248,24 +274,24 @@ def EvaluateOrder(request, pk):
 
     order = get_object_or_404(Order, pk=pk)
     products = OrderedProduct.objects.filter(order=order)
-    
-    if request.method =='GET': 
+
+    if request.method =='GET':
         context['order'] = order
         context['products'] = products
         return render(request, template_name, context)
-    
-    if request.method == 'POST': 
-        for product in products:  
-            form_status = request.POST.get(f'product_status_{product.pk}')  
+
+    if request.method == 'POST':
+        for product in products:
+            form_status = request.POST.get(f'product_status_{product.pk}')
             form_available_quantity = request.POST.get(f'product_available_quantity_{product.pk}')
-            
+
             if form_status:
                 product.status = form_status
 
             product_balance = int(product.call_product.balance)
             if product.status == 'available':
                 if form_available_quantity:
-                    messages.add_message(request, constants.WARNING, f'Se o produto {product.call_product.product} está disponivel, remova a quantidade parcial.')
+                    messages.warning(request, f'Se o produto {product.call_product.product} está disponivel, remova a quantidade parcial.')
                     return redirect('evaluate-order', pk=order.pk)
 
                 product_ordered_quantity = int(product.ordered_quantity)
@@ -273,12 +299,12 @@ def EvaluateOrder(request, pk):
 
             if product.status == 'parcial':
                 if not form_available_quantity:
-                    messages.add_message(request, constants.WARNING, f"Adicione a quantidade parcial disponível ao Produto {product.call_product.product}")
+                    messages.warning(request, f"Adicione a quantidade parcial disponível ao Produto {product.call_product.product}")
                     return redirect('evaluate-order', pk=order.pk)
 
                 product.available_quantity = int(form_available_quantity)
                 product.call_product.balance = product_balance - product.available_quantity
-    
+
             if product.status == 'denied':
                 pass
 
@@ -288,13 +314,14 @@ def EvaluateOrder(request, pk):
         order.status = 'approved'
         order.save()
 
-        messages.add_message(request, constants.SUCCESS, f"Pedido avaliado com sucesso!")
+        messages.success(request, f"Pedido avaliado com sucesso!")
         return redirect('detail-order', pk=order.pk)
+
 
 @login_required
 @staff_required
 @order_evaluated
-def EvaluateOrderDenied(request,pk):
+def EvaluateOrderDenied(request, pk):
     template_name = 'order/denied.html'
     context = {}
 
@@ -304,14 +331,14 @@ def EvaluateOrderDenied(request,pk):
     if request.method == 'POST':
         order.status = 'denied'
         order.save()
-        return redirect('detail-order', pk= order.pk) 
-    
+        return redirect('detail-order', pk=order.pk)
+
     return render(request, template_name, context)
 
 @login_required
 @order_owner
 @confirm_password
-def OrderDelivered(request,pk):
+def OrderDelivered(request, pk):
     template_name = 'order/delivered.html'
     context = {}
 
@@ -321,8 +348,8 @@ def OrderDelivered(request,pk):
     if request.method == 'POST':
         order.status = 'delivered'
         order.save()
-        return redirect('detail-order', pk= order.pk) 
-    
+        return redirect('detail-order', pk=order.pk)
+
     return render(request, template_name, context)
 
 @login_required

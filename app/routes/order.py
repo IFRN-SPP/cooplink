@@ -1,10 +1,10 @@
 from django.urls import path
 from app.views.order import (
-  OrderList, 
-  OrderCreate, 
-  OrderCreateAdmin, 
-  OrderDetail, 
-  OrderDelete, 
+  OrderList,
+  OrderCreate,
+  OrderCreateAdmin,
+  OrderDetail,
+  OrderDelete,
   OrderedProductDelete,
   OrderedProductUpdate,
   EvaluateOrder,

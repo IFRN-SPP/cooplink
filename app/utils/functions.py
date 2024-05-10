@@ -7,6 +7,7 @@ from xhtml2pdf import pisa
 
 from app.models import Order
 
+
 def render_to_pdf(template_name, context_dict={}):
     """
     Renders an HTML template to a PDF file.
@@ -56,7 +57,7 @@ def get_week_end(monday):
     friday = monday + timedelta(days=4)
     end_of_week = timezone.make_aware(datetime.combine(friday, datetime.max.time()))
     return end_of_week
-    
+
 
 def get_relatory_orders(week_start, week_end):
     """
@@ -72,7 +73,7 @@ def get_relatory_orders(week_start, week_end):
     orders = Order.objects.filter(
         timestamp__gte=week_start,
         timestamp__lt=week_end,
-        status='approved' or 'delived',
+        status='approved' or 'delivered',
     )
     return orders
 
@@ -89,16 +90,16 @@ def calculate_total_products(orders):
     """
     total_products = {}
     for order in orders:
-        if (order.status == 'approved') or (order.status == 'delived'):   
+        if (order.status == 'approved') or (order.status == 'delivered'):
             for ordered_product in order.call_products.all():
                 product_name = ordered_product.call_product.product.name
-                product_unit = ordered_product.call_product.product.unit  
-                if ordered_product.status == 'available':   
+                product_unit = ordered_product.call_product.product.unit
+                if ordered_product.status == 'available':
                     ordered_quantity = ordered_product.ordered_quantity
-                elif ordered_product.status == 'parcial':   
+                elif ordered_product.status == 'parcial':
                     ordered_quantity = ordered_product.available_quantity
                 else:
-                    continue  
+                    continue
 
                 if product_name in total_products:
                     total_products[product_name]['quantity'] += ordered_quantity

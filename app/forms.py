@@ -7,85 +7,92 @@ from django.utils import timezone
 
 from .models import *
 
+
 class InstitutionForm(forms.ModelForm):
     class Meta:
         model = Institution
         fields = ("__all__")
+
 
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ("__all__")
 
+
 class CallForm(forms.ModelForm):
     class Meta:
         model = Call
         fields = ("__all__")
-    
+
     def clean(self):
         cleaned_data = super().clean()
         start_date = cleaned_data.get("start")
         end_date = cleaned_data.get("end")
         current_date = timezone.now().date()
-        
         if start_date and end_date:
-            #se  data de inicio for maior ou igual a de fim = erro
             if start_date >= end_date:
                 raise forms.ValidationError("A data de início deve ser anterior à data de término.")
-            # se data final é menor ou igual a atual = erro
             elif end_date <= current_date:
                 current_date_formatted = current_date.strftime('%d/%m/%Y')
                 raise forms.ValidationError(f'A data de término deve ser maior que a data atual: {current_date_formatted}')
         return cleaned_data
+
 
 class CallActiveForm(forms.ModelForm):
     class Meta:
         model = Call
         fields = ("active",)
 
+
 class CallProductForm(forms.ModelForm):
     class Meta:
         model = CallProduct
         fields = ("__all__")
 
-# Inline formset dos call product
+
 CallProductFormSet = inlineformset_factory(
-    Call, CallProduct, form=CallProductForm, 
+    Call, CallProduct, form=CallProductForm,
     extra=1, can_delete=True, can_delete_extra=True
 )
+
 
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ("institution", "call",)
 
+
 class OrderedProductForm(forms.ModelForm):
     class Meta:
         model = OrderedProduct
         fields= ("call_product", "ordered_quantity",)
+
 
 OrderedProductFormSet = inlineformset_factory(
     Order, OrderedProduct, form = OrderedProductForm,
     extra=1, can_delete=True, can_delete_extra=True
 )
 
+
 class UserCreateForm(UserCreationForm):
     class Meta:
         model = UserProfile
         fields = UserCreationForm.Meta.fields + ("first_name", "institution",)
+
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ("username", "first_name", "institution")
 
-# Form de Permissão
+
 class PermissionForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ("is_staff",)
 
-# Form de Confirmação de Senha
+
 class ConfirmPasswordForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput())
 
@@ -105,5 +112,4 @@ class ConfirmPasswordForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-    
 

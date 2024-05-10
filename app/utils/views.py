@@ -4,7 +4,7 @@ from app.forms import ConfirmPasswordForm
 # View de confirmação de Senha
 class ConfirmPasswordView(UpdateView):
     """
-    View for confirm passwoard.
+    View for confirm password.
     """
     form_class = ConfirmPasswordForm
     template_name = 'registration/confirm-password.html'
