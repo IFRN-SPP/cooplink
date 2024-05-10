@@ -134,10 +134,13 @@ def get_balance(request):
     if request.method == 'GET' and is_ajax(request):
         product_id = request.GET.get('product_id')
 
-        call_product = CallProduct.objects.get(id=product_id)
-        product = Product.objects.get(id=call_product.product.id)
+        if product_id == '':
+            balance = None
+        else:
+            call_product = CallProduct.objects.get(id=product_id)
+            product = Product.objects.get(id=call_product.product.id)
+            balance = f'{call_product.balance} {product.unit}'
 
-        balance = f'{call_product.balance} {product.unit}'
         data['balance'] = balance
 
     else:
