@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
+from crispy_forms.helper import FormHelper
 
 from django.contrib.auth.hashers import check_password
 from django.utils import timezone
@@ -50,6 +51,11 @@ class CallProductForm(forms.ModelForm):
         model = CallProduct
         fields = ("__all__")
 
+    def __init__(self, *args, **kwargs):
+        super(OrderedProductForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
+
 
 CallProductFormSet = inlineformset_factory(
     Call, CallProduct, form=CallProductForm,
@@ -67,6 +73,11 @@ class OrderedProductForm(forms.ModelForm):
     class Meta:
         model = OrderedProduct
         fields= ("call_product", "ordered_quantity",)
+
+    def __init__(self, *args, **kwargs):
+        super(OrderedProductForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
 
 
 OrderedProductFormSet = inlineformset_factory(
