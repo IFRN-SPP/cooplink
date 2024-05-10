@@ -6,28 +6,55 @@
 
 {% include "partials/modal-form.html" %}
 
-<div class="container justify-content-center">
+<div class="wrapper">
+  <!-- Sidebar -->
+  {% include "partials/sidebar.html" %}
 
-  <h1>Instituições</h1>
-  <a href="{% url 'index' %}">index</a>
-  <br>
-  <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-institution' %}">Cadastrar Instituição</button>
-  
-  <table id="{% table_id %}" class="table ">
-    <thead>
-      <th>PK</th>
-      <th>Nome</th>
-      <th>CNPJ</th>
-    </thead>
-    <tbody style="height: 50vh;">
-      {% include 'partials/institution/list.html' %}
-    </tbody>
-  </table>
+  <!-- Main Component -->
+  <div class="main">
+    <nav class="navbar navbar-expand px-3 border-bottom d-flex justify-content-between">
+        <!-- Button for sidebar toggle -->
+        <button class="btn" type="button" data-bs-theme="dark">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-  {% include "partials/pagination.html" %}
+        <div class="d-flex align-items-baseline">
+            {% if user.is_authenticated %}                    
+                {{request.user}} - {{request.user.institution}}
+                
+                <form class="btn" action="{% url "logout" %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Logout</button>
+                </form>
+            {% endif %}
+        </div>
+    </nav>
+    
+    <main class="content px-3 py-2">
+      <div class="container justify-content-center">
 
+        <h1>Instituições</h1>
+        <a href="{% url 'index' %}">index</a>
+        <br>
+        <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-institution' %}">Cadastrar Instituição</button>
+        
+        <table id="{% table_id %}" class="table ">
+          <thead>
+            <th>PK</th>
+            <th>Nome</th>
+            <th>CNPJ</th>
+          </thead>
+          <tbody style="height: 50vh;">
+            {% include 'partials/institution/list.html' %}
+          </tbody>
+        </table>
+
+        {% include "partials/pagination.html" %}
+
+      </div>
+    </main>
+  </div>
 </div>
-
 {% endblock content %}
 {% block script %}
 <script src="{% static 'js/jquery.ajax.js' %}"></script>

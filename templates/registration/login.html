@@ -5,11 +5,21 @@
 
 {% block content %}
 <div class="container">
-  <h3>LOGIN</h3>
-  <form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-success " type="submit">Entrar</button>
-  </form>
+  <div class="form-background mt-5">
+      <div class="content-header d-flex align-items-baseline justify-content-between">
+          <h3 class="poppins-bold">LOGIN</h3>
+          <h3 class="text-secondary poppins-bold">COOPPOTENGI</h3>
+      </div>
+
+      <hr class="divider">
+     
+      <form action="#" method="post">
+          <div class="d-flex flex-column">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <button type="submit" class="btn btn-success mt-3">ENTRAR</button>
+          </div>
+      </form>
+  </div>
 </div>
 {% endblock content %}

@@ -1,34 +1,57 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load ajax_tags %}
-{% block title %}Produtos{% endblock title %}
+{% block title %}
+  Produtos
+{% endblock %}
 {% block content %}
+  {% include 'partials/modal-form.html' %}
 
-{% include "partials/modal-form.html" %}
+  <div class="wrapper">
+    <!-- Sidebar -->
+    {% include 'partials/sidebar.html' %}
 
-<div class="container justify-content-center">
+    <!-- Main Component -->
+    <div class="main">
+      <nav class="navbar navbar-expand px-3 border-bottom d-flex justify-content-between">
+        <!-- Button for sidebar toggle -->
+        <button class="btn" type="button" data-bs-theme="dark"><span class="navbar-toggler-icon"></span></button>
 
-  <h1>Produtos</h1>
-  <a href="{% url 'index' %}">index</a>
-  <br>
-  <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-product' %}">Cadastrar Produto</button>
-  
-  <table id="{% table_id %}" class="table">
-    <thead>
-      <th>PK</th>
-      <th>Nome</th>
-      <th>Unidade</th>
-    </thead>
-    <tbody style="height: 50vh;">
-      {% include 'partials/product/list.html' %}
-    </tbody>
-  </table>
+        <div class="d-flex align-items-baseline">
+          {% if user.is_authenticated %}
+            {{ request.user }} - {{ request.user.institution }}
 
-  {% include "partials/pagination.html" %}
+            <form class="btn" action="{% url 'logout' %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
+          {% endif %}
+        </div>
+      </nav>
+      <main class="content px-3 py-2">
+        <div class="container justify-content-center">
+          <h1>Produtos</h1>
+          <a href="{% url 'index' %}">index</a>
+          <br />
+          <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-product' %}">Cadastrar Produto</button>
 
-</div>
+          <table id="{% table_id %}" class="table">
+            <thead>
+              <th>PK</th>
+              <th>Nome</th>
+              <th>Unidade</th>
+            </thead>
+            <tbody style="height: 50vh;">
+              {% include 'partials/product/list.html' %}
+            </tbody>
+          </table>
 
-{% endblock content %}
+          {% include 'partials/pagination.html' %}
+        </div>
+      </main>
+    </div>
+  </div>
+{% endblock %}
 {% block script %}
-<script src="{% static 'js/jquery.ajax.js' %}"></script>
-{% endblock script %}
+  <script src="{% static 'js/jquery.ajax.js' %}"></script>
+{% endblock %}

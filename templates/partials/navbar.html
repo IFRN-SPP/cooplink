@@ -8,8 +8,13 @@
   <a href="{% url 'order-list'%}">Pedidos</a>
   
   {% if user.is_authenticated %}
-  <a href="{% url 'index' %}">Inicio</a>
-  {{request.user}} - {{request.user.institution}}
-  <form class="btn" action="{% url "logout" %}" method="post">{% csrf_token %}<button type="submit">Logout</button></form>
+    <a href="{% url 'index' %}">Inicio</a>
+    
+    {{request.user}} - {{request.user.institution}}
+
+    <form class="btn" action="{% url "logout" %}" method="post">
+      {% csrf_token %}
+      <button type="submit">Logout</button>
+    </form>
   {% endif %}
 </div>

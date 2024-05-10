@@ -1,38 +1,63 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load ajax_tags %}
-{% block title %}Usuários{% endblock title %}
+
+{% block title %}
+  Usuários
+{% endblock %}
 {% block content %}
+  {% include 'partials/modal-form.html' %}
 
-{% include "partials/modal-form.html" %}
+  <div class="wrapper">
+    <!-- Sidebar -->
+    {% include 'partials/sidebar.html' %}
 
-<div class="container justify-content-center">
+    <!-- Main Component -->
+    <div class="main">
+      <nav class="navbar navbar-expand px-3 border-bottom d-flex justify-content-between">
+        <!-- Button for sidebar toggle -->
+        <button class="btn" type="button" data-bs-theme="dark"><span class="navbar-toggler-icon"></span></button>
 
-  <h1>Usuários</h1>
-  <a href="{% url 'index' %}">index</a>
-  <br>
-  <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-user' %}">Cadastrar Usuário</button>
-  <br>
-  
-  <table id="{% table_id %}"  class="table">
-    <thead>
-      <th>PK</th>
-      <th>Username</th>
-      <th>Nome</th>
-      <th>Instituição</th>
-      <th>Ativo</th>
-      <th>Administrador</th>
-    </thead>
-    <tbody style="height: 50vh;">
-      {% include 'partials/user/list.html' %}
-    </tbody>
-  </table>
+        <div class="d-flex align-items-baseline">
+          {% if user.is_authenticated %}
+            {{ request.user }} - {{ request.user.institution }}
 
-  {% include "partials/pagination.html" %}
+            <form class="btn" action="{% url 'logout' %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
+          {% endif %}
+        </div>
+      </nav>
+      <main class="content px-3 py-2">
+        <div class="container justify-content-center">
+          <h1>Usuários</h1>
+          <a href="{% url 'index' %}">index</a>
+          <br />
+          <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-user' %}">Cadastrar Usuário</button>
+          <br />
 
-</div>
+          <table id="{% table_id %}" class="table">
+            <thead>
+              <th>PK</th>
+              <th>Username</th>
+              <th>Nome</th>
+              <th>Instituição</th>
+              <th>Ativo</th>
+              <th>Administrador</th>
+            </thead>
+            <tbody style="height: 50vh;">
+              {% include 'partials/user/list.html' %}
+            </tbody>
+          </table>
 
-{% endblock content %}
+          {% include 'partials/pagination.html' %}
+        </div>
+      </main>
+    </div>
+  </div>
+{% endblock %}
+
 {% block script %}
-<script src="{% static 'js/jquery.ajax.js' %}"></script>
-{% endblock script %}
+  <script src="{% static 'js/jquery.ajax.js' %}"></script>
+{% endblock %}
