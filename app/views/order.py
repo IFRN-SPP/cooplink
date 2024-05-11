@@ -191,7 +191,6 @@ def OrderDetail(request, pk):
     user = request.user
 
     order = get_object_or_404(Order, pk=pk)
-    products = OrderedProduct.objects.filter(order=order)
     institution = get_object_or_404(Institution, pk=order.call.institution.pk)
 
     if (not user.is_staff) and (user.institution != institution):
@@ -199,7 +198,6 @@ def OrderDetail(request, pk):
         return redirect('order-list')
 
     context['order'] = order
-    context['products'] = products
     return render(request,template_name, context)
 
 # Delete de Pedido
@@ -238,8 +236,7 @@ def OrderedProductUpdate(request, pk):
     order = get_object_or_404(Order, pk=pk)
 
     if request.method == 'GET':
-        products = OrderedProduct.objects.filter(order=order)
-        form_product = OrderedProductFormSet(instance=order, queryset=products)
+        form_product = OrderedProductFormSet(instance=order, queryset=order.products)
 
         context['order'] = order
         context['form_product'] = form_product
@@ -274,17 +271,14 @@ def OrderedProductUpdate(request, pk):
 def EvaluateOrder(request, pk):
     template_name = 'order/evaluate-order.html'
     context = {}
-
     order = get_object_or_404(Order, pk=pk)
-    products = OrderedProduct.objects.filter(order=order)
 
     if request.method =='GET':
         context['order'] = order
-        context['products'] = products
         return render(request, template_name, context)
 
     if request.method == 'POST':
-        for product in products:
+        for product in order.products:
             form_status = request.POST.get(f'product_status_{product.pk}')
             form_available_quantity = request.POST.get(f'product_available_quantity_{product.pk}')
 
@@ -361,14 +355,12 @@ def OrderReport(request, pk):
     template_name = "pdf/order-report.html"
     data = {}
     order = get_object_or_404(Order, pk=pk)
-    products = OrderedProduct.objects.filter(order=order)
 
     if not order.status == ('approved' or 'delivered'):
         messages.warning(request, "Não é possível gerar o relatório de um Pedido que não foi aprovado ou entregue")
         return redirect('detail-order', pk)
 
     data['order'] = order
-    data['products'] = products
     today = timezone.now().date()
     data['today'] = today
 

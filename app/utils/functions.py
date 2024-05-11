@@ -73,7 +73,7 @@ def get_report_orders(week_start, week_end):
     orders = Order.objects.filter(
         timestamp__gte=week_start,
         timestamp__lt=week_end,
-        status='approved' or 'delivered',
+        status__in=('approved', 'delivered')
     )
     return orders
 

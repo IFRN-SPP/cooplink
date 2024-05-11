@@ -107,8 +107,7 @@ def CallProductUpdate(request, pk):
     context['call'] = call
 
     if request.method == 'GET':
-        products = CallProduct.objects.filter(call=call)
-        form_product = CallProductFormSet(instance=call, queryset=products)
+        form_product = CallProductFormSet(instance=call, queryset=call.products)
         context['form_product'] = form_product
 
     if request.method == 'POST':
@@ -133,7 +132,6 @@ def CallDetail(request, pk):
     user = request.user
 
     call = get_object_or_404(Call, pk=pk)
-    products = CallProduct.objects.filter(call=call)
     institution = get_object_or_404(Institution, pk=call.institution.pk)
 
     if (not user.is_staff) and (institution != user.institution):
@@ -141,7 +139,6 @@ def CallDetail(request, pk):
         return redirect('index')
 
     context['call'] = call
-    context['products'] = products
     return render(request, template_name, context)
 
 

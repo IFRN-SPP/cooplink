@@ -13,6 +13,18 @@ class Institution(models.Model):
     class Meta:
         ordering = ['-id']
 
+    @property
+    def users(self):
+        if self.id:
+            users = UserProfile.objects.filter(institution=self.id)
+            return users
+
+    @property
+    def calls(self):
+        if self.id:
+            calls = Call.objects.filter(institution=self.id)
+            return calls
+
 
 class UserProfile(AbstractUser):
     institution = models.ForeignKey(Institution, on_delete=models.PROTECT, null=True, verbose_name="Instituição")
@@ -49,6 +61,11 @@ class Call(models.Model):
     class Meta:
         ordering = ['-id']
 
+    @property
+    def products(self):
+        if self.id:
+            products = CallProduct.objects.filter(call=self.id)
+            return products
 
 class Product(models.Model):
     CHOICES = [
@@ -66,10 +83,10 @@ class Product(models.Model):
 
 
 class CallProduct(models.Model):
-    call = models.ForeignKey(Call, on_delete=models.CASCADE, related_name='products', verbose_name="Chamada")
+    call = models.ForeignKey(Call, on_delete=models.CASCADE, related_name='product', verbose_name="Chamada")
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='call', verbose_name="Produto")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Preço")
-    balance = models.IntegerField(default=None, verbose_name="Saldo")
+    balance = models.DecimalField(max_digits=4, decimal_places=1, verbose_name="Saldo")
 
     def __str__(self):
         return f'{self.product} {self.price} - {self.call.number}'
@@ -99,13 +116,28 @@ class Order(models.Model):
         ordering = ['-timestamp']
 
     @property
-    def get_total_price(self):
-        total_price = Decimal(0)
+    def products(self):
         if self.id:
             products = OrderedProduct.objects.filter(order=self.id)
+            return products
+
+    @property
+    def available_products(self):
+        if (self.status == 'approved') or (self.status == 'delivered') :
+            products = OrderedProduct.objects.filter(
+                order=self,
+                status__in=('parcial', 'available')
+            )
+            return products
+
+    @property
+    def get_total_price(self):
+        total_price = 0.0
+        if self.id:
+            products = self.available_products
             for product in products:
-                total_price += product.get_quantity_price
-        return total_price or None
+                total_price += float(product.get_quantity_price.replace(',', '.'))
+        return "{:.2f}".format(total_price).replace('.', ',') if total_price else None
 
 
 class OrderedProduct(models.Model):
@@ -117,8 +149,8 @@ class OrderedProduct(models.Model):
 
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='call_products', verbose_name="Pedido")
     call_product = models.ForeignKey(CallProduct, on_delete=models.PROTECT, related_name='order', verbose_name="Produto da Chamada")
-    ordered_quantity = models.IntegerField(default=None, verbose_name="Quant. Pedida")
-    available_quantity = models.IntegerField(null=True, blank=True, verbose_name="Quant. Disponível")
+    ordered_quantity = models.DecimalField(max_digits=4, decimal_places=1, verbose_name="Quant. Pedida")
+    available_quantity = models.DecimalField(max_digits=4, decimal_places=1, null=True, blank=True, verbose_name="Quant. Disponível")
     status = models.CharField(max_length=10, choices=CHOICES, default='available', verbose_name="Situação")
 
     def __str__(self):
@@ -131,9 +163,9 @@ class OrderedProduct(models.Model):
     def get_quantity_price(self):
         quantity_price = None
         if self.call_product and (self.ordered_quantity or self.available_quantity):
-            price = Decimal(self.call_product.price)
-            quantity = Decimal(self.ordered_quantity)
+            price = float(self.call_product.price)
+            quantity = float(self.ordered_quantity)
             if self.available_quantity:
-                quantity = Decimal(self.available_quantity)
+                quantity = float(self.available_quantity)
             quantity_price = price*quantity
-        return quantity_price
+        return "{:.2f}".format(quantity_price).replace('.', ',') if quantity_price is not None else None

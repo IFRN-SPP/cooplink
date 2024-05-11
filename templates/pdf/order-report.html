@@ -7,7 +7,7 @@
           left: 50pt; width: 512pt; top: 20pt; height: 40pt;
       }
       @frame content_frame {          /* Content Frame */
-          left: 50pt; width: 512pt; top: 60pt; height: 832pt;
+          left: 50pt; width: 492pt; top: 60pt; height: 862pt;
       }
       @frame footer_frame {           /* Another static Frame */
           -pdf-frame-content: footer_content;
@@ -38,12 +38,7 @@
       <header id="header_content">
         {% include "pdf/header.html" %}
       </header>
-  
-      {% comment %} <!-- Content for Static Frame 'footer_frame' -->
-      <div id="footer_content">Página <pdf:pagenumber>
-          de <pdf:pagecount>
-      </div> {% endcomment %}
-  
+
       <!-- HTML Content -->
       <div style="border: 1.5px solid #000;  line-height: 27px; text-align: center;">
         <h1 style="font-size: 16px; font-weight: 600; padding: 10px 10px 0 10px;">
@@ -75,22 +70,18 @@
             </tr>
           </thead>
           <tbody>
-            {% for ordered_product in order.call_products.all %}
+            {% for ordered_product in order.available_products %}
             <tr>
               <td width="50px">{{forloop.counter}}</td>
               <td width="170px">{{ordered_product.call_product.product.name}}</td>
               <td>{{ordered_product.call_product.product.unit}}</td>
-              {% if not ordered_product.status == 'denied' %}
                 {% if ordered_product.status == 'available' %}
                   <td>{{ ordered_product.ordered_quantity}} </td>
-                  <td>{{ordered_product.call_product.price}}</td>
-                  <td>{{ ordered_product.get_quantity_price}} </td>
                 {% elif ordered_product.status == 'parcial' %}
                   <td>{{ ordered_product.available_quantity}} </td>
-                  <td>{{ordered_product.call_product.price}}</td>
-                  <td>{{ ordered_product.get_quantity_price}} </td>
                 {% endif %}
-              {% endif %}
+              <td>{{ordered_product.call_product.price}}</td>
+              <td>{{ ordered_product.get_quantity_price}} </td>
             </tr>
             {% endfor %}
             <tr>

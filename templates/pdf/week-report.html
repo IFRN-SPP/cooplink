@@ -7,7 +7,7 @@
           left: 50pt; width: 512pt; top: 20pt; height: 40pt;
       }
       @frame content_frame {          /* Content Frame */
-          left: 50pt; width: 512pt; top: 60pt; height: 632pt;
+          left: 50pt; width: 492pt; top: 60pt; height: 662pt;
       }
       @frame footer_frame {           /* Another static Frame */
           -pdf-frame-content: footer_content;
@@ -86,8 +86,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for ordered_product in order.call_products.all %}
-            {% if not ordered_product.status == 'denied' %}
+            {% for ordered_product in order.available_products %}
             <tr>
                 <td>{{ ordered_product.call_product.product.name }}</td>
                 {% if ordered_product.status == 'available' %}
@@ -96,7 +95,6 @@
                   <td>{{ ordered_product.available_quantity }}  {{ ordered_product.call_product.product.unit }}</td>
                 {% endif %}
               </tr>
-            {% endif %}
             {% endfor %}
 
           </tbody>

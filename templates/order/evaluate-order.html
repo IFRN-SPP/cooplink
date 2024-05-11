@@ -25,7 +25,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for object in products %}
+                            {% for object in order.products %}
                             <tr>
                                 <td>{{ object.call_product.product }}</td>
                                 <td>{{ object.ordered_quantity }}</td>

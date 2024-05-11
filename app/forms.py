@@ -52,7 +52,7 @@ class CallProductForm(forms.ModelForm):
         fields = ("__all__")
 
     def __init__(self, *args, **kwargs):
-        super(OrderedProductForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_show_labels = False
 
@@ -75,7 +75,7 @@ class OrderedProductForm(forms.ModelForm):
         fields= ("call_product", "ordered_quantity",)
 
     def __init__(self, *args, **kwargs):
-        super(OrderedProductForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_show_labels = False
 
