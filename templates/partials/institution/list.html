@@ -6,6 +6,7 @@
   <th>
     <button class="js-update btn btn-secondary" data-url="{% url 'js-update-institution' object.pk %}">Editar</button>
     <button class="js-delete btn btn-danger" data-url="{% url 'js-delete-institution' object.pk %}">Deletar</button>
+    <a classs= 'btn btn-info' href="{% url 'detail-institution' object.pk %}">Detalhar</button>
   </th> 
 </tr>
 {% endfor %}

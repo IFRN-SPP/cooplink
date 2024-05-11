@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load ajax_tags %}
-{% block title %}
-  Instituições
-{% endblock %}
+{% block title %}Instituições{% endblock %}
+
 {% block content %}
   {% include 'partials/modal-form.html' %}
 
@@ -28,7 +27,9 @@
     {% include 'partials/pagination.html' %}
   </div>
   {% include 'partials/sidebar_template_2.html' %}
+
 {% endblock %}
+
 {% block script %}
   <script src="{% static 'js/jquery.ajax.js' %}"></script>
 {% endblock %}

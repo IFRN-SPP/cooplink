@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Instituição{% endblock title %}
+{% block content %}
+
+{% include 'partials/sidebar_template_1.html' %}
+
+<div class="container justify-content-center table-background">
+    <h1>Instituição - {{institution.name}}</h1>
+    <p>
+        CNPJ: {{institution.cnpj}} <br>
+        Representante(s):
+        {% for user in institution.users %}
+            {{ user.username }}; 
+        {% endfor %}
+            
+    </p>
+    <hr>
+    
+    <div class="table-responsive">
+        <table class="table table-striped mt-4">
+          <thead>
+            <tr>
+              <th>Número da Chamada</th>
+              <th>Início</th>
+              <th>Término</th>
+              <th>Situação</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for call in institution.calls %}
+            <tr>
+           
+                <td>{{ call.number}}</td>
+                <td>{{call.start}}</td>
+                <td>{{call.end}}</td>
+                <td>
+                    {% if call.active == True %}
+                        <div class="badge text-bg-success">ATIVA</div>
+                    {% else %}
+                        <div class="badge text-bg-warning">INATIVA</div>
+                    {% endif %}
+                </td>
+          
+            </tr>
+            {% endfor %}
+        </tbody>
+</div>
+
+{% endblock %}
