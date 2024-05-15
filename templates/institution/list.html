@@ -6,7 +6,6 @@
 {% block content %}
   {% include 'partials/modal-form.html' %}
 
-  {% include 'partials/sidebar_template_1.html' %}
   <div class="container justify-content-center">
     <h1>Instituições</h1>
     <a href="{% url 'index' %}">index</a>
@@ -26,10 +25,11 @@
 
     {% include 'partials/pagination.html' %}
   </div>
-  {% include 'partials/sidebar_template_2.html' %}
 
 {% endblock %}
 
 {% block script %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
   <script src="{% static 'js/jquery.ajax.js' %}"></script>
+  <script src="{% static 'js/jquery.masks.js' %}"></script>
 {% endblock %}

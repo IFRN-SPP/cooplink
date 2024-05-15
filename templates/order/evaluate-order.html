@@ -4,7 +4,6 @@
 
 {% block content %}
 
-    {% include 'partials/sidebar_template_1.html' %}
         <div class="container justify-content-center">
             <h1>Avaliar Pedido {{order.pk}} - {{order.call }}</h1>
             <p>Autor: {{order.user}}</p>
@@ -63,7 +62,6 @@
                 {% include "partials/modal.html" with modal_id="denied-modal" modal_title="Confirmar Avaliação" modal_text="<h5>Tem certeza que deseja <strong>NEGAR</strong> esse Pedido?</h5>" btn_text="Negar" btn_class="btn-danger"%}
             </form>
         </div>
-    {% include 'partials/sidebar_template_2.html' %}
 
 {% endblock content %}
 

@@ -4,7 +4,6 @@
 
 {% block content %}
 
-    {% include 'partials/sidebar_template_1.html' %}
         <div class="container justify-content-center">
             <h1>Pedido {{order.pk}}</h1>
             <p>Situação do pedido: {{order.status}}</p>
@@ -72,6 +71,5 @@
                 {% endif %}  
             </div>
         </div>
-    {% include 'partials/sidebar_template_2.html' %}
 
 {% endblock content %}

@@ -3,30 +3,6 @@
 
 {% block content %}
 
-<div class="wrapper">
-    <!-- Sidebar -->
-    {% include "partials/sidebar.html" %}
-
-    <!-- Main Component -->
-    <div class="main">
-        <nav class="navbar navbar-expand px-3 border-bottom d-flex justify-content-between">
-            <!-- Button for sidebar toggle -->
-            <button class="btn" type="button" data-bs-theme="dark">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="d-flex align-items-baseline">
-                {% if user.is_authenticated %}                    
-                    {{request.user}} - {{request.user.institution}}
-                    
-                    <form class="btn" action="{% url "logout" %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Logout</button>
-                    </form>
-                {% endif %}
-            </div>
-        </nav>
-        <main class="content px-3 py-2">
             <div class="container">
                 <h1>Pedidos Pendentes</h1>
                 <a href="{% url 'order-list' %}" class="btn btn-info btn-sm">Todas os Pedidos</a>
@@ -115,9 +91,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </main>
-    </div>
 </div>
 
 {% endblock content %}

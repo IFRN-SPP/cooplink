@@ -1,3 +1,97 @@
+:root {
+  --main-bg-color: #B1C1CA;
+  --white-color: #f8fbf9;
+  --black-color: #0E0E0E;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: var(--main-bg-color);
+}
+
+.navbar-bg-color {
+  background-color: var(--white-color);
+}
+
+.poppins-semi-bold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.poppins-bold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.poppins-medium {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.table-background {
+  min-height: 400px;
+  max-height: auto;
+  border-radius: 10px;
+  background-color: var(--white-color);
+  margin-bottom: 5rem;
+  padding: 2rem;
+}
+
+.form-background {
+
+  width: 400px;
+
+  border-radius: 10px;
+  background-color: var(--white-color);
+
+  margin: 0 auto;
+  margin-bottom: 5rem;
+
+  padding: 2rem;
+}
+
+.divider {
+  border: 3px solid #00870E;
+}
+
+.content-header p, .content-header label {
+  font-size: 20px;
+}
+
+.input-control {
+  padding: .375rem .75rem;
+  border-radius: .375rem;
+  border: 1px #dee2e6 solid;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  border: #000 1px solid;
+}
+
+.btn{
+  transition: all 0.15s ease-in-out !important;
+}
+
+.btn-rounded{
+  border-radius: 50%;
+  width: 2.5rem;
+  display: flex;
+  justify-content: center;
+}
+
 .modal{
   transition: all 0.15s ease-in-out !important;
 }

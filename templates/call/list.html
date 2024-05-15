@@ -8,7 +8,6 @@
 {% block content %}
   {% include 'partials/modal-form.html' %}
 
-  {% include 'partials/sidebar_template_1.html' %}
   <div class="table-background container justify-content-center">
     <div class="content-header d-flex justify-content-between">
       {% if user.is_staff %}
@@ -46,7 +45,6 @@
       {% include 'partials/pagination.html' %}
     </div>
   </div>
-  {% include 'partials/sidebar_template_2.html' %}
 {% endblock %}
 
 {% block script %}
