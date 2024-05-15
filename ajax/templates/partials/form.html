@@ -1,4 +1,4 @@
-
+{% load crispy_forms_tags %}
 <div class="modal-header">
   <h4 class="modal-title">{{ title }}</h4>
   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -7,7 +7,7 @@
 <div class="modal-body">
 {% if modal_form %}
   <h5>Preencha os campos obrigatórios.</h5>
-  {{ form.as_p }}
+  {{ form|crispy }}
 
 {% elif modal_delete %}
   <h5>Deletar: {{ object }}?</h5>

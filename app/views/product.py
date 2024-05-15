@@ -12,7 +12,22 @@ class ProductList(LoginRequiredMixin, StaffRequiredMixin, AjaxListView):
     model = Product
     template_name = 'product/list.html'
     partial_list = 'partials/product/list.html'
-    paginate_by = 6
+    paginate_by = 7
+
+    def get_queryset(self):
+        queryset = Product.objects.all()
+        name = self.request.GET.get('search', '')
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
+
+    def get_context(self):
+        context = {}
+        name = self.request.GET.get('search', '')
+        context['name'] = name
+        if self.paginate_by:
+            context['filter'] = f'&search={name}'
+        return context
 
 
 class ProductCreate(AjaxCreateView):
