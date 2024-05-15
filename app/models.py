@@ -5,7 +5,7 @@ from decimal import Decimal
 
 class Institution(models.Model):
     name = models.CharField(max_length=100, verbose_name="Nome da Instituição")
-    cnpj = models.CharField(max_length=14, verbose_name="CNPJ")
+    cnpj = models.CharField(max_length=18, verbose_name="CNPJ")
 
     def __str__(self):
         return self.name

@@ -7,10 +7,22 @@
   <th>{{object.is_active}}</th>
   <th>{{object.is_staff}}</th>
   <th>
-    <button class="js-update btn btn-secondary" data-url="{% url 'js-update-user' object.pk %}">Editar</button>
-    <button class="js-delete btn btn-danger" data-url="{% url 'js-delete-user' object.pk %}">Deletar</button>
-    <a class="btn btn-info" href="{% url "update-user-password" object.pk %}">Mudar senha</a>
-    <a class="btn btn-warning" href="{% url "update-user-permission" object.pk %}">Mudar Permissão</a>
+    <!-- Dropdown menu -->
+    <div class="dropdown">
+      <button class="btn btn-success" type="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <i class="bi bi-three-dots-vertical"></i>
+      </button>
+      <ul class="dropdown-menu">
+          <li><a class="js-update dropdown-item" data-url="{% url 'js-update-user' object.pk %}"> <i class="bi bi-pencil-fill"></i> Editar </a></li>
+          <li><a class="dropdown-item" href="{% url "update-user-permission" object.pk %}"> <i class="bi bi-exclamation-triangle-fill"></i> Alterar permissões</a></li>
+          <li><a class="dropdown-item" href="{% url "update-user-password" object.pk %}"> <i class="bi bi-arrow-repeat"></i> Mudar senha </a></li>
+          <li>
+              <hr class="dropdown-divider">
+          </li>
+          <li><a class="js-delete dropdown-item" data-url="{% url 'js-delete-user' object.pk %}"> <i class="bi bi-trash3-fill"></i> Excluir</a></li>
+      </ul>
+    </div>
   </th> 
 </tr>
 {% endfor %}

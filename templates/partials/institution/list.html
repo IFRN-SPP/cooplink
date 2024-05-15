@@ -1,12 +1,27 @@
 {% for object in object_list %}
-<tr>
-  <th>{{object.pk}}</th>
-  <th>{{object.name}}</th>
-  <th>{{object.cnpj}}</th>
-  <th>
-    <button class="js-update btn btn-secondary" data-url="{% url 'js-update-institution' object.pk %}">Editar</button>
-    <button class="js-delete btn btn-danger" data-url="{% url 'js-delete-institution' object.pk %}">Deletar</button>
-    <a classs= 'btn btn-info' href="{% url 'detail-institution' object.pk %}">Detalhar</button>
-  </th> 
-</tr>
+  <tr>
+    <th>{{ object.pk }}</th>
+    <th>{{ object.name }}</th>
+    <th>{{ object.cnpj }}</th>
+    <th>
+      <!-- Dropdown menu -->
+      <div class="dropdown">
+        <button class="btn btn-success" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></button>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item js-update" data-url="{% url 'js-update-institution' object.pk %}"><i class="bi bi-pencil-fill"></i> Editar</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="{% url 'detail-institution' object.pk %}"><i class="bi bi-eye-fill"></i> Detalhar</a>
+          </li>
+          <li>
+            <hr class="dropdown-divider" />
+          </li>
+          <li>
+            <a class="dropdown-item js-delete" data-url="{% url 'js-delete-institution' object.pk %}"><i class="bi bi-trash3-fill"></i> Excluir</a>
+          </li>
+        </ul>
+      </div>
+    </th>
+  </tr>
 {% endfor %}

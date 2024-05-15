@@ -1,22 +1,28 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load ajax_tags %}
-{% block title %}Instituições{% endblock %}
+{% block title %}
+  Instituições
+{% endblock %}
 
 {% block content %}
   {% include 'partials/modal-form.html' %}
 
-  <div class="container justify-content-center">
-    <h1>Instituições</h1>
-    <a href="{% url 'index' %}">index</a>
-    <br />
-    <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-institution' %}">Cadastrar Instituição</button>
+  <div class="container justify-content-center table-background">
 
-    <table id="{% table_id %}" class="table">
+    <div class="content-header d-flex justify-content-between">
+      <h3 class="poppins-bold">Instituições</h3>
+      <div>
+          <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-institution' %}"> <i class="bi bi-plus-circle"></i> Cadastrar Instituição</button>
+      </div>
+    </div>
+
+    <table id="{% table_id %}" class="table table-striped mt-4">
       <thead>
         <th>PK</th>
         <th>Nome</th>
         <th>CNPJ</th>
+        <th>OPÇÕES</th>
       </thead>
       <tbody style="height: 50vh;">
         {% include 'partials/institution/list.html' %}
@@ -25,11 +31,9 @@
 
     {% include 'partials/pagination.html' %}
   </div>
-
 {% endblock %}
 
 {% block script %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
   <script src="{% static 'js/jquery.ajax.js' %}"></script>
-  <script src="{% static 'js/jquery.masks.js' %}"></script>
 {% endblock %}

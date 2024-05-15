@@ -8,14 +8,16 @@
 {% block content %}
   {% include 'partials/modal-form.html' %}
 
-    <div class="container justify-content-center">
-      <h1>Usuários</h1>
-      <a href="{% url 'index' %}">index</a>
-      <br />
-      <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-user' %}">Cadastrar Usuário</button>
-      <br />
+    <div class="container justify-content-center table-background">
+   
+      <div class="content-header d-flex justify-content-between">
+        <h3 class="poppins-bold">Usuários</h3>
+        <div>
+          <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-user' %}"> <i class="bi bi-plus-circle"></i> Cadastrar Usuário</button>
+        </div>
+      </div>
 
-      <table id="{% table_id %}" class="table">
+      <table id="{% table_id %}" class="table table-striped mt-4">
         <thead>
           <th>PK</th>
           <th>Username</th>
@@ -23,6 +25,7 @@
           <th>Instituição</th>
           <th>Ativo</th>
           <th>Administrador</th>
+          <th>Opções</th>
         </thead>
         <tbody style="height: 50vh;">
           {% include 'partials/user/list.html' %}
