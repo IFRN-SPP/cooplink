@@ -2,6 +2,9 @@
   --main-bg-color: #B1C1CA;
   --white-color: #f8fbf9;
   --black-color: #0E0E0E;
+  --green-color: #00870E;
+
+  --border-radius: 5px
 }
 
 * {
@@ -15,6 +18,10 @@ body {
   background-color: var(--main-bg-color);
 }
 
+hr{
+  margin: 0.7rem 0;
+  border: .1rem solid var(--main-bg-color);
+}
 .navbar-bg-color {
   background-color: var(--white-color);
 }
@@ -60,11 +67,13 @@ body {
 }
 
 .divider {
-  border: 3px solid #00870E;
+  border: 3px solid var(--green-color);
 }
-
+.table-group-divider {
+  border-top: 2px solid var(--green-color) !important;
+}
 .content-header p, .content-header label {
-  font-size: 20px;
+  font-size: 1.2rem;
 }
 
 .input-control {
@@ -83,6 +92,7 @@ body {
 
 .btn{
   transition: all 0.15s ease-in-out !important;
+  border-radius: var(--border-radius);
 }
 
 .btn-rounded{

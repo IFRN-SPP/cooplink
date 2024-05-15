@@ -1,86 +1,117 @@
 {% extends 'base.html' %}
-{% block title %}Index{% endblock title %}
+{% block title %}Início{% endblock title %}
 {% block content %}
 <div class="container">
-    <hr>
-    <h1>Pedidos da Instituição</h1>
-    <a href="{% url 'order-list' %}" >Ver Pedidos</a>
-    <br>
-    <a href="{% url 'create-order' %}" class="btn btn-success btn-sm">Cadastrar Pedido</a>
-       
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>N°</th>
-                    <th>Situação</th>
-                    <th>Autor</th>
-                    <th>Feito em</th>
-                    <th>Opções</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% for object in orders %}
+    <div class="table-background my-4">
+        <div class="content-header">
+            <h3 class="poppins-bold">Pedidos da Instituição</h3>
+            <hr>
+            <div class="d-flex gap-4 mb-3">
+                <a href="{% url 'create-order' %}" class="btn btn-success"><i class="bi bi-plus-circle me-2"></i> FAZER PEDIDO</a>
+                <a href="{% url 'order-list' %}" class="btn btn-outline-success" ><i class="bi bi-file-earmark me-2"></i>TODOS OS PEDIDOS</a>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped align-middle border border-3">
+                <thead>
                     <tr>
-                        <td>{{ object.pk }}</td>
-                        <td>{{ object.status }}</td>
-                        <td>{{ object.user }}</td>
-                        <td>{{ object.timestamp }}</td>
-
-                        <td>
-                            <a href="{% url 'detail-order' object.pk %}" class="btn btn-primary btn-sm">Detalhar</a>
-                            {% if order.user == user %}
-                                {% if object.status == 'pending' or object.status == 'denied' %}
-                                    <a href="{% url "js-delete-order" object.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
-                                {% endif %}
-                            {% endif %}
-                           
-                            {% if object.status == 'pending' %}
-                                <a href="{% url "update-ordered-product" object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar pedido</a>
-                            {% endif %}
-                            
-                        </td>
+                        <th>N°</th>
+                        <th>SITUAÇÃO</th>
+                        <th>AUTOR</th>
+                        <th>FEITO EM</th>
+                        <th>OPÇÕES</th>
                     </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="5">Nenhum pedido até o momento</td>
-                    </tr>
-                {% endfor %}
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for object in orders %}
+                        <tr>
+                            <td>{{ object.pk }}</td>
+                            <td>
+                                <div class="badge text-uppercase fw-semibold
+                                    {% if object.status == 'pending' %}
+                                    text-bg-warning
+                                    {% elif object.status == 'approved' %}
+                                    text-bg-success
+                                    {% elif object.status == 'denied' %}
+                                    text-bg-danger
+                                    {% elif object.status == 'delivered' %}
+                                    text-bg-primary
+                                    {% endif %}
+                                    ">
+                                    {{ object.get_status_display }}
+                                </div>
+                            </td>
+                            <td>{{ object.user.get_full_name }}</td>
+                            <td>{{ object.timestamp|date:"SHORT_DATETIME_FORMAT" }}</td>
 
-            </tbody>
-        </table>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-success btn-rounded ms-2" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></button>
+                                    <ul class="dropdown-menu">
+                                      <li>
+                                        <a href="{% url 'detail-order' object.pk %}" class="dropdown-item">
+                                            <i class="bi bi-eye-fill me-3"></i> Detalhar</a>
+                                      </li>
+                                      {% if object.status == 'pending'%}
+                                      <li>
+                                          <a href="{% url "update-ordered-product" object.pk %}" class="dropdown-item">
+                                            <i class="bi bi-pencil-fill me-3"></i> Editar Pedido
+                                          </a>
+                                      </li>
+                                    {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5">Nenhum pedido até o momento</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <hr>
-
-    {% if call %}
-    <h1> Chamada Atual - {{call.number}}</h1>
-    <a href="{% url 'call-list' %}">Minhas Chamadas</a>
-    <a href="{% url 'detail-call' call.id %}">Ver essa chamada</a>
-    <p>INICIO: {{call.start}}</p>
-    <p>TERMINO: {{call.end}}</p>
-    <table class="table table-striped">
-        <thead>
-          <th>Produto</th>
-          <th>Saldo</th>
-          <th>Unidade</th>
-          <th>Preço</th>
-        </thead>
-        <tbody>
-      {% for product in products %}
-          <tr>
-            <td>{{product.product}}</td>
-            <td>{{product.balance}}</td>
-            <td>{{product.product.unit}}</td>
-            <td>{{product.price}}</td>
-          </tr>
-      {% endfor %}
-        </tbody>
-      </table>
-    {% else %}
-    <h2>Sem Chamada Ativa</h2>
-    <a href="{% url 'call-list' %}">Minhas Chamadas</a>
-    {% endif %}
+    <div class="table-background">
+        {% if call %}
+        <div class="content-header">
+            <div class="row">
+                <h3 class="poppins-bold col-md-6">Chamada Atual - {{call.number}}</h3>
+                <div class="d-flex justify-content-end gap-5 col-md-6 ">
+                    <p class="m-0 ">INÍCIO: <span class="fw-medium  ">{{call.start|date:"SHORT_DATE_FORMAT"}}</span></p>
+                    <p class="m-0 ">TÉRMINO: <span class="fw-medium  ">{{call.end|date:"SHORT_DATE_FORMAT"}}</span></p>
+                </div>
+            </div>
+            <hr>
+            <div class="d-flex gap-4 mb-3">
+                <a href="{% url 'detail-call' call.id %}" class=" btn btn-success"><i class="bi bi-search me-2"></i>DETALHAR CHAMADA</a>
+                <a href="{% url 'call-list' %}" class=" btn btn-outline-success "><i class="bi bi-file-earmark me-2"></i> MINHAS CHAMADAS</a>
+            </div>
+        </div>
+        <div class="table-responsive ">
+            <table class="table table-striped align-middle text-center border border-3">
+                <thead>
+                    <th>PRODUTO</th>
+                    <th>SALDO</th>
+                    <th>UNIDADE</th>
+                    <th>VALOR UNITÁRIO (R$)</th>
+                </thead>
+                <tbody class="table-group-divider ">
+                {% for product in products %}
+                    <tr>
+                    <td>{{product.product}}</td>
+                    <td>{{product.balance}}</td>
+                    <td>{{product.product.unit}}</td>
+                    <td>{{product.price}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <h3 class="poppins-bold">Sem Chamada Ativa</h3>
+        <a href="{% url 'call-list' %}">Minhas Chamadas</a>
+        {% endif %}
+    </div>
 </div>
+
 {% endblock content %}

@@ -14,7 +14,7 @@ def index(request):
     if user.is_staff:
         return redirect('index-admin')
 
-    orders = Order.objects.filter(institution=user.institution)
+    orders = Order.objects.filter(institution=user.institution)[:5]
     call= Call.objects.filter(active=True, institution=user.institution).first()
     products = CallProduct.objects.filter(call=call)
 
