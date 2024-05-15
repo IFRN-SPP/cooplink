@@ -4,7 +4,7 @@
 
 {% block content %}
 
-        <div class="container justify-content-center">
+        <div class="container justify-content-center table-background">
             <h1>Pedido {{order.pk}}</h1>
             <p>Situação do pedido: {{order.status}}</p>
             <p>Feito em: {{ order.timestamp}}</p>
@@ -18,8 +18,9 @@
                     <a href="{% url 'order-report' order.pk %}" target="_blank" class='btn btn-info btn-sm' >Gerar Termo de Recebimento</a>   
                 {% endif %}
             {% endif %}
-
+            
             <div class="table-responsive">
+                <br>
                 <table class="table table-striped">
                     <thead>
                         <tr>

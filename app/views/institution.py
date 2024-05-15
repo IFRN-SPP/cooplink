@@ -18,6 +18,21 @@ class InstitutionList(LoginRequiredMixin, StaffRequiredMixin, AjaxListView):
     partial_list = 'partials/institution/list.html'
     paginate_by = 6
 
+    def get_queryset(self):
+        queryset = Institution.objects.all()
+        name = self.request.GET.get('search', '')
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
+
+    def get_context(self):
+        context = {}
+        name = self.request.GET.get('search', '')
+        context['name'] = name
+        if self.paginate_by:
+            context['filter'] = f'&search={name}'
+        return context
+
 
 class InstitutionCreate(AjaxCreateView):
     form_class = InstitutionForm

@@ -17,17 +17,29 @@
       </div>
     </div>
 
-    <table id="{% table_id %}" class="table table-striped mt-4">
-      <thead>
-        <th>PK</th>
-        <th>Nome</th>
-        <th>CNPJ</th>
-        <th>OPÇÕES</th>
-      </thead>
-      <tbody style="height: 50vh;">
-        {% include 'partials/institution/list.html' %}
-      </tbody>
-    </table>
+    <form id="{% form_id %}" action="?" method="GET">
+      <div class="d-md-flex my-2">
+        <input class="search form-control w-50" type="text" name="search" value="{{name}}" placeholder="Buscar instituição...">
+      </div>
+    </form>
+
+    <div class="my-2">
+
+    </div>
+
+    <div class="table-responsive">
+      <table id="{% table_id %}" class="table table-striped mt-4">
+        <thead>
+          <th>PK</th>
+          <th>Nome</th>
+          <th>CNPJ</th>
+          <th>OPÇÕES</th>
+        </thead>
+        <tbody>
+          {% include 'partials/institution/list.html' %}
+        </tbody>
+      </table>
+    </div>
 
     {% include 'partials/pagination.html' %}
   </div>

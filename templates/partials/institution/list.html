@@ -1,9 +1,9 @@
 {% for object in object_list %}
   <tr>
-    <th>{{ object.pk }}</th>
-    <th>{{ object.name }}</th>
-    <th>{{ object.cnpj }}</th>
-    <th>
+    <td>{{ object.pk }}</td>
+    <td>{{ object.name }}</td>
+    <td>{{ object.cnpj }}</td>
+    <td>
       <!-- Dropdown menu -->
       <div class="dropdown">
         <button class="btn btn-success" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></button>
@@ -22,6 +22,6 @@
           </li>
         </ul>
       </div>
-    </th>
+    </td>
   </tr>
 {% endfor %}

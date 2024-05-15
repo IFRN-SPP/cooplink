@@ -18,9 +18,19 @@
 
       {% if user.is_staff %}
         <div>
-          <a href="{% url 'create-call' %}" class="btn btn-success"><i class="bi bi-plus-circle"></i> Criar chamada</a>
+          <a href="{% url 'create-call' %}" class="btn btn-success"><i class="bi bi-plus-circle"></i> Cadastrar chamada</a>
         </div>
       {% endif %}
+    </div>
+
+    <form id="{% form_id %}" action="?" method="GET">
+      <div class="d-md-flex my-2">
+        <input class="search form-control w-50" type="number" name="search" value="{{number}}" placeholder="Buscar número da chamada...">
+      </div>
+    </form>
+
+    <div class="my-2">
+
     </div>
 
     <div class="table-responsive">
@@ -38,7 +48,7 @@
           </tr>
         </thead>
 
-        <tbody style="height: 30vh;" class="table-group-divider">
+        <tbody class="table-group-divider">
           {% include 'partials/call/list.html' %}
         </tbody>
       </table>
