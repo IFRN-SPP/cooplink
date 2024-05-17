@@ -9,7 +9,7 @@
   {% include 'partials/modal-form.html' %}
 
     <div class="container justify-content-center table-background">
-   
+
       <div class="content-header d-flex justify-content-between">
         <h3 class="poppins-bold">Usuários</h3>
         <div>
@@ -19,15 +19,15 @@
 
       <table id="{% table_id %}" class="table table-striped mt-4">
         <thead>
-          <th>PK</th>
-          <th>Username</th>
-          <th>Nome</th>
-          <th>Instituição</th>
-          <th>Ativo</th>
-          <th>Administrador</th>
-          <th>Opções</th>
+          <th>N°</th>
+          <th>NOME DE USUÁRIO</th>
+          <th>NOME</th>
+          <th>INSTITUIÇÃO</th>
+          <th>ATIVO</th>
+          <th>ADMINISTRADOR</th>
+          <th>OPÇÕES</th>
         </thead>
-        <tbody style="height: 50vh;">
+        <tbody class="table-group-divider ">
           {% include 'partials/user/list.html' %}
         </tbody>
       </table>

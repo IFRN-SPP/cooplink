@@ -2,17 +2,17 @@
 {% block title %}Início{% endblock title %}
 {% block content %}
 <div class="container">
-    <div class="table-background my-4">
+    <div class="table-background">
         <div class="content-header">
             <h3 class="poppins-bold">Pedidos da Instituição</h3>
             <hr>
-            <div class="d-flex gap-4 mb-3">
+            <div class="d-flex gap-4 my-3">
                 <a href="{% url 'create-order' %}" class="btn btn-success"><i class="bi bi-plus-circle me-2"></i> FAZER PEDIDO</a>
                 <a href="{% url 'order-list' %}" class="btn btn-outline-success" ><i class="bi bi-file-earmark me-2"></i>TODOS OS PEDIDOS</a>
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table table-striped align-middle border border-3">
+            <table class="table table-striped ">
                 <thead>
                     <tr>
                         <th>N°</th>
@@ -82,13 +82,13 @@
                 </div>
             </div>
             <hr>
-            <div class="d-flex gap-4 mb-3">
+            <div class="d-flex gap-4 my-3">
                 <a href="{% url 'detail-call' call.id %}" class=" btn btn-success"><i class="bi bi-search me-2"></i>DETALHAR CHAMADA</a>
                 <a href="{% url 'call-list' %}" class=" btn btn-outline-success "><i class="bi bi-file-earmark me-2"></i> MINHAS CHAMADAS</a>
             </div>
         </div>
         <div class="table-responsive ">
-            <table class="table table-striped align-middle text-center border border-3">
+            <table class="table table-striped text-center ">
                 <thead>
                     <th>PRODUTO</th>
                     <th>SALDO</th>

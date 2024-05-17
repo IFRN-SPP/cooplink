@@ -1,12 +1,24 @@
 {% for object in object_list %}
 <tr>
-  <th>{{object.pk}}</th>
-  <th>{{object.username}}</th>
-  <th>{{object.first_name}}</th>
-  <th>{{object.institution}}</th>
-  <th>{{object.is_active}}</th>
-  <th>{{object.is_staff}}</th>
-  <th>
+  <td>{{object.pk}}</td>
+  <td>{{object.username}}</td>
+  <td>{{object.get_full_name}}</td>
+  <td>{{object.institution}}</td>
+  <td>
+    {% if object.is_active %}
+    <span class="badge text-bg-success ">ATIVO</span>
+    {% else %}
+    <span class="badge text-bg-secondary ">INATIVO</span>
+    {% endif %}
+  </td>
+  <td>
+    {% if object.is_staff %}
+    <span class="badge text-bg-success ">SIM</span>
+    {% else %}
+    <span class="badge text-bg-secondary ">NÃO</span>
+    {% endif %}
+  </td>
+  <td>
     <!-- Dropdown menu -->
     <div class="dropdown">
       <button class="btn btn-success" type="button" data-bs-toggle="dropdown"
@@ -23,6 +35,6 @@
           <li><a class="js-delete dropdown-item" data-url="{% url 'js-delete-user' object.pk %}"> <i class="bi bi-trash3-fill"></i> Excluir</a></li>
       </ul>
     </div>
-  </th> 
+  </td> 
 </tr>
 {% endfor %}

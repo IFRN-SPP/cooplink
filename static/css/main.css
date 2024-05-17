@@ -1,10 +1,12 @@
 :root {
   --main-bg-color: #B1C1CA;
+  --main-bg2-color: #b1c1ca97;
   --white-color: #f8fbf9;
   --black-color: #0E0E0E;
   --green-color: #00870E;
 
-  --border-radius: 5px
+  --border-radius: 5px;
+  --content-border-radius: 15px;
 }
 
 * {
@@ -19,8 +21,15 @@ body {
 }
 
 hr{
-  margin: 0.7rem 0;
-  border: .1rem solid var(--main-bg-color);
+  margin: 0;
+  border: .1rem solid var(--main-bg2-color);
+  opacity: 1;
+}
+table{
+  border: .2rem solid var(--main-bg2-color) !important;
+  th, td{
+    vertical-align: middle;
+  }
 }
 .navbar-bg-color {
   background-color: var(--white-color);
@@ -47,22 +56,18 @@ hr{
 .table-background {
   min-height: 400px;
   max-height: auto;
-  border-radius: 10px;
+  border-radius: var(--content-border-radius);
   background-color: var(--white-color);
-  margin-bottom: 5rem;
+  margin-block: 1rem;
   padding: 2rem;
 }
 
 .form-background {
-
-  width: 400px;
-
-  border-radius: 10px;
+  max-width: 400px;
+  border-radius: var(--content-border-radius);
   background-color: var(--white-color);
-
   margin: 0 auto;
-  margin-bottom: 5rem;
-
+  margin-block: 1rem;
   padding: 2rem;
 }
 
@@ -76,19 +81,35 @@ hr{
   font-size: 1.2rem;
 }
 
-.input-control {
+.form-control, .form-select{
   padding: .375rem .75rem;
-  border-radius: .375rem;
-  border: 1px #dee2e6 solid;
+  border-radius: var(--border-radius);
+  border: .1rem solid var(--main-bg-color);
+  box-shadow: none !important;
+  &:focus{
+    border: .1rem solid var(--black-color);
+  }
 }
 
-.cursor-pointer {
+.form-select{
   cursor: pointer;
+  &:hover{
+    border: .1rem solid var(--black-color);
+  }
 }
 
-.cursor-pointer:hover {
-  border: #000 1px solid;
+.form-box{
+  margin-block: .8rem;
 }
+
+.asteriskField{
+  color: #f45353;
+}
+
+.font-10{
+  font-size: .9rem;
+}
+
 
 .btn{
   transition: all 0.15s ease-in-out !important;
