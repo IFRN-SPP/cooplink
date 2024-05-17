@@ -90,7 +90,7 @@ OrderedProductFormSet = inlineformset_factory(
 class UserCreateForm(UserCreationForm):
     class Meta:
         model = UserProfile
-        fields = UserCreationForm.Meta.fields + ("first_name", "institution",)
+        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "institution",)
 
 
 class UserUpdateForm(forms.ModelForm):

@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
-from decimal import Decimal
+
 
 class Institution(models.Model):
     name = models.CharField(max_length=100, verbose_name="Nome da Instituição")
@@ -28,6 +28,8 @@ class Institution(models.Model):
 
 class UserProfile(AbstractUser):
     institution = models.ForeignKey(Institution, on_delete=models.PROTECT, null=True, verbose_name="Instituição")
+
+    REQUIRED_FIELDS = ['institution']
 
     def __str__(self):
         return self.username
