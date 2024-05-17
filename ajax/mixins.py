@@ -17,7 +17,7 @@ class PaginateMixin:
         """
         paginator = Paginator(object_list, paginate_by)
         page_num = request.GET.get('page')
-        
+
         try:
             object_list = paginator.get_page(page_num)
         except PageNotAnInteger:
@@ -70,18 +70,18 @@ class AjaxResponseMixin(ContextMixin, PaginateMixin):
                 object_list = self.paginate(self.request, paginate_by, object_list)
                 context['page'] = context[f'{self.object_list}'] = object_list
                 data['html_pagination'] = render_to_string(self.partial_pagination, context)
-            
+
             context[f'{self.object_list}'] = object_list
             data['html_list'] = render_to_string(self.partial_list, context)
         return JsonResponse(data)
-    
+
     def get_queryset(self):
         """
         Returns the queryset of the model's objects to be listed.
         """
         queryset = self.model.objects.all()
         return queryset
-    
+
 
 class FormResponseMixin(AjaxResponseMixin):
     """
@@ -95,7 +95,7 @@ class FormResponseMixin(AjaxResponseMixin):
         Processes a valid form, returns an AJAX response.
         """
         return self.ajax_response(form=form, template_name=self.template_name, success_url=self.success_url)
-    
+
     def render_form(self, form):
         """
         Renders the specified form as part of the AJAX response.
@@ -103,7 +103,7 @@ class FormResponseMixin(AjaxResponseMixin):
         return self.ajax_response(form=form, template_name=self.template_name)
 
 
-class DeleteReponseMixin(AjaxResponseMixin):
+class DeleteResponseMixin(AjaxResponseMixin):
     """
     Mixin to handle AJAX responses for delete operations.
     """
@@ -116,7 +116,7 @@ class DeleteReponseMixin(AjaxResponseMixin):
         data = {'form_is_valid': False}
         data['html_form'] = render_to_string(self.template_name, {'object': instance}, request=self.request)
         return JsonResponse(data)
-    
+
     def form_valid(self):
         """
         Processes a successful delete operation, returning an AJAX response.

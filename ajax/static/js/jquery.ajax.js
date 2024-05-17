@@ -11,7 +11,7 @@ $(function(){
             }
         });
     };
-    
+
     var saveForm = function(){
         var form = $(this);
         $.ajax({
@@ -78,12 +78,12 @@ $(function(){
         return false
     }
 
-    var paginatation = function(){
+    var pagination = function(){
         var url = $(this).attr("data-url");
         $.ajax({
             url: url,
             type: 'get',
-            dataType: 'json',    
+            dataType: 'json',
             success: function(data){
                 $("#ajax-table tbody").html(data.html_list);
                 if(data.html_pagination){
@@ -93,9 +93,9 @@ $(function(){
         });
         return false
     };
- 
+
     function addMessage(text, messageClass){
-        var alert = $('<div class="alert ' + messageClass + ' alert-dismissible fade show fw-bold" role="alert">' + text + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+        var alert = $('<div class="alert ' + messageClass + ' alert-dismissible fade show" role="alert">' + text + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
 
         if ($('#ajax-message').length) {$('#ajax-message').append(alert)}
     }
@@ -110,16 +110,16 @@ $(function(){
 
     // DELETE
     $("#ajax-table").on("click", ".js-delete", loadForm);
-    $("#ajax-modal").on("submit", ".js-delete-form", saveForm); 
-    
+    $("#ajax-modal").on("submit", ".js-delete-form", saveForm);
+
     // PAGINATION
-    $("#ajax-pagination").on("click", ".js-link", paginatation);
+    $("#ajax-pagination").on("click", ".js-link", pagination);
 
     // FILTER
     $("#ajax-filter").on("input", filter);
     $("#ajax-filter").on("submit", filter);
 
-    // BTN RESET FILTER 
+    // BTN RESET FILTER
     $('.btn-reset').on("click", function() {
         loadList('?')
     });

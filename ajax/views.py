@@ -4,7 +4,8 @@ from django.http import JsonResponse
 from django.views import View
 
 from .utils import is_ajax
-from .mixins import AjaxResponseMixin, FormResponseMixin, DeleteReponseMixin
+from .mixins import AjaxResponseMixin, FormResponseMixin, DeleteResponseMixin
+
 
 class AjaxListView(View, AjaxResponseMixin):
     """
@@ -28,7 +29,8 @@ class AjaxListView(View, AjaxResponseMixin):
                 context['page'] = context[f'{self.object_list}'] = object_list
 
             return render(request, self.template_name, context)
-        
+
+
 class AjaxFormView(View, FormResponseMixin):
     """
     Base view for form processing and returning JSON responses.
@@ -48,13 +50,16 @@ class AjaxFormView(View, FormResponseMixin):
         """
         form = self.form_class(request.POST)
         return self.form_valid(form)
-    
+
     def form_valid(self, form):
         """
         Save form parameters and return the form validation.
         """
+        if not form.is_valid():
+            return self.render_form(form)
         form.save()
         return super().form_valid(form)
+
 
 class AjaxCreateView(AjaxFormView):
     """
@@ -63,11 +68,12 @@ class AjaxCreateView(AjaxFormView):
     def get(self, request, *args, **kwargs):
         if is_ajax(request):
             return super().get(request, *args, **kwargs)
-    
+
         return redirect(self.success_url)
 
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
+
 
 class AjaxUpdateView(AjaxFormView):
     """
@@ -79,7 +85,7 @@ class AjaxUpdateView(AjaxFormView):
         form = self.form_class(instance=instance)
         if is_ajax(request):
             return self.render_form(form)
-        
+
         return redirect(self.success_url)
 
     def post(self, request, pk, *args, **kwargs):
@@ -88,7 +94,8 @@ class AjaxUpdateView(AjaxFormView):
         form = self.form_class(request.POST, instance=instance)
         return self.form_valid(form)
 
-class AjaxDeleteView(View, DeleteReponseMixin):
+
+class AjaxDeleteView(View, DeleteResponseMixin):
     """
     View to delete an existing object using AJAX.
     """
@@ -96,19 +103,20 @@ class AjaxDeleteView(View, DeleteReponseMixin):
         instance = get_object_or_404(self.model, pk=pk)
         if is_ajax(request):
             return self.render_form(instance)
-        
+
         return redirect(self.success_url)
 
     def post(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(self.model, pk=pk)
         try:
             instance.delete()
-        
-        except ProtectedError as e:
+
+        except ProtectedError:
             data = {}
             data['protected_error'] = True
-            data['message'] = f"Não é possível excluir {instance} porque está sendo associado a outros registros."
+            data['message'] = f"Não é possível excluir {instance} porque está sendo associado a outros cadastros."
             data['message_class'] =  'alert-danger'
             return JsonResponse(data)
-        
+
         return self.form_valid()
+
