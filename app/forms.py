@@ -43,6 +43,7 @@ class CallForm(forms.ModelForm):
                 current_date_formatted = current_date.strftime('%d/%m/%Y')
                 raise forms.ValidationError(f'A data de término deve ser maior que a data atual: {current_date_formatted}')
         return cleaned_data
+    
 
 
 class CallActiveForm(forms.ModelForm):
