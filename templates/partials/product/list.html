@@ -4,8 +4,20 @@
   <td>{{object.name}}</td>
   <td>{{object.unit}}</td>
   <td>
-    <button class="js-update btn btn-secondary" data-url="{% url 'js-update-product' object.pk %}">Editar</button>
-    <button class="js-delete btn btn-danger" data-url="{% url 'js-delete-product' object.pk %}">Deletar</button>
+    <div class="dropdown">
+      <button class="btn btn-outline-success btn-rounded ms-2" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></button>
+      <ul class="dropdown-menu">
+        <li>
+          <a class="dropdown-item js-update" data-url="{% url 'js-update-product' object.pk %}"><i class="bi bi-pencil-fill"></i> Editar</a>
+        </li>
+        <li>
+          <hr class="dropdown-divider" />
+        </li>
+        <li>
+          <a class="dropdown-item js-delete" data-url="{% url 'js-delete-product' object.pk %}"><i class="bi bi-trash3-fill"></i> Excluir</a>
+        </li>
+      </ul>
+    </div>
   </td> 
 </tr>
 {% endfor %}

@@ -27,10 +27,10 @@
       </div>
       <div class="d-flex gap-3">
         <p>
-          <b>Inicio:</b> {{ call.start }}
+          <b>Início:</b> {{ call.start }}
         </p>
         <p>
-          <b>Termino:</b>{{ call.end }}
+          <b>Término:</b> {{ call.end }}
         </p>
       </div>
     </div>
@@ -45,7 +45,7 @@
           <th>Deletar?</th>
         {% endif %}
       </thead>
-      <tbody>
+      <tbody  class="table-group-divider">
         {% for product in call.products %}
           <tr>
             <td>{{ product.product }}</td>

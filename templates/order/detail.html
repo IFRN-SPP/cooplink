@@ -5,13 +5,19 @@
 {% block content %}
 
         <div class="container justify-content-center table-background">
-            <h1>Pedido {{order.pk}}</h1>
-            <p>Situação do pedido: {{order.status}}</p>
-            <p>Feito em: {{ order.timestamp}}</p>
-            <p>Por: {{ order.user}}</p>
+            <h3 class='poppins-bold'>Pedido {{order.pk}}</h3>
+            <hr>
+            <br>
+
+            <p>
+                <b>Situação do pedido:</b> {{order.status}}
+            </p>
+
+            <p><b>Feito em:</b> {{ order.timestamp}}</p>
+            <p><b>Por:</b> {{ order.user}}</p>
             
             {% if user.is_staff %}
-                <p>Instituição: {{ order.institution }}</p>
+                <p><b>Instituição:</b> {{ order.institution }}</p>
                 {% if order.status == 'pending' %}
                     <a href="{% url 'evaluate-order' order.pk %}" class='btn btn-info btn-sm' >Avaliar pedido</a>   
                 {% elif order.status == 'approved' or order.status == 'delivered' %}
@@ -33,7 +39,7 @@
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody class='table-group-divider'>
                         {% for object in order.products %}
                             <tr>
                                 <td>{{ object.call_product.product }}</td>

@@ -1,6 +1,6 @@
 :root {
   --main-bg-color: #B1C1CA;
-  --main-bg2-color: #b1c1ca97;
+  --main-bg2-color: #bfc6ca88;
   --white-color: #f8fbf9;
   --black-color: #0E0E0E;
   --green-color: #00870E;
@@ -26,7 +26,7 @@ hr{
   opacity: 1;
 }
 table{
-  border: .2rem solid var(--main-bg2-color) !important;
+  border: .1rem solid var(--main-bg2-color) !important;
   th, td{
     vertical-align: middle;
   }

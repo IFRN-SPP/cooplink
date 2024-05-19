@@ -10,7 +10,7 @@
 
         <div class="d-flex align-items-baseline">
           {% if user.is_authenticated %}
-            {{ request.user }} - {{ request.user.institution }}
+            <p> {{ request.user }} - {{ request.user.institution }}</p>
 
             <form class="btn" action="{% url 'logout' %}" method="post">
               {% csrf_token %}

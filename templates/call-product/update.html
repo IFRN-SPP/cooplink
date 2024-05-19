@@ -5,19 +5,20 @@
 {% block content %}
 
     <div class="container justify-content-center table-background">
-        <h3>Editar Produtos da Chamada</h3>
-        <p class="lead">Preencha todos os campos obrigatórios:</p>
+        <h3 class="poppins-bold" >Editar Produtos da Chamada</h3>
+        <p class="lead text-muted">Preencha todos os campos obrigatórios:</p>
 
         <hr>
 
         <form action="" method="POST">
             {% csrf_token %}
-
-            <h3>{{call.institution}} - {{call.number}} {% if call.active %}ATIVO{% else %}FECHADA{% endif %} </h3>
+            <br>
+            <p class='h4'>{{call.institution}} - Chamada: {{call.number}} </p>
+            <p> Situação: {% if call.active %}ATIVO{% else %}FECHADA{% endif %}</p>
 
             {{ form_product.management_form}} 
             <div class="table-responsive">
-                <table class="table ">
+                <table class="table table-striped mt-4">
                     <thead>
                         <tr>
                             <td>Produtos</td>
@@ -28,7 +29,7 @@
                     </thead>
                     <tbody>
 
-                    </tbody>
+                    </tbody >
                     {% for form in form_product %}
                         <tr class='inlineform'>
                             <td>{{ form.product }}</td>
