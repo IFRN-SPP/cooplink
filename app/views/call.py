@@ -26,15 +26,12 @@ class CallList(LoginRequiredMixin, AjaxListView):
         queryset = Call.objects.all()
         if not user.is_staff:
             queryset = Call.objects.filter(institution=user.institution)
-        return queryset
 
-    def get_queryset(self):
-        queryset = Call.objects.all()
         number = self.request.GET.get('search', '')
         if number:
             queryset = queryset.filter(number__icontains=number)
         return queryset
-    
+
     def get_context(self):
         context = {}
         number = self.request.GET.get('search', '')
