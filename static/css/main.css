@@ -123,6 +123,11 @@ table{
   justify-content: center;
 }
 
+.btn-gap{
+  display: flex;
+  gap: .7rem;
+}
+
 .modal{
   transition: all 0.15s ease-in-out !important;
 }

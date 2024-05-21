@@ -5,37 +5,59 @@
 {% block content %}
 
         <div class="container justify-content-center table-background">
-            <h3 class='poppins-bold'>Pedido {{order.pk}}</h3>
-            <hr>
-            <br>
+            <div class="content-header">
+                <div class="d-flex justify-content-between mb-2">
 
-            <p>
-                <b>Situação do pedido:</b> {{order.status}}
-            </p>
+                    <div class="d-flex align-items-baseline poppins-bold gap-3 ">
+                        <div class="fs-3">Pedido {{order.pk}} - {{order.call}}</div>
+                        <div class="">
+                            <span class="badge text-uppercase fs-4 py-2
+                                {% if order.status == 'pending' %}
+                                text-bg-warning
+                                {% elif order.status == 'approved' %}
+                                text-bg-success
+                                {% elif order.status == 'denied' %}
+                                text-bg-danger
+                                {% elif order.status == 'delivered' %}
+                                text-bg-primary
+                                {% endif %}
+                                ">
+                                {{ order.get_status_display }}
+                            </span>
+                        </div>
+                    </div>
+                    {% if user.is_staff and order.status == 'pending' %}
+                    <div class="content-header">
+                        <a class="btn btn-success btn-gap" href="{% url 'evaluate-order' order.pk %}">
+                            <i class="bi bi-star-fill"></i>
+                            AVALIAR PEDIDO
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+                <hr>
+            </div>
+            <div class="content-header d-flex align-items-baseline my-2">
+                <div>
+                    <p>AUTOR: <strong>{{ order.user.get_full_name}}</strong></p>
+                    {% if user.is_staff %}
+                    <p>INSTITUIÇÃO: <strong>{{ order.institution }}</strong></p>
+                    {% endif %}
+                    <p>FEITO EM: <strong>{{ order.timestamp}}</strong></p>
+                </div>
+            </div>
 
-            <p><b>Feito em:</b> {{ order.timestamp}}</p>
-            <p><b>Por:</b> {{ order.user}}</p>
-            
-            {% if user.is_staff %}
-                <p><b>Instituição:</b> {{ order.institution }}</p>
-                {% if order.status == 'pending' %}
-                    <a href="{% url 'evaluate-order' order.pk %}" class='btn btn-info btn-sm' >Avaliar pedido</a>   
-                {% elif order.status == 'approved' or order.status == 'delivered' %}
-                    <a href="{% url 'order-report' order.pk %}" target="_blank" class='btn btn-info btn-sm' >Gerar Termo de Recebimento</a>   
-                {% endif %}
-            {% endif %}
-            
             <div class="table-responsive">
-                <br>
-                <table class="table table-striped">
+                <table class="table table-striped text-center ">
                     <thead>
                         <tr>
-                            <th>Produto</th>
-                            <th>Preço</th>
-                            <th>Quantidade Pedida</th>
-                            <th>Quantidade Disponivel</th>
-                            <th>Saldo Atual da Chamada</th>
-                            <th>Situação</th>
+                            <th>PRODUTO</th>
+                            <th>QUANT. PEDIDA</th>
+                            <th>QUANT. DISPONIVEL</th>
+                            <th>SALDO ATUAL</th>
+                            <th>VALOR UNITÁRIO</th>
+                            <th>VALOR TOTAL</th>
+                            <th>SITUAÇÃO</th>
                         </tr>
                     </thead>
 
@@ -43,39 +65,63 @@
                         {% for object in order.products %}
                             <tr>
                                 <td>{{ object.call_product.product }}</td>
-                                <td>{{ object.call_product.price }}</td>
-                                <td>{{ object.ordered_quantity }}</td>
+                                <td>{{ object.ordered_quantity }} {{object.call_product.product.unit}}</td>
                                 <td>
                                     {% if order.status != 'pending' %}
                                         {% if object.available_quantity %}
-                                        {{ object.available_quantity }}
+                                        {{ object.available_quantity }} {{object.call_product.product.unit}}
                                         {% elif object.status == 'denied' %}
                                         <i>Produto Negado</i>
                                         {% else %}
                                         <i>Quant. Pedida</i>
                                         {% endif %}
                                     {% else %}
-                                    Ainda não avaliado
+                                    ----------
                                     {% endif %}
                                 </td>
                                 <td>{{object.call_product.balance}} {{object.call_product.product.unit}}</td>
+                                <td>{{ object.call_product.price }}</td>
+                                <td>{{ object.get_quantity_price }}</td>
                                 {% if order.status != 'pending' %}
-                                <td>{{ object.status }}</td>   
+                                <td>
+                                    <div class="badge text-uppercase fw-semibold
+                                        {% if object.status == 'parcial' %}
+                                        text-bg-warning
+                                        {% elif object.status == 'available' %}
+                                        text-bg-success
+                                        {% elif object.status == 'denied' %}
+                                        text-bg-danger
+                                        {% endif %}
+                                        ">
+                                        {{ object.get_status_display }}
+                                    </div>
+                                </td>
                                 {% else %}
-                                <td>-------</td>
+                                <td>--------</td>
                                 {% endif %}
                             </tr>
                         {% endfor %}
-
                     </tbody>
+                    {% if order.status == 'approved' or order.status == 'delivered' %}
+                    <tfoot class="text-center">
+                        <td> <strong>TOTAL R$</strong></td>
+                        <td colspan="4"></td>
+                        <td>{{order.get_total_price}}</td>
+                        <td></td>
+                    </tfoot>
+                    {% endif %}
                 </table>
             </div>
 
-            <div>
-                {% if order.status == 'approved' %}
-                    Ao receber seu pedido, confirme a entrega. <a href="{% url 'order-delivered' order.pk %}" class='btn btn-success btn-sm'>Confirmar entrega</a>
-                {% endif %}  
+            {% if order.status == 'approved' %}
+            <div class="d-flex align-items-baseline my-1 gap-3 ms-3 ">
+                <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+                <p>Ao receber seu pedido, confirme a entrega.</p>
+                <a href="{% url 'order-delivered' order.pk %}" class="btn btn-outline-success ">
+                    CONFIRMAR ENTREGA
+                </a>
             </div>
+            {% endif %}  
         </div>
 
 {% endblock content %}

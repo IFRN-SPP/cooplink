@@ -4,9 +4,23 @@
     {% if user.is_staff %}
       <td>{{ object.institution }}</td>
     {% endif %}
-    <td>{{ object.user }}</td>
-    <td>{{ object.status }}</td>
-    <td>{{ object.timestamp }}</td>
+    <td>{{ object.user.get_full_name }}</td>
+    <td>
+      <div class="badge text-uppercase fw-semibold
+        {% if object.status == 'pending' %}
+        text-bg-warning
+        {% elif object.status == 'approved' %}
+        text-bg-success
+        {% elif object.status == 'denied' %}
+        text-bg-danger
+        {% elif object.status == 'delivered' %}
+        text-bg-primary
+        {% endif %}
+        ">
+        {{ object.get_status_display }}
+      </div>
+    </td>
+    <td>{{ object.timestamp|date:"SHORT_DATETIME_FORMAT" }}</td>
 
     <td>
       <!-- Dropdown menu -->

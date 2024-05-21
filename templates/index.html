@@ -109,7 +109,10 @@
         </div>
         {% else %}
         <h3 class="poppins-bold">Sem Chamada Ativa</h3>
-        <a href="{% url 'call-list' %}">Minhas Chamadas</a>
+        <hr>
+        <div class="my-3">
+            <a href="{% url 'call-list' %}" class=" btn btn-outline-success "><i class="bi bi-file-earmark me-2"></i> MINHAS CHAMADAS</a>
+        </div>
         {% endif %}
     </div>
 </div>
