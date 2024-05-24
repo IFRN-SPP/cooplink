@@ -356,7 +356,7 @@ def OrderReport(request, pk):
     data = {}
     order = get_object_or_404(Order, pk=pk)
 
-    if not order.status == ('approved' or 'delivered'):
+    if (order.status != 'approved') and (order.status != 'delivered'):
         messages.warning(request, "Não é possível gerar o relatório de um Pedido que não foi aprovado ou entregue")
         return redirect('detail-order', pk)
 
