@@ -8,6 +8,22 @@
     <div class="d-flex justify-content-between">
       <div class="d-flex align-items-baseline gap-3 mb-3">
         <h3 class="poppins-bold">Chamada {{ call.number }}</h3>
+        <div class="">
+          <span class="badge text-uppercase fs-4 py-2
+              {% if call.active %}
+              text-bg-success
+              {% else %}
+              text-bg-warning
+              {% endif %}
+              ">
+              
+              {% if call.active %}
+              Ativa
+              {% else %}
+              Inativa
+              {% endif %}
+          </span>
+      </div>
       </div>
 
       <div class="content-header">
@@ -54,7 +70,7 @@
             <td>{{ product.price }}</td>
             {% if user.is_staff %}
               <td>
-                <a href="{% url 'delete-call-product' product.pk %}" class="btn btn-danger btn-sm" title="Excluir">x</a>
+                <a href="{% url 'delete-call-product' product.pk %}" class="btn btn-danger btn-sm" title="Excluir"><i class="bi bi-trash3-fill"></i> Excluir </a>
               </td>
             {% endif %}
           </tr>
