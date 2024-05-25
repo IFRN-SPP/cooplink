@@ -7,16 +7,17 @@
 {% block content %}
   {% include 'partials/modal-form.html' %}
 
-    <div class="container justify-content-center table-background">
+  <div class="container">
+    <div class="table-background">
       <div class="content-header justify-content-between">
-        <h3 class="poppins-bold">Pedidos</h3>
+        <h3 class="poppins-bold">PEDIDOS</h3>
         <hr>
         <div class="d-flex my-3 gap-3">
           {% if user.is_staff %}
-            <a href="{% url 'create-order-admin' %}" class="btn btn-success btn-sm"><i class="bi bi-plus-circle me-2"></i> NOVO PEDIDO</a>
-            <a href="{% url 'week-report' %}" class="btn btn-outline-success  btn-sm" target="_blank"><i class="bi bi-newspaper me-2"></i> RELÁTORIO SEMANAL</a>
+            <a href="{% url 'create-order-admin' %}" class="btn btn-success btn-gap"><i class="bi bi-plus-circle"></i> NOVO PEDIDO</a>
+            <a href="{% url 'week-report' %}" class="btn btn-success btn-gap" target="_blank"><i class="bi bi-newspaper"></i> RELÁTORIO SEMANAL</a>
           {% else %}
-            <a href="{% url 'create-order' %}" class="btn btn-success"><i class="bi bi-plus-circle me-2"></i> NOVO PEDIDO</a>
+            <a href="{% url 'create-order' %}" class="btn btn-success btn-gap"><i class="bi bi-plus-circle"></i> NOVO PEDIDO</a>
           {% endif %}
         </div>
       </div>
@@ -44,6 +45,7 @@
         {% include 'partials/pagination.html' %}
       </div>
     </div>
+  </div>
 {% endblock %}
 {% block script %}
   <script src="{% static 'js/jquery.ajax.js' %}"></script>

@@ -131,3 +131,16 @@ table{
 .modal{
   transition: all 0.15s ease-in-out !important;
 }
+
+.alert-box{
+  max-width: fit-content;
+  padding: .5rem .7rem;
+  margin: .5rem 0;
+  border: .1rem solid var(--main-bg-color);
+  border-radius: var(--border-radius);
+}
+
+.alert{
+  color: var(--black-color) !important;
+  border: none !important;
+}
