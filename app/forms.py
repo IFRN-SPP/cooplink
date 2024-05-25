@@ -8,7 +8,6 @@ from django.utils import timezone
 
 from .models import *
 
-
 class InstitutionForm(forms.ModelForm):
     class Meta:
         model = Institution
@@ -57,6 +56,16 @@ class CallProductForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_show_labels = False
 
+class CallUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Call
+        fields = ['number', 'institution', 'start', 'end']
+        widgets = {
+            'number': forms.TextInput(attrs={'class': 'form-control'}),
+            'institution': forms.TextInput(attrs={'class': 'form-control'}),
+            'start': forms.DateInput(attrs={'class': 'form-control'}),
+            'end': forms.DateInput(attrs={'class': 'form-control'}),
+        }
 
 CallProductFormSet = inlineformset_factory(
     Call, CallProduct, form=CallProductForm,
