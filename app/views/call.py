@@ -13,8 +13,6 @@ from app.utils.mixins import StaffRequiredMixin
 
 from django.views.generic.edit import UpdateView
 
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Row, Column
 
 class CallList(LoginRequiredMixin, AjaxListView):
     model = Call
@@ -45,11 +43,9 @@ class CallList(LoginRequiredMixin, AjaxListView):
 
 class CallUpdate(LoginRequiredMixin, StaffRequiredMixin, UpdateView):
     model = Call
-    fields = ['number', 'institution', 'start', 'end']
+    form_class = CallUpdateForm
     template_name = 'call/create.html'
     success_url = reverse_lazy('call-list')
-
-    
 
 
 @login_required

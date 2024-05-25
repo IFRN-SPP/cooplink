@@ -24,6 +24,10 @@ class CallForm(forms.ModelForm):
     class Meta:
         model = Call
         fields = ("__all__")
+        widgets = {
+            "start": forms.DateInput(format = ('%Y-%m-%d'), attrs = {'type': 'date', 'class': 'form-control'}),
+            "end": forms.DateInput(format = ('%Y-%m-%d'), attrs = {'type': 'date', 'class': 'form-control'}),
+        }
 
     def clean(self):
         cleaned_data = super().clean()
@@ -37,7 +41,7 @@ class CallForm(forms.ModelForm):
                 current_date_formatted = current_date.strftime('%d/%m/%Y')
                 raise forms.ValidationError(f'A data de término deve ser maior que a data atual: {current_date_formatted}')
         return cleaned_data
-    
+
 
 
 class CallActiveForm(forms.ModelForm):
@@ -56,16 +60,16 @@ class CallProductForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_show_labels = False
 
+
 class CallUpdateForm(forms.ModelForm):
     class Meta:
         model = Call
         fields = ['number', 'institution', 'start', 'end']
         widgets = {
-            'number': forms.TextInput(attrs={'class': 'form-control'}),
-            'institution': forms.TextInput(attrs={'class': 'form-control'}),
-            'start': forms.DateInput(attrs={'class': 'form-control'}),
-            'end': forms.DateInput(attrs={'class': 'form-control'}),
+            "start": forms.DateInput(format = ('%Y-%m-%d'), attrs = {'type': 'date', 'class': 'form-control'}),
+            "end": forms.DateInput(format = ('%Y-%m-%d'), attrs = {'type': 'date', 'class': 'form-control'}),
         }
+
 
 CallProductFormSet = inlineformset_factory(
     Call, CallProduct, form=CallProductForm,
