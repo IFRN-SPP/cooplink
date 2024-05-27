@@ -70,6 +70,19 @@ class CallUpdateForm(forms.ModelForm):
             "end": forms.DateInput(format = ('%Y-%m-%d'), attrs = {'type': 'date', 'class': 'form-control'}),
         }
 
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get("start")
+        end_date = cleaned_data.get("end")
+        current_date = timezone.now().date()
+        if start_date and end_date:
+            if start_date >= end_date:
+                raise forms.ValidationError("A data de início deve ser anterior à data de término.")
+            elif end_date <= current_date:
+                current_date_formatted = current_date.strftime('%d/%m/%Y')
+                raise forms.ValidationError(f'A data de término deve ser maior que a data atual: {current_date_formatted}')
+        return cleaned_data
+
 
 CallProductFormSet = inlineformset_factory(
     Call, CallProduct, form=CallProductForm,
