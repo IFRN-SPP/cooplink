@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load ajax_tags %}
+{% block title %}
+  Pedidos
+{% endblock %}
+{% block content %}
+  {% include 'partials/modal-form.html' %}
+
+  <div class="container">
+    <div class="table-background">
+      <div class="content-header justify-content-between">
+        <h3 class="poppins-bold">PEDIDOS</h3>
+        <hr>
+        <div class="d-flex my-3 gap-3">
+          {% if user.is_staff %}
+            <a href="{% url 'create-order-admin' %}" class="btn btn-success btn-gap"><i class="bi bi-plus-circle"></i> NOVO PEDIDO</a>
+            <a href="{% url 'week-report' %}" class="btn btn-success btn-gap" target="_blank"><i class="bi bi-newspaper"></i> RELÁTORIO SEMANAL</a>
+          {% else %}
+            <a href="{% url 'create-order' %}" class="btn btn-success btn-gap"><i class="bi bi-plus-circle"></i> NOVO PEDIDO</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table id="{% table_id %}" class="table table-striped">
+          <thead>
+            <tr>
+              <th>N°</th>
+              {% if user.is_staff %}
+                <th>INSTITUIÇÃO</th>
+              {% endif %}
+              <th>AUTOR</th>
+              <th>SITUAÇÃO</th>
+              <th>FEITO EM</th>
+              <th>OPÇÕES</th>
+            </tr>
+          </thead>
+
+          <tbody class="table-group-divider ">
+            {% include 'partials/order/list.html' %}
+          </tbody>
+        </table>
+
+        {% include 'partials/pagination.html' %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block script %}
+  <script src="{% static 'js/jquery.ajax.js' %}"></script>
+{% endblock %}

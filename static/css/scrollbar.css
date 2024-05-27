@@ -1,0 +1,13 @@
+
+/* baseado em Chromium */
+::-webkit-scrollbar {
+  display: none;
+}
+/* Firefox */
+html {
+  scrollbar-width: none;
+}
+/* Edge antigo */
+body {
+  -ms-overflow-style: none;
+}

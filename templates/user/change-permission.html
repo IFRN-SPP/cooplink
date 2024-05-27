@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Mudar Permissão{% endblock title %}
+{% block navbar %}{% endblock navbar %}
+{% block content %}
+<h1>MUDAR PERMISSÃO </h1>
+<div class="lead">Digite a mudar permissão de {{ form.instance }}</div>
+
+<form action="" method="post">
+{% csrf_token %}
+
+{% if form.instance.is_staff %}
+<h3>Remover as permissões de administração de {{ form.instance }}?</p>
+{% else %}
+<h3>Adicionar permissões de administração a {{ form.instance }}?</h3>
+{% endif %}
+
+<div class="d-none">{{form.as_p}}</div>
+
+<a href="{% url "user-list" %}" class="btn btn-danger">Cancelar</a>
+<button class="btn btn-primary" type="submit">Mudar Permissão</button>
+</form>
+{% endblock %}

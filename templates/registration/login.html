@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %} Login {% endblock title %}
+{% block navbar %}{% endblock navbar %}
+
+{% block content %}
+<div class="container">
+  <div class="form-background mt-5">
+      <div class="content-header d-flex align-items-baseline justify-content-between">
+          <h3 class="poppins-bold">LOGIN</h3>
+          <h3 class="text-secondary poppins-bold">COOPPOTENGI</h3>
+      </div>
+
+      <hr class="divider opacity-50">
+
+      <form action="" method="post">
+          <div class="d-flex flex-column form-box">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+              <div class="alert alert-danger font-10" role="alert">
+                {{error}}
+              </div>
+              {% endfor %}
+            {% endif %}
+
+            <div class="form-group">
+              {{ form.username|as_crispy_field }}
+            </div>
+            <div class="form-group">
+              {{ form.password|as_crispy_field }}
+            </div>
+
+              <button type="submit" class="btn btn-success mt-3">ENTRAR</button>
+          </div>
+      </form>
+  </div>
+</div>
+{% endblock content %}

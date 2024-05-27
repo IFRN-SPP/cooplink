@@ -1,0 +1,29 @@
+{% load crispy_forms_tags %}
+{% load static %}
+<div class="modal-header">
+  <h4 class="modal-title poppins-bold">{{ title }}</h4>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+{% if modal_form %}
+  <div class="fs-5">Preencha os campos obrigatórios <span class="asteriskField fw-semibold ">*</span></div>
+  <hr>
+  <div class="form-box">
+    {{ form|crispy }}
+  </div>
+
+{% elif modal_delete %}
+  <div class="fs-5">Deletar: <strong>{{ object }}</strong>?</div>
+
+{% endif %}
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+  <button type="submit" class="btn {{ button_class }}">{{ button_text }}</button>
+</div>
+
+<script src="{% static 'js/jqueryMasks.js' %}"></script>
+
+

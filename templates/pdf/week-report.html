@@ -1,0 +1,109 @@
+<head>
+  <style>
+    @page {
+      size: a4 portrait;
+      @frame header_frame {           /* Static Frame */
+          -pdf-frame-content: header_content;
+          left: 50pt; width: 512pt; top: 20pt; height: 40pt;
+      }
+      @frame content_frame {          /* Content Frame */
+          left: 50pt; width: 492pt; top: 60pt; height: 662pt;
+      }
+      @frame footer_frame {           /* Another static Frame */
+          -pdf-frame-content: footer_content;
+          left: 50pt; width: 512pt; top: 780pt; height: 20pt;
+      }
+    }
+    *{
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+    body{
+      font-size: 14px;
+      line-height: 1.5px;
+    }
+    itens th, itens td{
+      padding: 4px; 
+      text-align: center;
+      border: 1.5px solid #000; 
+    }
+    
+  </style>
+  </head>
+  <body>
+      <!-- Content for Static Frame 'header_frame' -->
+      <header id="header_content">
+        {% include "pdf/header.html" %}
+      </header>
+  
+      <!-- Content for Static Frame 'footer_frame' -->
+      <div id="footer_content">Página <pdf:pagenumber>
+          de <pdf:pagecount>
+      </div>
+  
+      <!-- HTML Content -->
+      <div style="border: 1.5px solid #000; text-align:center;">
+        <h1 style="font-size: 16px; font-weight: 600; padding: 10px;">
+          RELATÓRIO SEMANAL DE &nbsp;{{monday|date:"SHORT_DATE_FORMAT"}}&nbsp; A &nbsp;{{friday|date:"SHORT_DATE_FORMAT"}}&nbsp;
+        </h1>
+      </div>
+
+      <itens>
+        <h2>PRODUTOS TOTAIS</h2>
+        {% if total_products.items %}
+        <table>
+          <thead>
+            <tr>
+              <th style="background-color: #ddd">PRODUTO</th>
+              <th style="background-color: #ddd">QUANTIDADE</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product_name, quantity in total_products.items %}
+            <tr>
+              <td> {{product_name}}</td>
+              <td> {{quantity.quantity}} {{quantity.unit}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <i>&nbsp;SEM PRODUTOS</i>
+        {% endif %}
+      </itens>
+
+      <h2>INSTITUIÇÕES</h2>
+
+      <itens>
+        {% for order in orders %}
+        <h3>{{order.institution}}</h3>
+        <table>
+          <thead>
+            <tr>
+              <th style="background-color: #ddd">PRODUTO</th>
+              <th style="background-color: #ddd">QUANTIDADE</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ordered_product in order.available_products %}
+            <tr>
+                <td>{{ ordered_product.call_product.product.name }}</td>
+                {% if ordered_product.status == 'available' %}
+                  <td>{{ ordered_product.ordered_quantity }}  {{ ordered_product.call_product.product.unit }}</td>
+                {% elif ordered_product.status == 'parcial' %}
+                  <td>{{ ordered_product.available_quantity }}  {{ ordered_product.call_product.product.unit }}</td>
+                {% endif %}
+              </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+        <br>
+        {% empty %}
+        <i>&nbsp;SEM INSTITUIÇÔES</i>
+        {% endfor %}
+      </itens>
+
+  </body>
+  </html>

@@ -1,0 +1,4 @@
+<form method="post" action="{% url 'js-delete-institution' object.pk %}" class="js-delete-form">
+{% csrf_token %}
+{% include "partials/form.html" with modal_delete=True title="Excluir Instituição" button_text="Excluir" button_class="btn-danger" %}
+</form>

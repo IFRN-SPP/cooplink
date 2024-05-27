@@ -1,0 +1,123 @@
+<head>
+  <style>
+    @page {
+      size: a4 portrait;
+      @frame header_frame {           /* Static Frame */
+          -pdf-frame-content: header_content;
+          left: 50pt; width: 512pt; top: 20pt; height: 40pt;
+      }
+      @frame content_frame {          /* Content Frame */
+          left: 50pt; width: 492pt; top: 60pt; height: 862pt;
+      }
+      @frame footer_frame {           /* Another static Frame */
+          -pdf-frame-content: footer_content;
+          left: 50pt; width: 512pt; top: 780pt; height: 20pt;
+      } 
+    }
+    *{
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+    body{
+      font-size: 14px;
+      line-height: 1.5px;
+    }
+    
+    itens th, itens td{
+      padding: 4px; 
+      text-align: center; 
+      font-weight:bold;
+      border: 1.5px solid #000; 
+    }
+    
+  </style>
+  </head>
+  <body>
+      <!-- Content for Static Frame 'header_frame' -->
+      <header id="header_content">
+        {% include "pdf/header.html" %}
+      </header>
+
+      <!-- HTML Content -->
+      <div style="border: 1.5px solid #000;  line-height: 27px; text-align: center;">
+        <h1 style="font-size: 16px; font-weight: 600; padding: 10px 10px 0 10px;">
+          TERMO DE RECEBIMENTO E ACEITABILIDADE DE PRODUTOS DA AGRICULTURA FAMILIAR
+        </h1>
+      </div>
+
+      <div style="border: 1.5px solid #000; text-align:center;  line-height: 27px;">
+        <p style="font-size: 14px; padding: 10px 10px 0 10px;">
+          Atesto que a <strong>{{order.institution.name}}</strong>, CNPJ <strong>{{order.institution.cnpj}}</strong>, representada por
+          <br>
+          ____________________________________, CPF ___________________ 
+          <br>
+          recebeu em _____/_____/_____ da CoopPotengi os produtos abaixo relacionados:
+        </p>
+      </div>
+
+      <itens>
+        {% if order %}
+        <table>
+          <thead>
+            <tr>
+              <td width="50px">N°</td>
+              <td width="170px">PRODUTO</td>
+              <td>UNIDADE</td>
+              <td>QUANT.</td>
+              <td>VALOR UNIT(*)</td>
+              <td>VALOR TOTAL</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ordered_product in order.available_products %}
+            <tr>
+              <td width="50px">{{forloop.counter}}</td>
+              <td width="170px">{{ordered_product.call_product.product.name}}</td>
+              <td>{{ordered_product.call_product.product.unit}}</td>
+                {% if ordered_product.status == 'available' %}
+                  <td>{{ ordered_product.ordered_quantity}} </td>
+                {% elif ordered_product.status == 'parcial' %}
+                  <td>{{ ordered_product.available_quantity}} </td>
+                {% endif %}
+              <td>{{ordered_product.call_product.price}}</td>
+              <td>{{ ordered_product.get_quantity_price}} </td>
+            </tr>
+            {% endfor %}
+            <tr>
+              <td colspan="5" style="text-align: left;">TOTAL R$</td>
+              <td>{{ order.get_total_price }}</td>
+            </tr>
+
+          </tbody>
+        </table>
+        {% endif %}
+      </itens>
+      <div style="border: 1.5px solid #000; text-align:start;  line-height: 21px;">
+        <p style="font-size: 14px; padding: 10px 10px 0 10px;">
+          *Nestes termos, os produtos entrgues de acordo com o Projeto de Vendas de Gêneros Alimenticios da Agricultura Familiar.
+          <br>
+          <br>
+          Declaro ainda que o(s) produto(s) está(ão) de acordo com os padrões de qualidade aceitos por esta instiuição, pelo(s) qual(is) concedemos a aceitabilidade, compromentendo-nos a dar a destinação final aos produtos estabelecidos.
+        </p>
+      </div>
+      <div style="border: 1.5px solid #000; text-align:start;  line-height: 27px;">
+        <p style="font-size: 14px; padding: 10px 10px 0 10px;">
+          OBSERVAÇÕES: 
+          <br>
+          <br>
+        </p>
+      </div>
+        <p align="right">São Paulo do Potengi/RN {{today}}</p>
+      <br>
+      <div  align="center">
+        <p>__________________________________________________</p>
+        <p>NOME:</p>
+        <p>CPF:</p>
+  
+        <p>__________________________________________________</p>
+        <p>CoopPotengi</p>
+      </div>
+
+  </body>
+  </html>

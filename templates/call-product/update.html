@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Produtos das Chamadas{% endblock title %}
+
+{% block content %}
+
+    <div class="container justify-content-center table-background">
+        <h3 class="poppins-bold" >Editar Produtos da Chamada</h3>
+        <p class="lead text-muted">Preencha todos os campos obrigatórios:</p>
+
+        <hr>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            <br>
+            <p class='h4'>{{call.institution}} - Chamada: {{call.number}} </p>
+            <p> Situação: {% if call.active %}ATIVO{% else %}FECHADA{% endif %}</p>
+
+            {{ form_product.management_form}} 
+            <div class="table-responsive">
+                <table class="table table-striped mt-4">
+                    <thead>
+                        <tr>
+                            <td>Produtos</td>
+                            <td>Preço (R$)</td>
+                            <td>Saldo do Produto</td>
+                            <td>Apagar</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody >
+                    {% for form in form_product %}
+                        <tr class='inlineform'>
+                            <td>{{ form.product }}</td>
+                            <td>{{ form.price }}</td>
+                            <td>{{ form.balance }}</td>
+                            <td class="d-none">{{ form.id }}</td>
+                            <td class="d-none">{% if form.instance.pk %}{{ form.DELETE}}{% endif %}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                </table>    
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-success">Cadastrar</button>
+        </form>
+
+    </div>
+
+{% endblock content %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(function() {
+            $('.inlineform').formset({
+                prefix: '{{ form_product.prefix }}',
+                addText: '<button type="submit" class="btn btn-success btn-sm">+</button>',
+                deleteText: '<button type="submit" class="btn btn-danger btn-sm">x</button>',
+            });
+        })
+    </script>
+
+    <script src="{% static 'js/get_products.js' %}"></script>
+{% endblock script %}

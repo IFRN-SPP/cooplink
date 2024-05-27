@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load ajax_tags %}
+{% block title %}
+  Chamadas
+{% endblock %}
+
+{% block content %}
+  {% include 'partials/modal-form.html' %}
+
+  <div class="table-background container justify-content-center">
+    <div class="content-header d-flex justify-content-between">
+      {% if user.is_staff %}
+        <h3 class="poppins-bold">Chamadas</h3>
+      {% else %}
+        <h3 class="poppins-bold">Minhas chamadas</h3>
+      {% endif %}
+
+      {% if user.is_staff %}
+        <div>
+          <a href="{% url 'create-call' %}" class="btn btn-success"><i class="bi bi-plus-circle"></i> Cadastrar chamada</a>
+        </div>
+      {% endif %}
+    </div>
+
+    <form id="{% form_id %}" action="?" method="GET">
+      <div class="d-md-flex my-2">
+        <input class="search form-control w-50" type="number" name="search" value="{{number}}" placeholder="Buscar número da chamada...">
+      </div>
+    </form>
+
+    <div class="my-2">
+
+    </div>
+
+    <div class="">
+      <table id="{% table_id %}" class="table table-striped mt-4">
+        <thead>
+          <tr>
+            <th>Número</th>
+            {% if user.is_staff %}
+              <th>Instituição</th>
+            {% endif %}
+            <th>Início</th>
+            <th>Término</th>
+            <th>Situação</th>
+            <th>Opções</th>
+          </tr>
+        </thead>
+
+        <tbody class="table-group-divider" >
+          {% include 'partials/call/list.html' %}
+        </tbody>
+      </table>
+      {% include 'partials/pagination.html' %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{% static 'js/jquery.ajax.js' %}"></script>
+{% endblock %}

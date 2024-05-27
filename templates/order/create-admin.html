@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}Cadastrar Pedido{% endblock title %}
+{% block content %}
+
+        <div class="container justify-content-center table-background">
+            <h3 class="poppins-bold">Cadastrar Pedido</h3>
+            <p class="lead">Preencha todos os campos obrigatórios <span class="asteriskField fw-semibold">*</span></p>
+            <hr>
+            <div class="form-box">
+                <form action="" method="POST">
+                    {% csrf_token %}
+
+                    <div class="w-25">
+                        {{ form.institution|as_crispy_field }}
+                        {{ form.call|as_crispy_field }}
+                    </div>
+
+                    {% if form_product %}
+                    {{ form_product.management_form }}
+                        <h3>Produtos do Pedidos</h3>
+                        <div class="table-responsive">
+                            <table class="table ">
+                                <thead>
+                                    <tr>
+                                        <th>PRODUTOS</th>
+                                        <th>QUANTIDADE</th>
+                                        <th>SALDO DO PRODUTO</th>
+                                        <th>APAGAR</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider">
+                                    {% for form in form_product %}
+                                        <tr class='inlineform' id="form-row-{{ form.prefix }}">
+                                            <td class='product-select'>{{ form.call_product|as_crispy_field }}</td>
+
+                                            <td>{{ form.ordered_quantity|as_crispy_field }}</td>
+                                            <td  class="product-balance fw-semibold "> </td>
+                                            <td></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    {% endif %}
+
+                    <div class="d-flex align-items-baseline justify-content-end mt-5 gap-5">
+                        <a class="btn btn-danger" href="{% url 'order-list' %}">CANCELAR</a>
+                        <button class="btn btn-success" type="submit">FAZER PEDIDO</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+{% endblock content %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(function() {
+            $('.inlineform').formset({
+                prefix: '{{ form_product.prefix }}',
+                addText: '<button type="submit" class="btn btn-success btn-sm">+</button>',
+                deleteText: '<button type="submit" class="btn btn-danger btn-sm">x</button>',
+            });
+        })
+    </script>
+
+    <script src="{% static "js/get_products.js" %}"></script>
+    
+{% endblock script %}

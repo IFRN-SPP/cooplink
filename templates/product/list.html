@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load ajax_tags %}
+{% load crispy_forms_tags %}
+{% block title %}
+  Produtos
+{% endblock %}
+{% block content %}
+  {% include 'partials/modal-form.html' %}
+
+  <div class="container table-background">
+    <div class="content-header d-flex justify-content-between">
+      <h3 class="poppins-bold">Produtos</h3>
+      <div>
+        <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-product' %}">
+          <i class="bi bi-plus-circle me-2"></i>
+          Cadastrar Produto
+        </button>
+      </div>
+    </div>
+
+    <form id="{% form_id %}" action="?" method="GET">
+      <div class="d-md-flex my-2">
+        <input class="search form-control w-50" type="text" name="search" value="{{name}}" placeholder="Buscar produto...">
+      </div>
+    </form>
+
+    <div class="my-2">
+
+    </div>
+
+    <div class="table-responsive " >
+      <table id="{% table_id %}" class="table table-striped align-middle">
+        <thead>
+          <th>N°</th>
+          <th>NOME</th>
+          <th>UNIDADE</th>
+          <th>OPÇÕES</th>
+        </thead>
+        <tbody class="table-group-divider ">
+          {% include 'partials/product/list.html' %}
+        </tbody>
+      </table>
+    </div>
+
+    {% include 'partials/pagination.html' %}
+  </div>
+{% endblock %}
+{% block script %}
+  <script src="{% static 'js/jquery.ajax.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,146 @@
+:root {
+  --main-bg-color: #B1C1CA;
+  --main-bg2-color: #bfc6ca88;
+  --white-color: #f8fbf9;
+  --black-color: #0E0E0E;
+  --green-color: #00870E;
+
+  --border-radius: 5px;
+  --content-border-radius: 15px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: var(--main-bg-color);
+}
+
+hr{
+  margin: 0;
+  border: .1rem solid var(--main-bg2-color);
+  opacity: 1;
+}
+table{
+  border: .1rem solid var(--main-bg2-color) !important;
+  th, td{
+    vertical-align: middle;
+  }
+}
+.navbar-bg-color {
+  background-color: var(--white-color);
+}
+
+.poppins-semi-bold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.poppins-bold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.poppins-medium {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.table-background {
+  min-height: 400px;
+  max-height: auto;
+  border-radius: var(--content-border-radius);
+  background-color: var(--white-color);
+  margin-block: 1rem;
+  padding: 2rem;
+}
+
+.form-background {
+  max-width: 400px;
+  border-radius: var(--content-border-radius);
+  background-color: var(--white-color);
+  margin: 0 auto;
+  margin-block: 1rem;
+  padding: 2rem;
+}
+
+.divider {
+  border: 3px solid var(--green-color);
+}
+.table-group-divider {
+  border-top: 2px solid var(--green-color) !important;
+}
+.content-header p, .content-header label {
+  font-size: 1.2rem;
+}
+
+.form-control, .form-select{
+  padding: .375rem .75rem;
+  border-radius: var(--border-radius);
+  border: .1rem solid var(--main-bg-color);
+  box-shadow: none !important;
+  &:focus{
+    border: .1rem solid var(--black-color);
+  }
+}
+
+.form-select{
+  cursor: pointer;
+  &:hover{
+    border: .1rem solid var(--black-color);
+  }
+}
+
+.form-box{
+  margin-block: .8rem;
+}
+
+.asteriskField{
+  color: #f45353;
+}
+
+.font-10{
+  font-size: .9rem;
+}
+
+
+.btn{
+  transition: all 0.15s ease-in-out !important;
+  border-radius: var(--border-radius);
+}
+
+.btn-rounded{
+  border-radius: 50%;
+  width: 2.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-gap{
+  display: flex;
+  gap: .7rem;
+}
+
+.modal{
+  transition: all 0.15s ease-in-out !important;
+}
+
+.alert-box{
+  max-width: fit-content;
+  padding: .5rem .7rem;
+  margin: .5rem 0;
+  border: .1rem solid var(--main-bg-color);
+  border-radius: var(--border-radius);
+}
+
+.alert{
+  color: var(--black-color) !important;
+  border: none !important;
+}

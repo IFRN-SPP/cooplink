@@ -1,0 +1,4 @@
+<form method="post" action="{% url 'js-update-user' form.instance.pk %}" class="js-update-form">
+{% csrf_token %}
+{% include "partials/form.html" with modal_form=True title="Editar Usuário" button_text="Salvar" button_class="btn-primary" %}
+</form>

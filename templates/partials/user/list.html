@@ -1,0 +1,40 @@
+{% for object in object_list %}
+<tr>
+  <td>{{object.pk}}</td>
+  <td>{{object.username}}</td>
+  <td>{{object.get_full_name}}</td>
+  <td>{{object.institution}}</td>
+  <td>
+    {% if object.is_active %}
+    <span class="badge text-bg-success ">ATIVO</span>
+    {% else %}
+    <span class="badge text-bg-secondary ">INATIVO</span>
+    {% endif %}
+  </td>
+  <td>
+    {% if object.is_staff %}
+    <span class="badge text-bg-success ">SIM</span>
+    {% else %}
+    <span class="badge text-bg-secondary ">NÃO</span>
+    {% endif %}
+  </td>
+  <td>
+    <!-- Dropdown menu -->
+    <div class="dropdown">
+      <button class="btn btn-outline-success btn-rounded ms-2" type="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <i class="bi bi-three-dots-vertical"></i>
+      </button>
+      <ul class="dropdown-menu">
+          <li><a class="js-update dropdown-item" data-url="{% url 'js-update-user' object.pk %}"> <i class="bi bi-pencil-fill"></i> Editar </a></li>
+          <li><a class="dropdown-item" href="{% url "update-user-permission" object.pk %}"> <i class="bi bi-exclamation-triangle-fill"></i> Alterar permissões</a></li>
+          <li><a class="dropdown-item" href="{% url "update-user-password" object.pk %}"> <i class="bi bi-arrow-repeat"></i> Mudar senha </a></li>
+          <li>
+              <hr class="dropdown-divider">
+          </li>
+          <li><a class="js-delete dropdown-item" data-url="{% url 'js-delete-user' object.pk %}"> <i class="bi bi-trash3-fill"></i> Excluir</a></li>
+      </ul>
+    </div>
+  </td> 
+</tr>
+{% endfor %}

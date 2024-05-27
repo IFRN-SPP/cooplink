@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Avaliar Pedido {% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="table-background">
+        <h3 class="poppins-bold"> <span class="text-success me-2">AVALIAR</span> PEDIDO {{order.pk}} - CHAMADA {{order.call.number }}</h3>
+        <hr>
+        <div class="content-header d-flex align-items-baseline my-2">
+            <div>
+                <p>AUTOR: {{order.user.get_full_name}}</p>
+                <p>INSTITUIÇÃO: {{order.institution.name}}</p>
+            </div>
+        </div>
+
+        <h4 class="poppins-bold">PRODUTOS DO PEDIDO</h4>
+        <form  method='POST' action="{% url 'evaluate-order' order.pk %}" >
+            {% csrf_token %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>PRODUTO</th>
+                            <th>QUANT. PEDIDA</th>
+                            <th>QUANT. DISPONÍVEL</th>
+                            <th>SALDO ATUAL</th>
+                            <th>SITUAÇÃO</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider ">
+                        {% for object in order.products %}
+                        <tr>
+                            <td><strong>{{ object.call_product.product.name }}</strong></td>
+                            <td>{{ object.ordered_quantity }} {{ object.call_product.product.unit }}</td>
+                            <td class="w-25">
+                                <input class="form-control w-75" type="number" name="product_available_quantity_{{ object.pk }}" id="id_product_available_quantity_{{ object.pk }}" placeholder="Se Parcial...">
+                            </td>
+                            <td>{{ object.call_product.balance }} {{ object.call_product.product.unit }}</td>
+                            <td>
+                                <select class="form-select" name="product_status_{{ object.pk }}">
+                                    <option value="available" {% if object.status == available%}selected{% endif %}>Disponivel</option>
+                                    <option value="parcial" {% if object.status == parcial %}selected{% endif %}>Parcial</option>
+                                    <option value="denied" {% if object.status == denied %}selected{% endif %}>Negado</option>
+                                </select>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <hr>
+            </div>
+            <div class="d-flex align-items-baseline mt-3 gap-3">
+                <button type="button" class="btn btn-danger btn-gap" data-bs-toggle="modal" data-bs-target="#denied-modal">
+                    <i class="bi bi-x-circle"></i> NEGAR PEDIDO
+                </button>
+
+                <button type="button" class="btn btn-success btn-gap" data-bs-toggle="modal" data-bs-target="#confirm-modal">
+                    <i class="bi bi-check-circle"></i> APROVAR PEDIDO
+                </button>
+            </div>
+
+            {% include "partials/modal.html" with modal_id="confirm-modal" modal_title="Aprovar Pedido" modal_text="<h5>Tem certeza que deseja <strong>APROVAR</strong> esse Pedido?</h5>" btn_text="Confirmar" btn_class="btn-success"%}
+
+        </form>
+
+        <form action="{% url 'denied-order' order.pk %}" method="post">
+            {% csrf_token %}
+            {% include "partials/modal.html" with modal_id="denied-modal" modal_title="Negar Pedido" modal_text="<h5>Tem certeza que deseja <strong>NEGAR</strong> esse Pedido?</h5>" btn_text="Negar" btn_class="btn-danger"%}
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
+

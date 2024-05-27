@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar usuários</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside id="sidebar">
+            <div class="h-100">
+                <div class="sidebar-logo">
+                    <a href="#">COOPPOTENGI</a>
+                </div>
+                <!-- Sidebar Navigation -->
+                <ul class="sidebar-nav">
+                    <li class="sidebar-item">
+                        <a href="pedidos_table.html" class="sidebar-link"> Início </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a href="pedidos_table.html" class="sidebar-link"> Pedidos </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a href="chamadas_table.html" class="sidebar-link"> Chamadas </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a href="instituicoes_table.html" class="sidebar-link"> Instituições </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a href="produtos_table.html" class="sidebar-link"> Produtos </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a href="usuarios_table.html" class="sidebar-link"> Usuários </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <!-- Main Component -->
+        <div class="main">
+            <nav class="navbar navbar-expand px-3 border-bottom">
+                <!-- Button for sidebar toggle -->
+                <button class="btn" type="button" data-bs-theme="dark">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </nav>
+            <main class="content px-3 py-2">
+                <div class="container">
+                    <div class="mb-3">
+                        <div class="table-background">
+                            <div class="content-header d-flex justify-content-between">
+                                <h3 class="poppins-bold">Usuários</h3>
+                                <div>
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal"> <i class="bi bi-plus-circle"></i> Cadastrar
+                                        usuário
+                                    </button>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form action="#" method="POST">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastrar
+                                                        usuário
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close">
+                                                    </button>
+                                                </div>
+
+                                                <!-- Modal body -->
+                                                <div class="modal-body">
+                                                    <div class="d-flex flex-column column-gap-5">
+                                                        <div class="form-group">
+                                                            <label for="nome" class="form-label">Nome: </label>
+                                                            <input type="text" name="nome" class="form-control" required>
+                                                        </div>
+    
+                                                        <div class="form-group">
+                                                            <label for="senha" class="form-label">Senha: </label>
+                                                            <input type="text" name="senha" class="form-control" required>
+                                                        </div>
+    
+                                                        <div class="form-group">
+                                                            <label for="instituicao" class="form-label">Instituição: </label>
+                                                            <select name="instituicao" class="form-select cursor-pointer" required>
+                                                                <option selected disabled hidden></option>
+                                                                <option value="ifrn-spp">IFRN SPP</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Modal footer -->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger"
+                                                        data-bs-dismiss="modal">Cancelar</button>
+                                                    <button type="submit" class="btn btn-success">Cadastrar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="table table-striped mt-4">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">N°</th>
+                                        <th scope="col">USUÁRIO</th>
+                                        <th scope="col">INSTITUIÇÃO</th>
+                                        <th scope="col">ADMINISTRADOR</th>
+                                        <th scope="col">STATUS</th>
+                                        <th scope="col">OPÇÕES</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider">
+                                    <tr>
+                                        <th>1</th>
+                                        <td>Pedro</td>
+                                        <td>COOPPOTENGI</td>
+                                        <td>NÃO</td>
+                                        <td>ATIVO</td>
+                                        <td>
+                                            <!-- Dropdown menu -->
+                                            <div class="dropdown">
+                                                <button class="btn btn-success" type="button" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    <i class="bi bi-three-dots-vertical"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-fill"></i> Editar informações do usuário</a></li>
+                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-exclamation-triangle-fill"></i> Alterar permissões do usuário</a></li>
+                                                    <li><a class="dropdown-item" href="usuario_detail.html"> <i class="bi bi-eye-fill"></i> Detalhar </a></li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li><a class="dropdown-item" href="#"> <i class="bi bi-trash3-fill"></i> Excluir</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- Pagination -->
+                            <nav aria-label="Page navigation" class="position-relative">
+                                <ul class="pagination justify-content-center mt-5">
+                                    <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">Próxima</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="../script.js"></script>
+
+</body>
+
+</html>
