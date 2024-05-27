@@ -1,3 +1,4 @@
+from decouple import config
 from pathlib import Path
 from django.contrib.messages import constants
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -8,12 +9,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-900c+2@qy3(dke28a93c@g5cyel&1rni^dl53%*&l**cdwas0q'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
+TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
+
+# Deploy Settings
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_HSTS_SECONDS = 3600
+
 
 # Application definition
 DJANGO_APPS = [
@@ -36,7 +48,7 @@ THIRD_PARTY_APPS = [
     "crispy_bootstrap5",
 ]
 
-# Apps Instalaados 
+# Apps Instalados 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
 # Crispy forms bootstrap5
