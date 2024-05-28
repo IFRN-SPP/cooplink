@@ -12,7 +12,7 @@
   <a href="#sobre">Sobre</a> •
   <a href="#tecnologias">Tecnologias</a> •
   <a href="#instalação">Instalação</a> •
-  <a href="#colaboradores">Colaboradores</a> •
+  <a href="#colaboradores">Colaboradores</a>
 </p>
 
 <p align="center">
@@ -138,7 +138,7 @@ Os mais sinceros agradecimentos para as pessoas que tornaram esse projeto possí
 <table>
   <tr>
     <td align="center">
-      <a style="text-decoration: none;" href="https://github.com/dvanael" title="Ana Barbosa">
+      <a href="https://github.com/dvanael" title="Ana Barbosa">
         <img src="https://avatars.githubusercontent.com/dvanael" width="100px;" alt="collaborators pictures"/><br>
         <sub>
           <b>Ana Barbosa</b>
@@ -146,7 +146,7 @@ Os mais sinceros agradecimentos para as pessoas que tornaram esse projeto possí
       </a>
     </td>
     <td align="center">
-      <a style="text-decoration: none;"  href="https://github.com/polianadev" title="Poliana Pinheiro">
+      <a href="https://github.com/poliana-dev" title="Poliana Pinheiro">
         <img src="https://avatars.githubusercontent.com/poliana-dev" width="100px;" alt="collaborators pictures"/><br>
         <sub>
           <b>Poliana Pinheiro</b>
@@ -154,7 +154,7 @@ Os mais sinceros agradecimentos para as pessoas que tornaram esse projeto possí
       </a>
     </td>
     <td align="center">
-      <a style="text-decoration: none;"  href="https://github.com/wendersonvibes" title="Wenderson Nascimento">
+      <a href="https://github.com/wendersonvibes" title="Wenderson Nascimento">
         <img src="https://avatars.githubusercontent.com/wendersonvibes" width="100px;" alt="collaborators pictures"/><br>
         <sub>
           <b>Wenderson Nascimento</b>
@@ -169,7 +169,7 @@ Os mais sinceros agradecimentos para as pessoas que tornaram esse projeto possí
 <table>
   <tr>
     <td align="center">
-      <a style="text-decoration: none;"  href="https://github.com/dvcirilo" title="Diego Cirilo">
+      <a href="https://github.com/dvcirilo" title="Diego Cirilo">
         <img src="https://avatars.githubusercontent.com/dvcirilo" width="100px;" alt="collaborators pictures"/><br>
         <sub>
           <b>Diego Cirilo</b>
