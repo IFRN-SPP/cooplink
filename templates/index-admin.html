@@ -4,27 +4,36 @@
 {% block content %}
 
     <div class="container">
-        <div class="justify-content-center table-background">
+        <div class="table-background">
             <div class="content-header d-flex justify-content-between">
-                <h3 class="poppins-bold">Pedidos pendentes</h3>
-                <div>
-                <a href="{% url 'order-list' %}" class="btn btn-info btn-sm">Todas os Pedidos</a>
-                <a href="{% url 'create-order-admin' %}" class="btn btn-success btn-sm ">Cadastrar Pedido</a>
-                <a href="{% url 'week-report' %}" class="btn btn-warning btn-sm" target="_blank"> <i class="bi bi-newspaper"></i> Relátorio Semanal</a>
-                </div>
+                <h3 class="poppins-bold">PEDIDOS PENDENTES</h3>
             </div>
-        
-        
+            <hr>
+            <div class="d-md-flex gap-2">
+                <a href="{% url 'order-list' %}" class="btn btn-success btn-gap my-2">
+                    <i class="bi bi-file-earmark"></i>
+                    TODOS OS PEDIDOS
+                </a>
+                <a href="{% url 'create-order-admin' %}" class="btn btn-success btn-gap my-2">
+                    <i class="bi bi-plus-circle"></i>
+                    CADASTRAR PEDIDO
+                </a>
+                <a href="{% url 'week-report' %}" class="btn btn-outline-success btn-gap my-2" target="_blank">
+                    <i class="bi bi-newspaper"></i>
+                    RELÁTORIO SEMANAL
+                </a>
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>N°</th>
-                            <th>Instituição</th>
-                            <th>User</th>
-                            <th>Situação</th>
-                            <th>Feito em</th>
-                            <th>Opções</th>
+                            <th>INSTITUIÇÃO</th>
+                            <th>AUTOR</th>
+                            <th>SITUAÇÃO</th>
+                            <th>FEITO EM</th>
+                            <th>OPÇÕES</th>
                         </tr>
                     </thead>
 
@@ -33,23 +42,58 @@
                         <tr>
                             <td>{{ object.pk }}</td>
                             <td>{{ object.institution }}</td>
-                            <td>{{ object.user }}</td>
-                            <td>{{object.status}}</td>
-                            <td>{{ object.timestamp }}</td>
+                            <td>{{ object.user.get_full_name }}</td>
+                            <td>
+                                <div class="badge text-uppercase fw-semibold
+                                    {% if object.status == 'pending' %}
+                                    text-bg-warning
+                                    {% elif object.status == 'approved' %}
+                                    text-bg-success
+                                    {% elif object.status == 'denied' %}
+                                    text-bg-danger
+                                    {% elif object.status == 'delivered' %}
+                                    text-bg-primary
+                                    {% endif %}
+                                    ">
+                                    {{ object.get_status_display }}
+                                </div>
+                            </td>
+                            <td>{{ object.timestamp|date:"SHORT_DATETIME_FORMAT" }}</td>
 
                             <td>
-                                <a href="{% url 'detail-order' object.pk %}" class="btn btn-primary btn-sm">Detalhar</a>
-                                
-                                {% if object.status == 'pending'%}
-                                    <a href="{% url "update-ordered-product" object.pk %}" class="btn btn-warning btn-sm" title="Editar">Editar pedido</a>
-                                    <a href="{% url 'evaluate-order' object.pk %}" class='btn btn-info btn-sm'>Avaliar pedido</a>
-                                {% endif %}
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-success btn-rounded ms-2" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></button>
+
+                                    <ul class="dropdown-menu">
+                                      <li>
+                                        <a class="dropdown-item btn-gap" href="{% url 'detail-order' object.pk %}"><i class="bi bi-eye-fill"></i> Detalhar</a>
+                                      </li>
+
+                                      {% if object.status == 'pending' %}
+                                        {% if object.user == user %}
+                                          <li>
+                                            <a class="dropdown-item btn-gap" href="{% url 'update-ordered-product' object.pk %}" title="Editar"><i class="bi bi-pencil-fill"></i> Editar pedido</a>
+                                          </li>
+                                        {% endif %}
+
+                                        <li>
+                                          <hr class="dropdown-divider" />
+                                        </li>
+
+                                        {% if user.is_staff %}
+                                          <li>
+                                            <a class="dropdown-item btn-gap" href="{% url 'evaluate-order' object.pk %}"><i class="bi bi-star-fill"></i> Avaliar</a>
+                                          </li>
+                                        {% endif %}
+                                      {% endif %}
+                                    </ul>
+                                  </div>
 
                             </td>
                         </tr>
                         {% empty %}
                             <tr>
-                                <td colspan="6">Nenhum pedido até o momento</td>
+                                <td colspan="6">Nenhum pedido pendente até o momento</td>
                             </tr>
                         {% endfor %}
 
@@ -58,24 +102,31 @@
             </div>
         </div>
 
-        <div class="justify-content-center table-background">
-            <div class="content-header d-flex justify-content-between">
-                <h3 class="poppins-bold">Chamadas Ativas</h3>
-                <div>
-                    <a href="{% url 'call-list' %}" class="btn btn-info btn-sm ">Todas as Chamadas</a>
-                    <a href="{% url 'create-call' %}" class="btn btn-success btn-sm ">Cadastrar Chamada</a>
-                </div>
+        <div class="table-background">
+            <div class="content-header">
+                <h3 class="poppins-bold">CHAMADAS ATIVAS</h3>
+            </div>
+            <hr>
+            <div class="d-md-flex gap-2">
+                <a href="{% url 'call-list' %}" class="btn btn-success btn-gap my-2">
+                    <i class="bi bi-file-earmark"></i>
+                    TODAS AS CHAMADAS
+                </a>
+                <a href="{% url 'create-call' %}" class="btn btn-success btn-gap my-2">
+                    <i class="bi bi-plus-circle"></i>
+                    CADASTRAR CHAMADA
+                </a>
             </div>
 
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Número</th>
-                            <th>Instituição</th>
-                            <th>Início</th>
-                            <th>Término</th>
-                            <th>Opções</th>
+                            <th>NÚMERO</th>
+                            <th>INSTITUIÇÃO</th>
+                            <th>INÍCIO</th>
+                            <th>TÉRMINO</th>
+                            <th>OPÇÕES</th>
                         </tr>
                     </thead>
 
@@ -84,24 +135,24 @@
                             <tr>
                                 <td>{{ object.number }}</td>
                                 <td>{{ object.institution }}</td>
-                                <td>{{ object.start }}</td>
-                                <td>{{ object.end }}</td>
+                                <td>{{ object.start|date:"SHORT_DATE_FORMAT" }}</td>
+                                <td>{{ object.end|date:"SHORT_DATE_FORMAT" }}</td>
                                 <td>     
                                     <div class="dropdown">
                                         <button class="btn btn-outline-success btn-rounded ms-2" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></button>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a class="dropdown-item" href="{% url "detail-call" object.pk %}"><i class="bi bi-eye-fill"></i> Detalhar</a>
+                                                <a class="dropdown-item btn-gap" href="{% url "detail-call" object.pk %}"><i class="bi bi-eye-fill"></i> Detalhar</a>
                                             </li>
 
                                             <li>
-                                                <a class="dropdown-item js-update" href="{% url "update-call" object.pk %}"><i class="bi bi-pencil-fill"></i> Editar chamada</a>
+                                                <a class="dropdown-item btn-gap js-update" href="{% url "update-call" object.pk %}"><i class="bi bi-pencil-fill"></i> Editar Chamada</a>
                                             </li>
                                             <li>
                                                 <hr class="dropdown-divider" />
                                             </li>
                                             <li>
-                                                <a class="dropdown-item js-update" href="{% url "update-call-product" object.pk %}"><i class="bi bi-pencil-fill"></i> Editar produtos</a>
+                                                <a class="dropdown-item btn-gap js-update" href="{% url "update-call-product" object.pk %}"><i class="bi bi-pencil-fill"></i> Editar Produtos</a>
                                             </li>
                                         </ul>
                                       </div>
@@ -109,7 +160,7 @@
                             </tr>
                         {% empty %}
                             <tr>
-                                <td colspan="5">Nenhuma chamada até o momento</td>
+                                <td colspan="5">Nenhuma chamada até o momento.</td>
                             </tr>
                         {% endfor %}
 

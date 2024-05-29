@@ -6,7 +6,7 @@
         <div class="content-header">
             <h3 class="poppins-bold">Pedidos da Instituição</h3>
             <hr>
-            <div class="d-flex gap-4 my-3">
+            <div class="d-flex gap-3 my-2">
                 <a href="{% url 'create-order' %}" class="btn btn-success"><i class="bi bi-plus-circle me-2"></i> FAZER PEDIDO</a>
                 <a href="{% url 'order-list' %}" class="btn btn-outline-success" ><i class="bi bi-file-earmark me-2"></i>TODOS OS PEDIDOS</a>
             </div>
@@ -49,13 +49,13 @@
                                     <button class="btn btn-outline-success btn-rounded ms-2" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></button>
                                     <ul class="dropdown-menu">
                                       <li>
-                                        <a href="{% url 'detail-order' object.pk %}" class="dropdown-item">
-                                            <i class="bi bi-eye-fill me-3"></i> Detalhar</a>
+                                        <a href="{% url 'detail-order' object.pk %}" class="dropdown-item btn-gap">
+                                            <i class="bi bi-eye-fill"></i> Detalhar</a>
                                       </li>
                                       {% if object.status == 'pending'%}
                                       <li>
-                                          <a href="{% url "update-ordered-product" object.pk %}" class="dropdown-item">
-                                            <i class="bi bi-pencil-fill me-3"></i> Editar Pedido
+                                          <a href="{% url "update-ordered-product" object.pk %}" class="dropdown-item btn-gap">
+                                            <i class="bi bi-pencil-fill"></i> Editar Pedido
                                           </a>
                                       </li>
                                     {% endif %}
@@ -82,7 +82,7 @@
                 </div>
             </div>
             <hr>
-            <div class="d-flex gap-4 my-3">
+            <div class="d-flex gap-3 my-2">
                 <a href="{% url 'detail-call' call.id %}" class=" btn btn-success"><i class="bi bi-search me-2"></i>DETALHAR CHAMADA</a>
                 <a href="{% url 'call-list' %}" class=" btn btn-outline-success "><i class="bi bi-file-earmark me-2"></i> MINHAS CHAMADAS</a>
             </div>
@@ -110,7 +110,7 @@
         {% else %}
         <h3 class="poppins-bold">Sem Chamada Ativa</h3>
         <hr>
-        <div class="my-3">
+        <div class="my-2">
             <a href="{% url 'call-list' %}" class=" btn btn-outline-success "><i class="bi bi-file-earmark me-2"></i> MINHAS CHAMADAS</a>
         </div>
         {% endif %}
