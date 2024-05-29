@@ -46,11 +46,11 @@
         </div>
         <div class="content-header d-flex align-items-baseline my-2">
             <div>
-                <p>AUTOR: {{ order.user.get_full_name}}</p>
+                <p><strong>AUTOR</strong>: {{ order.user.get_full_name}}</p>
                 {% if user.is_staff %}
-                <p>INSTITUIÇÃO: {{ order.institution }}</p>
+                <p><strong>INSTITUIÇÃO</strong>: {{ order.institution }}</p>
                 {% endif %}
-                <p>FEITO EM: {{ order.timestamp}}</p>
+                <p><strong>FEITO EM</strong>: {{ order.timestamp|date:"SHORT_DATETIME_FORMAT"}}</p>
             </div>
         </div>
         <h4 class="poppins-bold">PRODUTOS DO PEDIDO</h4>

@@ -29,16 +29,16 @@
 
         <ul class="dropdown-menu">
           <li>
-            <a class="dropdown-item" href="{% url 'detail-order' object.pk %}"><i class="bi bi-eye-fill"></i> Detalhar</a>
+            <a class="dropdown-item btn-gap" href="{% url 'detail-order' object.pk %}"><i class="bi bi-eye-fill"></i> Detalhar</a>
           </li>
 
           {% if object.status == 'pending' %}
             {% if object.user == user %}
               <li>
-                <a class="js-delete dropdown-item" data-url="{% url 'js-delete-order' object.pk %}"><i class="bi bi-trash3-fill"></i> Excluir</a>
+                <a class="js-delete dropdown-item btn-gap" data-url="{% url 'js-delete-order' object.pk %}"><i class="bi bi-trash3-fill"></i> Excluir</a>
               </li>
               <li>
-                <a class="dropdown-item" href="{% url 'update-ordered-product' object.pk %}" title="Editar"><i class="bi bi-pencil-fill"></i> Editar pedido</a>
+                <a class="dropdown-item btn-gap" href="{% url 'update-ordered-product' object.pk %}" title="Editar"><i class="bi bi-pencil-fill"></i> Editar Pedido</a>
               </li>
             {% endif %}
 
@@ -48,7 +48,7 @@
 
             {% if user.is_staff %}
               <li>
-                <a class="dropdown-item" href="{% url 'evaluate-order' object.pk %}"><i class="bi bi-star-fill"></i> Avaliar</a>
+                <a class="dropdown-item btn-gap" href="{% url 'evaluate-order' object.pk %}"><i class="bi bi-star-fill"></i> Avaliar</a>
               </li>
             {% endif %}
           {% endif %}
@@ -57,7 +57,7 @@
           {% if object.status == 'denied' %}
             {% if user.is_staff %}
               <li>
-                <a class="js-delete dropdown-item" data-url="{% url 'js-delete-order' object.pk %}"><i class="bi bi-trash3-fill"></i> Excluir</a>
+                <a class="js-delete dropdown-item btn-gap" data-url="{% url 'js-delete-order' object.pk %}"><i class="bi bi-trash3-fill"></i> Excluir</a>
               </li>
             {% endif %}
           {% endif %}

@@ -4,55 +4,67 @@
 {% block title %}Cadastrar Pedido{% endblock title %}
 {% block content %}
 
-        <div class="container justify-content-center table-background">
-            <h3 class="poppins-bold">Cadastrar Pedido</h3>
-            <p class="lead">Preencha todos os campos obrigatórios <span class="asteriskField fw-semibold">*</span></p>
-            <hr>
-            <div class="form-box">
-                <form action="" method="POST">
-                    {% csrf_token %}
-
-                    <div class="w-25">
+<div class="container">
+    <div class="table-background">
+        <h3 class="poppins-bold">CADASTRAR PEDIDO</h3>
+        <p class="lead my-2">Preencha todos os campos obrigatórios <span class="asteriskField fw-semibold">*</span></p>
+        <hr>
+        <div class="form-box">
+            <form action="" method="POST">
+                {% csrf_token %}
+    
+                <div class="row">
+                    <div class="col-sm-4">
                         {{ form.institution|as_crispy_field }}
+                    </div>
+                    <div class="col-sm-4">
                         {{ form.call|as_crispy_field }}
                     </div>
-
-                    {% if form_product %}
-                    {{ form_product.management_form }}
-                        <h3>Produtos do Pedidos</h3>
-                        <div class="table-responsive">
-                            <table class="table ">
-                                <thead>
-                                    <tr>
-                                        <th>PRODUTOS</th>
-                                        <th>QUANTIDADE</th>
-                                        <th>SALDO DO PRODUTO</th>
-                                        <th>APAGAR</th>
+                </div>
+    
+                {% if form_product %}
+                {{ form_product.management_form }}
+                    <h4 class="poppins-bold">PRODUTOS DO PEDIDOS</h4>
+                    <div class="table-responsive">
+                        <table class="table ">
+                            <thead>
+                                <tr>
+                                    <th>PRODUTOS</th>
+                                    <th>QUANTIDADE</th>
+                                    <th>SALDO DO PRODUTO</th>
+                                    <th>APAGAR</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                {% for form in form_product %}
+                                    <tr class='inlineform' id="form-row-{{ form.prefix }}">
+                                        <td class="inline-margin product-select">{{ form.call_product|as_crispy_field }}</td>
+    
+                                        <td class="inline-margin">{{ form.ordered_quantity|as_crispy_field }}</td>
+                                        <td  class="product-balance fw-semibold "> </td>
+                                        <td></td>
                                     </tr>
-                                </thead>
-                                <tbody class="table-group-divider">
-                                    {% for form in form_product %}
-                                        <tr class='inlineform' id="form-row-{{ form.prefix }}">
-                                            <td class='product-select'>{{ form.call_product|as_crispy_field }}</td>
-
-                                            <td>{{ form.ordered_quantity|as_crispy_field }}</td>
-                                            <td  class="product-balance fw-semibold "> </td>
-                                            <td></td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-
-                    {% endif %}
-
-                    <div class="d-flex align-items-baseline justify-content-end mt-5 gap-5">
-                        <a class="btn btn-danger" href="{% url 'order-list' %}">CANCELAR</a>
-                        <button class="btn btn-success" type="submit">FAZER PEDIDO</button>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                </form>
-            </div>
+    
+                {% endif %}
+                <hr>
+                <div class="d-flex align-items-baseline gap-3 my-3">
+                    <a class="btn btn-danger btn-gap" href="{% url 'order-list' %}">
+                        <i class="bi bi-x-circle"></i>
+                        CANCELAR
+                    </a>
+                    <button class="btn btn-success btn-gap" type="submit">
+                        <i class="bi bi-check-circle"></i>
+                        FAZER PEDIDO
+                    </button>
+                </div>
+            </form>
         </div>
+    </div>
+</div>
 
 {% endblock content %}
 
@@ -61,12 +73,11 @@
         $(function() {
             $('.inlineform').formset({
                 prefix: '{{ form_product.prefix }}',
-                addText: '<button type="submit" class="btn btn-success btn-sm">+</button>',
-                deleteText: '<button type="submit" class="btn btn-danger btn-sm">x</button>',
+                addText: '<button type="submit" class="btn btn-success btn-gap"><i class="bi bi-plus-circle"></i>ADICIONAR PRODUTO</button>',
+                deleteText: '<button type="submit" class="btn btn-danger btn-sm ms-2"><i class="bi bi-x-circle"></i></button>',
             });
         })
     </script>
 
     <script src="{% static "js/get_products.js" %}"></script>
-    
 {% endblock script %}

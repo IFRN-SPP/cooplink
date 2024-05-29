@@ -144,3 +144,9 @@ table{
   color: var(--black-color) !important;
   border: none !important;
 }
+
+.inline-margin{
+  .mb-3{
+    margin: 0 !important;
+  }
+}
