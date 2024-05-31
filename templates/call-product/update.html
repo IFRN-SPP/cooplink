@@ -1,53 +1,67 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block title %}Produtos das Chamadas{% endblock title %}
-
 {% block content %}
-
-    <div class="container justify-content-center table-background">
-        <h3 class="poppins-bold" >Editar Produtos da Chamada</h3>
-        <p class="lead text-muted">Preencha todos os campos obrigatórios:</p>
-
-        <hr>
-
-        <form action="" method="POST">
-            {% csrf_token %}
-            <br>
-            <p class='h4'>{{call.institution}} - Chamada: {{call.number}} </p>
-            <p> Situação: {% if call.active %}ATIVO{% else %}FECHADA{% endif %}</p>
-
-            {{ form_product.management_form}} 
-            <div class="table-responsive">
-                <table class="table table-striped mt-4">
-                    <thead>
-                        <tr>
-                            <td>Produtos</td>
-                            <td>Preço (R$)</td>
-                            <td>Saldo do Produto</td>
-                            <td>Apagar</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody >
-                    {% for form in form_product %}
-                        <tr class='inlineform'>
-                            <td>{{ form.product }}</td>
-                            <td>{{ form.price }}</td>
-                            <td>{{ form.balance }}</td>
-                            <td class="d-none">{{ form.id }}</td>
-                            <td class="d-none">{% if form.instance.pk %}{{ form.DELETE}}{% endif %}</td>
-                            <td></td>
-                        </tr>
-                    {% endfor %}
-                </table>    
-            </div>
+<div class="container">
+    <div class="table-background">
+        <div class="content-header">
+            <h3 class="poppins-bold" >EDITAR PRODUTOS DA CHAMADA {{call.number}}</h3>
+            <p class="lead my-2">Preencha todos os campos obrigatórios <span class="asteriskField fw-semibold">*</span></p>
             <hr>
-            <button type="submit" class="btn btn-success">Cadastrar</button>
-        </form>
-
+            <div class="my-2">
+                <p><strong>INSITUIÇÃO</strong>: {{call.institution}}</p>
+                <p><strong>SITUAÇÃO</strong>:
+                    <span class="badge fs-6 {% if call.active %}text-bg-succes{% else %} text-bg-warning{% endif %}">
+                        {% if call.active %}ATIVO{% else %}INATIVA{% endif %}
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="my-3">
+            <h4 class="poppins-bold">PRODUTOS DA CHAMADA</h4>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form_product.management_form}}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>PRODUTOS</th>
+                                <th>PREÇO (R$)</th>
+                                <th>SALDO DO PRODUTO</th>
+                                <th>APAGAR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for form in form_product %}
+                                <tr class="inlineform">
+                                    <td class="inline-margin">{{ form.product|as_crispy_field }}</td>
+                                    <td class="inline-margin">{{ form.price|as_crispy_field }}</td>
+                                    <td class="inline-margin">{{ form.balance|as_crispy_field }}</td>
+                                    <td class="d-none">{{ form.id }}</td>
+                                    <td class="d-none">{% if form.instance.pk %}{{ form.DELETE}}{% endif %}</td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+                <div class="d-flex gap-3 my-3">
+                    <a href="{% url 'call-list' %}"class="btn btn-danger btn-gap">
+                        <i class="bi bi-x-circle"></i>
+                        CANCELAR
+                    </a>
+                    <button type="submit" class="btn btn-success btn-gap">
+                        <i class="bi bi-check-circle"></i>
+                        CADASTRAR
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-
+</div>
 {% endblock content %}
 
 {% block script %}
@@ -55,8 +69,8 @@
         $(function() {
             $('.inlineform').formset({
                 prefix: '{{ form_product.prefix }}',
-                addText: '<button type="submit" class="btn btn-success btn-sm">+</button>',
-                deleteText: '<button type="submit" class="btn btn-danger btn-sm">x</button>',
+                addText: '<button type="submit" class="btn btn-success btn-gap"><i class="bi bi-plus-circle"></i>ADICIONAR PRODUTO</button>',
+                deleteText: '<button type="submit" class="btn btn-danger btn-sm ms-2"><i class="bi bi-trash3-fill"></i></button>',
             });
         })
     </script>

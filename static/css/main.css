@@ -5,8 +5,8 @@
   --black-color: #0E0E0E;
   --green-color: #00870E;
 
-  --border-radius: 5px;
-  --content-border-radius: 15px;
+  --border-radius: 3px;
+  --content-border-radius: 3px;
 }
 
 * {
@@ -24,6 +24,9 @@ hr{
   margin: 0;
   border: .1rem solid var(--main-bg2-color);
   opacity: 1;
+}
+strong{
+  font-weight: 600;
 }
 table{
   border: .1rem solid var(--main-bg2-color) !important;
@@ -51,6 +54,13 @@ table{
   font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-style: normal;
+}
+
+.content-background{
+  border-radius: var(--content-border-radius);
+  background-color: var(--white-color);
+  margin-block: 1rem;
+  padding: 2rem;
 }
 
 .table-background {
@@ -93,6 +103,7 @@ table{
 
 .form-select{
   cursor: pointer;
+  border-radius: var(--border-radius);
   &:hover{
     border: .1rem solid var(--black-color);
   }

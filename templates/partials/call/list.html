@@ -1,12 +1,11 @@
 {% for object in calls %}
   <tr>
     <td>{{ object.number }}</td>
-
     {% if user.is_staff %}
       <td>{{ object.institution }}</td>
     {% endif %}
-    <td>{{ object.start }}</td>
-    <td>{{ object.end }}</td>
+    <td>{{ object.start|date:"SHORT_DATE_FORMAT" }}</td>
+    <td>{{ object.end|date:"SHORT_DATE_FORMAT" }}</td>
 
     <td>
       {% if object.active %}
@@ -17,25 +16,24 @@
     </td>
 
     <td>
-      <!-- Dropdown menu -->
       <div class="dropdown">
         <button class="btn btn-outline-success btn-rounded ms-2 " type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></button>
         <ul class="dropdown-menu">
           <li>
-            <a href="{% url 'detail-call' object.pk %}" class="dropdown-item" title="Detalhar"><i class="bi bi-eye-fill"></i> Detalhar</a>
+            <a href="{% url 'detail-call' object.pk %}" class="dropdown-item btn-gap" title="Detalhar"><i class="bi bi-eye-fill"></i> Detalhar</a>
           </li>
 
           {% if user.is_staff %}
             <li>
-              <a class="dropdown-item" href="{% url 'update-call' object.pk %}" title="Editar"><i class="bi bi-pencil-fill"></i> Editar chamada</a>
+              <a class="dropdown-item btn-gap" href="{% url 'update-call' object.pk %}" title="Editar"><i class="bi bi-pencil-fill"></i> Editar Chamada</a>
             </li>
 
             <li>
-              <a class="dropdown-item" href="{% url 'update-call-product' object.pk %}" title="Editar"><i class="bi bi-pencil-fill"></i> Editar produtos</a>
+              <a class="dropdown-item btn-gap" href="{% url 'update-call-product' object.pk %}" title="Editar"><i class="bi bi-pencil-fill"></i> Editar Produtos</a>
             </li>
 
             <li>
-              <a class="dropdown-item" href="{% url 'update-call-active' object.pk %}" title="Alterar Situação"><i class="bi bi-arrow-repeat"></i> Alterar situação</a>
+              <a class="dropdown-item btn-gap" href="{% url 'update-call-active' object.pk %}" title="Alterar Situação"><i class="bi bi-arrow-repeat"></i> Alterar Situação</a>
             </li>
 
             <li>
@@ -43,7 +41,7 @@
             </li>
 
             <li>
-              <a data-url="{% url 'js-delete-call' object.pk %}" class="js-delete dropdown-item" title="Excluir"><i class="bi bi-trash3-fill"></i> Excluir</a>
+              <a data-url="{% url 'js-delete-call' object.pk %}" class="js-delete dropdown-item btn-gap" title="Excluir"><i class="bi bi-trash3-fill"></i> Excluir</a>
             </li>
           {% endif %}
         </ul>
@@ -52,6 +50,10 @@
   </tr>
 {% empty %}
   <tr>
+    {% if user.is_staff %}
     <td colspan="6">Nenhuma chamada até o momento</td>
+    {% else %}
+    <td colspan="5">Nenhuma chamada até o momento</td>
+    {% endif %}
   </tr>
 {% endfor %}

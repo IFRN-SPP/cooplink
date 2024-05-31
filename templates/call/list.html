@@ -1,50 +1,44 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load ajax_tags %}
-{% block title %}
-  Chamadas
-{% endblock %}
+{% block title %}Chamadas{% endblock %}
 
 {% block content %}
   {% include 'partials/modal-form.html' %}
-
-  <div class="table-background container justify-content-center">
+<div class="container">
+  <div class="table-background">
     <div class="content-header d-flex justify-content-between">
       {% if user.is_staff %}
-        <h3 class="poppins-bold">Chamadas</h3>
+        <h3 class="poppins-bold">CHAMADAS</h3>
       {% else %}
-        <h3 class="poppins-bold">Minhas chamadas</h3>
+        <h3 class="poppins-bold">MINHAS CHAMADAS</h3>
       {% endif %}
 
       {% if user.is_staff %}
         <div>
-          <a href="{% url 'create-call' %}" class="btn btn-success"><i class="bi bi-plus-circle"></i> Cadastrar chamada</a>
+          <a href="{% url 'create-call' %}" class="btn btn-success btn-gap"><i class="bi bi-plus-circle"></i> CADASTRAR CHAMADA</a>
         </div>
       {% endif %}
     </div>
-
+    <hr>
     <form id="{% form_id %}" action="?" method="GET">
       <div class="d-md-flex my-2">
         <input class="search form-control w-50" type="number" name="search" value="{{number}}" placeholder="Buscar número da chamada...">
       </div>
     </form>
 
-    <div class="my-2">
-
-    </div>
-
     <div class="">
-      <table id="{% table_id %}" class="table table-striped mt-4">
+      <table id="{% table_id %}" class="table table-striped">
         <thead>
           <tr>
-            <th>Número</th>
+            <th>N°</th>
             {% if user.is_staff %}
-              <th>Instituição</th>
+              <th>INSTITUIÇÃO</th>
             {% endif %}
-            <th>Início</th>
-            <th>Término</th>
-            <th>Situação</th>
-            <th>Opções</th>
+            <th>INÍCIO</th>
+            <th>TÉRMINO</th>
+            <th>SITUAÇÃO</th>
+            <th>OPÇÕES</th>
           </tr>
         </thead>
 
@@ -55,6 +49,7 @@
       {% include 'partials/pagination.html' %}
     </div>
   </div>
+</div>
 {% endblock %}
 
 {% block script %}
