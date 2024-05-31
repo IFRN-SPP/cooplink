@@ -1,7 +1,7 @@
 {% load crispy_forms_tags %}
 {% load static %}
 <div class="modal-header">
-  <h4 class="modal-title poppins-bold">{{ title }}</h4>
+  <h4 class="modal-title poppins-bold text-uppercase">{{ title }}</h4>
   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 
@@ -20,8 +20,15 @@
 </div>
 
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-  <button type="submit" class="btn {{ button_class }}">{{ button_text }}</button>
+  <button type="button" class="btn btn-secondary text-uppercase" data-bs-dismiss="modal">Fechar</button>
+  <button type="submit" class="btn {{ button_class }} btn-gap text-uppercase">
+    {% if modal_form %}
+    <i class="bi bi-check-circle"></i>
+    {% elif modal_delete %}
+    <i class="bi bi-trash3-fill"></i>
+    {% endif %}
+    {{ button_text }}
+  </button>
 </div>
 
 <script src="{% static 'js/jqueryMasks.js' %}"></script>

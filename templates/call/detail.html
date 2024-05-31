@@ -28,18 +28,24 @@
     </div>
     <hr>
     <div class="content-header my-3">
+      {% if user.is_staff %}
       <p><strong>INSITITUIÇÃO</strong>: {{ call.institution }}</p>
-      <p><strong>INÍCIO</strong>: {{ call.start|date:"SHORT_DATE_FORMAT" }}</p>
-      <p><strong>TÉRMINO</strong>: {{ call.end|date:"SHORT_DATE_FORMAT" }}</p>
+      {% endif %}
+      <div class="d-md-flex gap-5">
+        <p class="m-0"><strong>INÍCIO</strong>: {{ call.start|date:"SHORT_DATE_FORMAT" }}</p>
+        <p class="m-0"><strong>TÉRMINO</strong>: {{ call.end|date:"SHORT_DATE_FORMAT" }}</p>
+      </div>
     </div>
     <div class="d-md-flex align-items-baseline">
       <h4 class="poppins-bold">PRODUTOS DA CHAMADA</h4>
+      {% if user.is_staff %}
       <div class="ms-auto">
         <a href="{% url 'update-call-product' call.pk %}" class="btn btn-success btn-gap my-1">
           <i class="bi bi-pencil-fill"></i>
           Editar Produtos
         </a>
       </div>
+      {% endif %}
     </div>
     <table class="table table-striped">
       <thead>

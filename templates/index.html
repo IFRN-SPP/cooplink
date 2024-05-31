@@ -4,11 +4,17 @@
 <div class="container">
     <div class="table-background">
         <div class="content-header">
-            <h3 class="poppins-bold">Pedidos da Instituição</h3>
+            <h3 class="poppins-bold">PEDIDOS DA INSTITUIÇÃO</h3>
             <hr>
-            <div class="d-flex gap-3 my-2">
-                <a href="{% url 'create-order' %}" class="btn btn-success"><i class="bi bi-plus-circle me-2"></i> FAZER PEDIDO</a>
-                <a href="{% url 'order-list' %}" class="btn btn-outline-success" ><i class="bi bi-file-earmark me-2"></i>TODOS OS PEDIDOS</a>
+            <div class="d-md-flex gap-3 my-1">
+                <a href="{% url 'create-order' %}" class="btn btn-success btn-gap my-1">
+                    <i class="bi bi-plus-circle"></i>
+                    FAZER PEDIDO
+                </a>
+                <a href="{% url 'order-list' %}" class="btn btn-outline-success btn-gap my-1" >
+                    <i class="bi bi-file-earmark"></i>
+                    TODOS OS PEDIDOS
+                </a>
             </div>
         </div>
         <div class="table-responsive">
@@ -75,16 +81,22 @@
         {% if call %}
         <div class="content-header">
             <div class="row">
-                <h3 class="poppins-bold col-md-6">Chamada Atual - {{call.number}}</h3>
+                <h3 class="poppins-bold col-md-6">CHAMADA ATUAL - {{call.number}}</h3>
                 <div class="d-flex justify-content-end gap-5 col-md-6 ">
-                    <p class="m-0 ">INÍCIO: <span class="fw-medium  ">{{call.start|date:"SHORT_DATE_FORMAT"}}</span></p>
-                    <p class="m-0 ">TÉRMINO: <span class="fw-medium  ">{{call.end|date:"SHORT_DATE_FORMAT"}}</span></p>
+                    <p class="m-0 ">INÍCIO: <span class="fw-medium">{{call.start|date:"SHORT_DATE_FORMAT"}}</span></p>
+                    <p class="m-0 ">TÉRMINO: <span class="fw-medium">{{call.end|date:"SHORT_DATE_FORMAT"}}</span></p>
                 </div>
             </div>
             <hr>
-            <div class="d-flex gap-3 my-2">
-                <a href="{% url 'detail-call' call.id %}" class=" btn btn-success"><i class="bi bi-search me-2"></i>DETALHAR CHAMADA</a>
-                <a href="{% url 'call-list' %}" class=" btn btn-outline-success "><i class="bi bi-file-earmark me-2"></i> MINHAS CHAMADAS</a>
+            <div class="d-md-flex gap-3 my-1">
+                <a href="{% url 'detail-call' call.id %}" class=" btn btn-success btn-gap my-1">
+                    <i class="bi bi-search"></i>
+                    DETALHAR CHAMADA
+                </a>
+                <a href="{% url 'call-list' %}" class=" btn btn-outline-success btn-gap my-1">
+                    <i class="bi bi-file-earmark"></i>
+                    MINHAS CHAMADAS
+                </a>
             </div>
         </div>
         <div class="table-responsive ">
@@ -108,10 +120,22 @@
             </table>
         </div>
         {% else %}
-        <h3 class="poppins-bold">Sem Chamada Ativa</h3>
+        <h3 class="poppins-bold">SEM CHAMADA ATIVA</h3>
         <hr>
         <div class="my-2">
-            <a href="{% url 'call-list' %}" class=" btn btn-outline-success "><i class="bi bi-file-earmark me-2"></i> MINHAS CHAMADAS</a>
+            <a href="{% url 'call-list' %}" class="btn btn-success btn-gap my-1">
+                <i class="bi bi-file-earmark"></i>
+                MINHAS CHAMADAS
+            </a>
+        </div>
+        <div class="alert-box">
+            <div class="d-md-flex gap-3 align-items-baseline">
+                <i class="bi bi-exclamation-triangle fs-4"></i>
+                Sua Instituição não possui uma <strong>Chamada Ativa</strong> para fazer pedidos.
+            </div>
+            <div>
+                Entre em contato com a Cooperativa e <strong>solicite o cadastro de Chamada</strong>.
+            </div>
         </div>
         {% endif %}
     </div>

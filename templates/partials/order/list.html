@@ -23,7 +23,6 @@
     <td>{{ object.timestamp|date:"SHORT_DATETIME_FORMAT" }}</td>
 
     <td>
-      <!-- Dropdown menu -->
       <div class="dropdown">
         <button class="btn btn-outline-success btn-rounded ms-2" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></button>
 
@@ -42,11 +41,11 @@
               </li>
             {% endif %}
 
+            {% if user.is_staff %}
             <li>
               <hr class="dropdown-divider" />
             </li>
 
-            {% if user.is_staff %}
               <li>
                 <a class="dropdown-item btn-gap" href="{% url 'evaluate-order' object.pk %}"><i class="bi bi-star-fill"></i> Avaliar</a>
               </li>

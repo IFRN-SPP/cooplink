@@ -25,6 +25,9 @@ hr{
   border: .1rem solid var(--main-bg2-color);
   opacity: 1;
 }
+a{
+  width: fit-content;
+}
 strong{
   font-weight: 600;
 }
@@ -138,6 +141,7 @@ table{
   display: flex;
   gap: .7rem;
 }
+
 
 .modal{
   transition: all 0.15s ease-in-out !important;
