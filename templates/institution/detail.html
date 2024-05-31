@@ -3,47 +3,92 @@
 {% block title %}Instituição{% endblock title %}
 {% block content %}
 
-<div class="container justify-content-center table-background">
-    <h1>Instituição - {{institution.name}}</h1>
-    <p>
-        CNPJ: {{institution.cnpj}} <br>
-        Representante(s):
-        {% for user in institution.users %}
-            {{ user.username }}; 
-        {% endfor %}
-            
-    </p>
-    <hr>
-    
-    <div class="table-responsive">
-        <table class="table table-striped mt-4">
-          <thead>
-            <tr>
-              <th>Número da Chamada</th>
-              <th>Início</th>
-              <th>Término</th>
-              <th>Situação</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            {% for call in institution.calls %}
-            <tr>
-           
-                <td>{{ call.number}}</td>
-                <td>{{call.start}}</td>
-                <td>{{call.end}}</td>
-                <td>
-                    {% if call.active == True %}
-                        <div class="badge text-bg-success">ATIVA</div>
-                    {% else %}
-                        <div class="badge text-bg-warning">INATIVA</div>
-                    {% endif %}
-                </td>
-          
-            </tr>
-            {% endfor %}
-        </tbody>
+<div class="container">
+    <div class="table-background">
+        <div class="content-header">
+            <h3 class="poppins-bold">INSTITUIÇÃO - {{institution.name}}</h3>
+            <hr>
+            <div class="my-2">
+                <p><strong>CNPJ</strong>: {{institution.cnpj}}</p>
+            </div>
+        </div>
+        <div class="my-2">
+            <h4 class="poppins-bold">CHAMADAS</h4>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>INÍCIO</th>
+                            <th>TÉRMINO</th>
+                            <th>SITUAÇÃO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for call in institution.calls %}
+                        <tr>
+                            <td>{{call.number}}</td>
+                            <td>{{call.start|date:"SHORT_DATE_FORMAT"}}</td>
+                            <td>{{call.end|date:"SHORT_DATE_FORMAT"}}</td>
+                            <td>
+                                {% if call.active == True %}
+                                    <div class="badge text-bg-success">ATIVA</div>
+                                {% else %}
+                                    <div class="badge text-bg-warning">INATIVA</div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {%empty%}
+                        <tr>
+                            <td colspan="4">Essa Instituição não possui Chamadas.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="my-2">
+            <h4 class="poppins-bold">REPRESENTANTES</h4>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>NOME</th>
+                            <th>NOME DE USUÁRIO</th>
+                            <th>ATIVO</th>
+                            <th>ADMINISTRADOR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in institution.users %}
+                        <tr>
+                            <td>{{user.get_full_name}}</td>
+                            <td>{{user.username}}</td>
+                            <td>
+                                {% if user.is_active %}
+                                <span class="badge text-bg-success">ATIVO</span>
+                                {% else %}
+                                <span class="badge text-bg-secondary">INATIVO</span>
+                                {% endif %}
+                              </td>
+                            <td>
+                                {% if user.is_staff %}
+                                <span class="badge text-bg-success">SIM</span>
+                                {% else %}
+                                <span class="badge text-bg-secondary">NÃO</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {%empty%}
+                        <tr>
+                            <td colspan="4">Essa Instituição não possui Representantes.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

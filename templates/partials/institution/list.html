@@ -4,25 +4,24 @@
     <td>{{ object.name }}</td>
     <td>{{ object.cnpj }}</td>
     <td>
-      <!-- Dropdown menu -->
       <div class="dropdown">
         <button class="btn btn-outline-success btn-rounded ms-2" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></button>
         <ul class="dropdown-menu">
           <li>
-            <a class="dropdown-item js-update" data-url="{% url 'js-update-institution' object.pk %}"><i class="bi bi-pencil-fill"></i> Editar</a>
+            <a class="dropdown-item js-update btn-gap" data-url="{% url 'js-update-institution' object.pk %}"><i class="bi bi-pencil-fill"></i> Editar</a>
           </li>
           <li>
-            <a class="dropdown-item" href="{% url 'detail-institution' object.pk %}"><i class="bi bi-eye-fill"></i> Detalhar</a>
+            <a class="dropdown-item btn-gap" href="{% url 'detail-institution' object.pk %}"><i class="bi bi-eye-fill"></i> Detalhar</a>
           </li>
           <li>
-            <hr class="dropdown-divider" />
+            <hr class="dropdown-divider btn-gap" />
           </li>
           <li>
-            <a class="dropdown-item js-delete" data-url="{% url 'js-delete-institution' object.pk %}"><i class="bi bi-trash3-fill"></i> Excluir</a>
+            <a class="dropdown-item js-delete btn-gap" data-url="{% url 'js-delete-institution' object.pk %}"><i class="bi bi-trash3-fill"></i> Excluir</a>
           </li>
         </ul>
       </div>
     </td>
-    
+
   </tr>
 {% endfor %}
