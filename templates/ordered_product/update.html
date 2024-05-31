@@ -1,53 +1,65 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block title %}Produtos do Pedido{% endblock title %}
-
 {% block content %}
 
-        <div class="container justify-content-center">
-            <h3>Editar Produtos do Pedido</h3>
-            <p class="lead">Preencha todos os campos obrigatórios:</p>
+<div class="container">
+    <div class="table-background">
+        <div class="content-header">
+            <h3 class="poppins-bold">EDITAR PRODUTOS DO PEDIDO {{order.id}}</h3>
+            <p class="lead my-2">Escolha os <span class="fw-semibold">Produtos</span> e sua <span class="fw-semibold">Quantidade</span> para fazer o pedido</p>
+        </div>
+        <hr>
+        <div class="content-header my-2">
+            <p><strong>INSTITUIÇÃO</strong> {{order.institution.name}}</p>
+            <p><strong>CHAMADA</strong> {{order.call.number}}</p>
+        </div>
 
-            <hr>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="user_call" id="id_call" value="{{order.call.pk}}">
 
-            <form action="" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="user_call" id="id_call" value="{{order.call.pk}}">
-
-                <h3>{{order.institution}} - {{order.call}}</h3> 
-                {{ form_product.management_form }}
-                    <h3>Produtos do Pedidos</h3>
-                    <div class="table-responsive">
-                        <table class="table ">
-                            <thead>
-                                <tr>
-                                    <td>Produtos</td>
-                                    <td>Quantidade</td>
-                                    <td>Saldo do Produto</td>
-                                    <td>Apagar</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
+            {{ form_product.management_form }}
+                <h4 class="poppins-bold">PRODUTOS DO PEDIDOS</h4>
+                <div class="table-responsive">
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th>PRODUTOS</th>
+                                <th>QUANTIDADE</th>
+                                <th>SALDO DO PRODUTO</th>
+                                <th>APAGAR</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
                             {% for form in form_product %}
-                                <tr class='inlineform ' id="form-row-{{ form.prefix }}">
-                                    <td class='product-select'>{{ form.call_product }}</td>
-                                    <td>{{ form.ordered_quantity }}</td>
+                                <tr class="inlineform" id="form-row-{{ form.prefix }}">
+                                    <td class="inline-margin product-select">{{ form.call_product|as_crispy_field }}</td>
+                                    <td class="inline-margin ">{{ form.ordered_quantity|as_crispy_field }}</td>
                                     <td  class="product-balance"> {{form.instance.call_product.balance}} {{form.instance.call_product.product.unit}}</td>
                                     <td class="d-none">{{form.id}}</td>
                                     <td>{% if form.instance %}{{form.DELETE}}{% endif %}</td>
                                 </tr>
                             {% endfor %}
-                        </table>    
-                    </div>
+                        </tbody>
+                    </table>
+                </div>
 
-                <hr>
-
-                <button type="submit" class="btn btn-primary ">Cadastrar</button>
-            </form>
-
-        </div>
+            <hr>
+            <div class="d-flex align-items-baseline gap-3 my-3">
+                <a class="btn btn-danger btn-gap" href="{% url 'order-list' %}">
+                    <i class="bi bi-x-circle"></i>
+                    CANCELAR
+                </a>
+                <button class="btn btn-success btn-gap" type="submit">
+                    <i class="bi bi-check-circle"></i>
+                    FAZER PEDIDO
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 {% endblock content %}
 
@@ -56,8 +68,8 @@
         $(function() {
             $('.inlineform').formset({
                 prefix: '{{ form_product.prefix }}',
-                addText: '<button type="submit" class="btn btn-success btn-sm">+</button>',
-                deleteText: '<button type="submit" class="btn btn-danger btn-sm">x</button>',
+                addText: '<button type="submit" class="btn btn-success btn-gap"><i class="bi bi-plus-circle"></i>ADICIONAR PRODUTO</button>',
+                deleteText: '<button type="submit" class="btn btn-danger btn-sm ms-2"><i class="bi bi-x-circle"></i></button>',
             });
         })
     </script>
