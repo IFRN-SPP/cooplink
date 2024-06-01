@@ -1,23 +1,15 @@
 <div class="wrapper">
-    <!-- Sidebar -->
+
     {% include 'partials/sidebar.html' %}
 
-    <!-- Main Component -->
     <div class="main">
-      <nav class="navbar navbar-expand px-3 border-bottom d-flex justify-content-between">
-        <!-- Button for sidebar toggle -->
-        <button class="btn" type="button" data-bs-theme="dark"><span class="navbar-toggler-icon"></span></button>
-
-        <div class="d-flex align-items-baseline">
-          {% if user.is_authenticated %}
-            <p> {{ request.user.get_full_name }}</p>
-
-            <form class="btn" action="{% url 'logout' %}" method="post">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-outline-secondary ">Logout</button>
-            </form>
-          {% endif %}
+      <nav class="navbar navbar-expand nav-none navbar-bg-color">
+        <div class="container container-fluid">
+          <a class="navbar-brand poppins-bold text-success" href="{% url 'index' %}">COOPPOTENGI</a>
+          <button class="btn" type="button"><span class="navbar-toggler-icon"></span></button>
         </div>
       </nav>
 
-      <main class="content px-3 py-2">
+      <nav class="nav-placeholder"></nav>
+
+      <main class="content px-md-3 py-md-2">

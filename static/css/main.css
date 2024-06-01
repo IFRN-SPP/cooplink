@@ -40,7 +40,9 @@ table{
 .navbar-bg-color {
   background-color: var(--white-color);
 }
-
+.active{
+  color: var(--green-color) !important
+}
 .poppins-semi-bold {
   font-family: "Poppins", sans-serif;
   font-weight: 600;
