@@ -14,7 +14,8 @@
 
       <hr class="divider opacity-50">
 
-      <form action="" method="post">
+      <div class="login">
+        <form action="{% url 'login' %}" method="post">
           <div class="d-flex flex-column form-box">
             {% csrf_token %}
 
@@ -35,7 +36,8 @@
 
               <button type="submit" class="btn btn-success mt-3">ENTRAR</button>
           </div>
-      </form>
+        </form>
+      </div>
   </div>
 </div>
 {% endblock content %}

@@ -121,7 +121,11 @@ table{
 .asteriskField{
   color: #f45353;
 }
-
+.login{
+  .asteriskField{
+    display: none;
+  }
+}
 .font-10{
   font-size: .9rem;
 }
