@@ -3,21 +3,54 @@
 {% block title %}Mudar Permissão{% endblock title %}
 {% block navbar %}{% endblock navbar %}
 {% block content %}
-<h1>MUDAR PERMISSÃO </h1>
-<div class="lead">Digite a mudar permissão de {{ form.instance }}</div>
+<div class="container ">
+  <div class="d-flex justify-content-center">
+    <div class="content-background">
+      <h3 class="poppins-bold">MUDAR PERMISSÃO</h3>
+      <hr>
+      <div class=" alert-box my-3">
+        <div class="d-md-flex align-items-baseline gap-2 text-uppercase fw-semibold">
+          <i class="bi bi-exclamation-triangle me-2 fs-5"></i>
+          Ao confirmar, você estará dando acesso <span class="text-danger">administrativo</span> para <strong>{% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}</strong>
+        </div>
+      </div>
+      <div class="alert-box d-grid gap-2 my-3">
+        <div>
+          Isso significa que o usuário poderá ter <strong>acesso completo</strong> ao sistema!
+        </div>
+        <div><strong>Ações de Risco</strong> que esse usuário poderá executar:</div>
+        <div>
+          <ul class="m-0 fw-semibold">
+            <li>Avalilação de Pedidos</li>
+            <li>Mudar Senhas de Usuário</li>
+            <li>Mudar Permissões de Usuários</li>
+          </ul>
+        </div>
+        <div>Esteja ciente para quem você está dando essas permissões!</div>
+      </div>
+      <form action="" method="post">
+        {% csrf_token %}
+        {% if form.instance.is_staff %}
+        <div class="poppins-medium my-3 fs-5">Remover as permissões de <span class="text-danger text-uppercase">administrativa</span> de {% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}?</div>
+        {% else %}
+        <div class="poppins-medium my-3 fs-5">Adicionar permissões de <span class="text-danger text-uppercase">administrativa</span> a {% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}?</div>
+        {% endif %}
 
-<form action="" method="post">
-{% csrf_token %}
+        <div class="d-none">{{form.as_p}}</div>
 
-{% if form.instance.is_staff %}
-<h3>Remover as permissões de administração de {{ form.instance }}?</p>
-{% else %}
-<h3>Adicionar permissões de administração a {{ form.instance }}?</h3>
-{% endif %}
-
-<div class="d-none">{{form.as_p}}</div>
-
-<a href="{% url "user-list" %}" class="btn btn-danger">Cancelar</a>
-<button class="btn btn-primary" type="submit">Mudar Permissão</button>
-</form>
+        <hr>
+        <div class="d-flex gap-3 mt-2">
+          <a href="{% url 'user-list' %}" class="btn btn-danger btn-gap my-1">
+            <i class="bi bi-x-circle"></i>
+            CANCELAR
+          </a>
+          <button class="btn btn-success btn-gap my-1" type="submit" btn-gap my-1>
+            <i class="bi bi-check-circle"></i>
+            CONFIRMAR
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}

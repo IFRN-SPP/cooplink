@@ -132,7 +132,7 @@ class PermissionForm(forms.ModelForm):
 
 
 class ConfirmPasswordForm(forms.ModelForm):
-    confirm_password = forms.CharField(widget=forms.PasswordInput())
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'autofocus':True}), label='Senha')
 
     class Meta:
         model = UserProfile

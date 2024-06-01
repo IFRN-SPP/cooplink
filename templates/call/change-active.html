@@ -1,35 +1,34 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Situação da Chamada{% endblock %}
-{% block navbar %}
-{% endblock %}
 {% block content %}
 <div class="container ">
-  <div class="d-flex justify-content-center">
+  <div class="d-flex">
     <div class="content-background">
       <h3 class="poppins-bold">ALTERAR SITUAÇÃO</h3>
       <hr>
-      <div class="fs-5 my-2">Confirme para mudar a situação da <strong>{{call}}</strong></div>
-      <form action="{% url 'update-call-active' call.pk %}" method="post">
-        {% csrf_token %}
-        {% if call.active %}
-          <h3 class="poppins-medium">Alterar para <span class="badge text-bg-warning">INATIVA</span> ?</h3>
-        {% else %}
-          <h3 class="poppins-medium">Alterar para <span class="badge text-bg-success">ATIVA</span> ?</h3>
-        {% endif %}
-        <div class="d-none">{{form}}</div>
-        <hr>
-        <div class="d-flex gap-3 mt-2">
-          <a href="{% url 'call-list' %}" class="btn btn-danger btn-gap my-1">
-            <i class="bi bi-x-circle"></i>
-            CANCELAR
-          </a>
-          <button class="btn btn-success btn-gap my-1" type="submit" btn-gap my-1>
-            <i class="bi bi-check-circle"></i>
-            CONFIRMAR
-          </button>
-        </div>
-      </form>
+      <div class="my-2">
+        <form action="{% url 'update-call-active' call.pk %}" method="post">
+          {% csrf_token %}
+          {% if call.active %}
+            <div class="poppins-medium my-3 fs-5">Deseja alterar a <strong>Chamada {{call.number}}</strong> para <span class="badge text-bg-warning">INATIVA</span> ?</div>
+          {% else %}
+            <div class="poppins-medium my-3 fs-5">Deseja alterar a <strong>Chamada {{call.number}}</strong> para <span class="badge text-bg-success">ATIVA</span> ?</div>
+          {% endif %}
+          <div class="d-none">{{form}}</div>
+          <hr>
+          <div class="d-flex gap-3 mt-2">
+            <a href="{% url 'call-list' %}" class="btn btn-danger btn-gap my-1">
+              <i class="bi bi-x-circle"></i>
+              CANCELAR
+            </a>
+            <button class="btn btn-success btn-gap my-1" type="submit" btn-gap my-1>
+              <i class="bi bi-check-circle"></i>
+              CONFIRMAR
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
