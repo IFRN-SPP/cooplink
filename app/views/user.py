@@ -42,6 +42,7 @@ class UserUpdatePassword(StaffRequiredMixin, ConfirmPasswordMixin, FormView):
     success_url = reverse_lazy('user-list')
 
     def form_valid(self, form):
+        form.save()
         pk = self.kwargs['pk']
         user = UserProfile.objects.get(pk=pk)
         messages.success(self.request, f'A senha de {user} foi alterada com sucesso!')
