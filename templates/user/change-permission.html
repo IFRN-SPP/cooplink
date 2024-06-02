@@ -11,13 +11,24 @@
       <div class=" alert-box my-3">
         <div class="d-md-flex align-items-baseline gap-2 text-uppercase fw-semibold">
           <i class="bi bi-exclamation-triangle me-2 fs-5"></i>
-          Ao confirmar, você estará dando acesso <span class="text-danger">administrativo</span> para <strong>{% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}</strong>
+          {% if form.instance.is_staff %}
+          Ao confirmar, você estará <span class="text-danger">removendo o acesso administrativo</span> de <strong>{% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}</strong>
+          {% else %}
+          Ao confirmar, você estará <span class="text-danger">permitindo acesso administrativo</span> para <strong>{% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}</strong>
+          {% endif %}
         </div>
       </div>
       <div class="alert-box d-grid gap-2 my-3">
         <div>
-          Isso significa que o usuário poderá ter <strong>acesso completo</strong> ao sistema!
+          {% if form.instance.is_staff %}
+          Isso significa que o usuário terá <strong>acesso limitado</strong> ao sistema!
+          {% else %}
+          Isso significa que o usuário terá <strong>acesso completo</strong> ao sistema!
+          {% endif %}
         </div>
+        {% if form.instance.is_staff %}
+        <div>Esteja ciente que esse usuário não poderá administrar o sistema!</div>
+        {% else %}
         <div><strong>Ações de Risco</strong> que esse usuário poderá executar:</div>
         <div>
           <ul class="m-0 fw-semibold">
@@ -27,13 +38,14 @@
           </ul>
         </div>
         <div>Esteja ciente para quem você está dando essas permissões!</div>
+        {% endif %}
       </div>
       <form action="" method="post">
         {% csrf_token %}
         {% if form.instance.is_staff %}
-        <div class="poppins-medium my-3 fs-5">Remover as permissões de <span class="text-danger text-uppercase">administrativa</span> de {% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}?</div>
+        <div class="poppins-medium my-3 fs-5">Remover Permissão <span class="text-danger text-uppercase">administrativa</span> de {% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}?</div>
         {% else %}
-        <div class="poppins-medium my-3 fs-5">Adicionar permissões de <span class="text-danger text-uppercase">administrativa</span> a {% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}?</div>
+        <div class="poppins-medium my-3 fs-5">Adicionar Permissão <span class="text-danger text-uppercase">administrativa</span> a {% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}?</div>
         {% endif %}
 
         <div class="d-none">{{form.as_p}}</div>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-
-{% block title %} Login {% endblock title %}
+{% load static %}
+{% block title %}Login{% endblock title %}
 {% block navbar %}{% endblock navbar %}
 
 {% block content %}
@@ -41,3 +41,7 @@
   </div>
 </div>
 {% endblock content %}
+
+{% block script %}
+<script src="{% static 'js/showPassword.js' %}"></script>
+{% endblock script %}
