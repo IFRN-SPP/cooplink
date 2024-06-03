@@ -9,23 +9,23 @@
             </li>
 
             <li class="sidebar-item">
-                <a href="{% url 'order-list' %}" class="sidebar-link poppins-medium {% if request.resolver_match.url_name == 'order-list' %}active{% endif %}"> Pedidos </a>
+                <a href="{% url 'order-list' %}" class="sidebar-link poppins-medium {% if 'order' in request.resolver_match.url_name  %}active{% endif %}"> Pedidos </a>
             </li>
 
             <li class="sidebar-item">
-                <a href="{% url 'call-list' %}" class="sidebar-link poppins-medium {% if request.resolver_match.url_name == 'call-list' %}active{% endif %}"> Chamadas </a>
+                <a href="{% url 'call-list' %}" class="sidebar-link poppins-medium {% if 'call' in request.resolver_match.url_name  %}active{% endif %}"> Chamadas </a>
             </li>
 
             <li class="sidebar-item">
-                <a href="{% url 'institution-list' %}" class="sidebar-link poppins-medium {% if request.resolver_match.url_name == 'institution-list' %}active{% endif %}"> Instituições </a>
+                <a href="{% url 'institution-list' %}" class="sidebar-link poppins-medium {% if 'institution' in request.resolver_match.url_name  %}active{% endif %}"> Instituições </a>
             </li>
 
             <li class="sidebar-item">
-                <a href="{% url 'product-list' %}" class="sidebar-link poppins-medium {% if request.resolver_match.url_name == 'product-list' %}active{% endif %}"> Produtos </a>
+                <a href="{% url 'product-list' %}" class="sidebar-link poppins-medium {% if 'product' in request.resolver_match.url_name  %}active{% endif %}"> Produtos </a>
             </li>
 
             <li class="sidebar-item">
-                <a href="{% url 'user-list' %}" class="sidebar-link poppins-medium {% if request.resolver_match.url_name == 'user-list' %}active{% endif %}"> Usuários </a>
+                <a href="{% url 'user-list' %}" class="sidebar-link poppins-medium {% if 'user' in request.resolver_match.url_name  %}active{% endif %}"> Usuários </a>
             </li>
 
             <div class="d-flex justify-content-center">
