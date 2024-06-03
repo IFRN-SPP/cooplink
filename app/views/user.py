@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 from django.contrib.auth.forms import SetPasswordForm
-from django.views.generic.edit import UpdateView, FormView
+from django.views.generic.edit import UpdateView, FormView, CreateView
 
 from app.forms import UserCreateForm, UserUpdateForm, PermissionForm, UserActiveForm
 from app.models import UserProfile
@@ -20,12 +20,14 @@ class UserList(LoginRequiredMixin, StaffRequiredMixin, AjaxListView):
     paginate_by = 6
 
 
-class UserCreate(AjaxCreateView):
+class UserCreate(LoginRequiredMixin, StaffRequiredMixin, CreateView):
     form_class = UserCreateForm
-    template_name = 'partials/user/create.html'
+    template_name = 'user/create.html'
     success_url = reverse_lazy('user-list')
-    message = "Usuário ADICIONADO com sucesso!"
-    message_class = "alert-success"
+
+    def form_valid(self, form):
+        messages.success(self.request, f'O usuário {form.instance} foi cadastrado com sucesso!')
+        return super().form_valid(form)
 
 
 class UserUpdate(AjaxUpdateView):

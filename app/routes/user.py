@@ -15,8 +15,8 @@ urlpatterns = [
     path("<int:pk>/mudar-senha/", UserUpdatePassword.as_view(), name="update-user-password"),
     path("<int:pk>/mudar-permissao/", UserUpdatePermission.as_view(), name="update-user-permission"),
     path("<int:pk>/mudar-atividade/", UserUpdateActive.as_view(), name="update-user-active"),
+    path("cadastrar/", UserCreate.as_view(), name="create-user"),
     # AJAX
-    path("js/create/", UserCreate.as_view(), name="js-create-user"),
     path("js/update/<int:pk>/", UserUpdate.as_view(), name="js-update-user"),
     path("js/delete/<int:pk>/", UserDelete.as_view(), name="js-delete-user"),
 ]

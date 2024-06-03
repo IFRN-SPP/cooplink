@@ -117,13 +117,22 @@ class UserCreateForm(UserCreationForm):
     class Meta:
         model = UserProfile
         fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "institution",)
+        labels = {
+            'first_name': 'Nome',
+            'last_name': 'Sobrenome',
+            'username': 'Nome de Usuário',
+        }
 
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ("username", "first_name", "institution")
-
+        fields = ("username", "institution", "first_name", "last_name",)
+        labels = {
+            'first_name': 'Nome',
+            'last_name': 'Sobrenome',
+            'username': 'Nome de Usuário',
+        }
 
 class UserActiveForm(forms.ModelForm):
     class Meta:
