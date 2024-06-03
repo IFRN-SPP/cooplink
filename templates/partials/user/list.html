@@ -26,8 +26,9 @@
       </button>
       <ul class="dropdown-menu">
           <li><a class="js-update dropdown-item btn-gap" data-url="{% url 'js-update-user' object.pk %}"> <i class="bi bi-pencil-fill"></i> Editar </a></li>
-          <li><a class="dropdown-item btn-gap" href="{% url "update-user-permission" object.pk %}"> <i class="bi bi-exclamation-triangle-fill"></i> Alterar permissões</a></li>
-          <li><a class="dropdown-item btn-gap" href="{% url "update-user-password" object.pk %}"> <i class="bi bi-arrow-repeat"></i> Mudar senha </a></li>
+          <li><a class="dropdown-item btn-gap" href="{% url "update-user-permission" object.pk %}"> <i class="bi bi-exclamation-triangle-fill"></i> Alterar Permissões</a></li>
+          <li><a class="dropdown-item btn-gap" href="{% url "update-user-active" object.pk %}"> <i class="bi bi-exclamation-triangle-fill"></i> Alterar Atividade</a></li>
+          <li><a class="dropdown-item btn-gap" href="{% url "update-user-password" object.pk %}"> <i class="bi bi-arrow-repeat"></i> Mudar Senha </a></li>
           <li>
               <hr class="dropdown-divider">
           </li>

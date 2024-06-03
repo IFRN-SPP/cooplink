@@ -125,6 +125,13 @@ class UserUpdateForm(forms.ModelForm):
         fields = ("username", "first_name", "institution")
 
 
+class UserActiveForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ("is_active",)
+        help_texts = {'is_active': None}
+
+
 class PermissionForm(forms.ModelForm):
     class Meta:
         model = UserProfile

@@ -5,14 +5,16 @@ from app.views.user import (
     UserUpdate,
     UserDelete,
     UserUpdatePassword,
-    UserUpdatePermission
+    UserUpdatePermission,
+    UserUpdateActive,
 )
 
 # Adicione suas URLs aqui
 urlpatterns = [
     path("", UserList.as_view(), name="user-list"),
     path("<int:pk>/mudar-senha/", UserUpdatePassword.as_view(), name="update-user-password"),
-    path("<int:pk>/mudar-permissao", UserUpdatePermission.as_view(), name="update-user-permission"),
+    path("<int:pk>/mudar-permissao/", UserUpdatePermission.as_view(), name="update-user-permission"),
+    path("<int:pk>/mudar-atividade/", UserUpdateActive.as_view(), name="update-user-active"),
     # AJAX
     path("js/create/", UserCreate.as_view(), name="js-create-user"),
     path("js/update/<int:pk>/", UserUpdate.as_view(), name="js-update-user"),

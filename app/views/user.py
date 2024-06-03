@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.forms import SetPasswordForm
 from django.views.generic.edit import UpdateView, FormView
 
-from app.forms import UserCreateForm, UserUpdateForm, PermissionForm
+from app.forms import UserCreateForm, UserUpdateForm, PermissionForm, UserActiveForm
 from app.models import UserProfile
 from app.utils.mixins import ConfirmPasswordMixin, StaffRequiredMixin
 
@@ -71,6 +71,27 @@ class UserUpdatePermission(StaffRequiredMixin, ConfirmPasswordMixin, UpdateView)
 
     def form_valid(self, form):
         messages.success(self.request, f'A permissão de {form.instance} foi alterada com sucesso!')
+        return super().form_valid(form)
+
+
+class UserUpdateActive(StaffRequiredMixin, ConfirmPasswordMixin, UpdateView):
+    model = UserProfile
+    form_class = UserActiveForm
+    template_name = 'user/change-active.html'
+    success_url = reverse_lazy('user-list')
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['is_active'] = True
+        if self.object.is_active:
+            initial['is_active'] = False
+        return initial
+
+    def form_valid(self, form):
+        if form.instance.is_active == True:
+            messages.success(self.request, f'{form.instance.first_name} {form.instance.last_name}  foi ativado com sucesso!')
+        if form.instance.is_active == False:
+            messages.success(self.request, f'{form.instance.first_name} {form.instance.last_name} foi desativado com sucesso!')
         return super().form_valid(form)
 
 
