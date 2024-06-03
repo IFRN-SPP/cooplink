@@ -56,9 +56,13 @@ def CallUpdateActive(request, pk):
     call = get_object_or_404(Call, pk=pk)
     context['call'] = call
 
+    institution = get_object_or_404(Institution, pk=call.institution.pk)
+    active_call = Call.objects.filter(institution=institution, active=True).first()
+    if (active_call == call):
+        active_call = None
+
     if request.method == 'GET':
-        initial = {'active': not call.active}
-        form = CallActiveForm(initial=initial)
+        form = CallActiveForm(instance=call)
 
     if request.method == 'POST':
         form = CallActiveForm(request.POST, instance=call)
@@ -70,11 +74,8 @@ def CallUpdateActive(request, pk):
                 messages.warning(request, f'A {call} agora está INATIVA!')
             return redirect('call-list')
 
-        if form.errors:
-            messages.warning(request, f'Existe outra Chamada ATIVA de {call.institution}! Desative a outra chamada antes de ativar a {call}')
-            return redirect('call-list')
-
     context['form'] = form
+    context['active_call'] = active_call
     return render(request, template_name, context)
 
 

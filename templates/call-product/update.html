@@ -9,16 +9,16 @@
             <h3 class="poppins-bold" >EDITAR PRODUTOS DA CHAMADA {{call.number}}</h3>
             <p class="lead my-2">Preencha todos os campos obrigatórios <span class="asteriskField fw-semibold">*</span></p>
             <hr>
-            <div class="my-2">
+            <div class="mt-2 d-md-flex gap-5">
                 <p><strong>INSITUIÇÃO</strong>: {{call.institution}}</p>
                 <p><strong>SITUAÇÃO</strong>:
-                    <span class="badge fs-6 {% if call.active %}text-bg-succes{% else %} text-bg-warning{% endif %}">
-                        {% if call.active %}ATIVO{% else %}INATIVA{% endif %}
+                    <span class="badge fs-6 {% if call.active %}text-bg-success{% else %}text-bg-warning{% endif %}">
+                        {% if call.active %}ATIVA{% else %}INATIVA{% endif %}
                     </span>
                 </p>
             </div>
         </div>
-        <div class="my-3">
+        <div class="mb-3">
             <h4 class="poppins-bold">PRODUTOS DA CHAMADA</h4>
             <form action="" method="POST">
                 {% csrf_token %}

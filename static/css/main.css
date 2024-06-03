@@ -105,7 +105,24 @@ table{
     border: .1rem solid var(--black-color);
   }
 }
-
+.form-check-input{
+  width: 1.2em;
+  height: 1.2em;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  border: .1rem solid var(--main-bg-color);
+  box-shadow: none !important;
+  &:focus{
+    border-color: .1rem solid var(--black-color);
+  }
+  &:checked{
+    background-color: var(--green-color);
+    border-color: var(--green-color);
+    &:focus{
+      border-color: .1rem solid var(--black-color);
+    }
+  }
+}
 .form-select{
   cursor: pointer;
   border-radius: var(--border-radius);
@@ -113,7 +130,9 @@ table{
     border: .1rem solid var(--black-color);
   }
 }
-
+.pointer{
+  cursor: pointer;
+}
 .form-box{
   margin-block: .8rem;
 }

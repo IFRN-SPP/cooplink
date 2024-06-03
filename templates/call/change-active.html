@@ -1,35 +1,53 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block title %}Situação da Chamada{% endblock %}
 {% block content %}
-<div class="container ">
-  <div class="d-flex">
-    <div class="content-background">
-      <h3 class="poppins-bold">ALTERAR SITUAÇÃO</h3>
-      <hr>
-      <div class="my-2">
-        <form action="{% url 'update-call-active' call.pk %}" method="post">
-          {% csrf_token %}
-          {% if call.active %}
-            <div class="poppins-medium my-3 fs-5">Deseja alterar a <strong>Chamada {{call.number}}</strong> para <span class="badge text-bg-warning">INATIVA</span> ?</div>
-          {% else %}
-            <div class="poppins-medium my-3 fs-5">Deseja alterar a <strong>Chamada {{call.number}}</strong> para <span class="badge text-bg-success">ATIVA</span> ?</div>
-          {% endif %}
-          <div class="d-none">{{form}}</div>
-          <hr>
-          <div class="d-flex gap-3 mt-2">
-            <a href="{% url 'call-list' %}" class="btn btn-danger btn-gap my-1">
-              <i class="bi bi-x-circle"></i>
-              CANCELAR
-            </a>
-            <button class="btn btn-success btn-gap my-1" type="submit" btn-gap my-1>
-              <i class="bi bi-check-circle"></i>
-              CONFIRMAR
-            </button>
-          </div>
-        </form>
-      </div>
+<div class="container">
+  <div class="content-background">
+    <h3 class="poppins-bold">ALTERAR SITUAÇÃO DA CHAMADA {{call.number}}</h3>
+    <hr>
+    <div class="my-2">
+      <form action="{% url 'update-call-active' call.pk %}" method="post">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+              {{error}}
+            </div>
+          {% endfor %}
+        {% endif %}
+        {% if active_call %}
+        <div class="alert-box my-2 align-items-baseline">
+          <i class="bi bi-exclamation-triangle me-2 fs-5"></i>
+          {{call.institution.name}} já possui uma <strong class="text-danger">Chamada Ativa</strong>! Desative essa Chamada antes.
+          <a class="btn btn-success py-1" href="{% url 'update-call-active' active_call.pk %}">DESATIVAR AGORA</a>
+        </div>
+        {% endif %}
+        <div class="alert-box my-2 align-items-baseline">
+          <i class="bi bi-exclamation-triangle me-2 fs-5"></i>
+          Ao ativar esse Chamada, ela será usada para os próximos Pedidos da Instituição: <strong>{{call.institution.name}}</strong>
+        </div>
+        <div class="mt-3 mx-2">
+          {{form.active|as_crispy_field}}
+        </div>
+        <hr>
+        <div class="d-flex gap-3 mt-2">
+          <a href="{% url 'call-list' %}" class="btn btn-danger btn-gap my-1">
+            <i class="bi bi-x-circle"></i>
+            CANCELAR
+          </a>
+          <button class="btn btn-success btn-gap my-1" type="submit" btn-gap my-1>
+            <i class="bi bi-check-circle"></i>
+            CONFIRMAR
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
 {% endblock %}
+
+{% block script %}
+<script src="{% static 'js/activeBadge.js' %}"></script>
+{% endblock script %}
