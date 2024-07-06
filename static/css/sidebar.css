@@ -96,11 +96,12 @@ li {
   width: 100vw;
 }
 
-.nav-none{
-  display: none;
+.desktop-display{
+  display: flex;
 }
-.nav-placeholder{
-  margin-block: 1rem;
+
+.mobile-display{
+  display: none;
 }
 
 /* Responsive */
@@ -113,10 +114,10 @@ li {
   #sidebar.collapsed {
     margin-left: -215px;
   }
-  .nav-none{
+  .mobile-display{
     display: flex;
   }
-  .nav-placeholder, .hidden-logo{
+  .desktop-display, .hidden-logo{
     display: none;
   }
   .sidebar-logo{

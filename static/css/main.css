@@ -200,7 +200,6 @@ table{
   margin: 0;
   padding: .3rem .6rem;
   .breadcrumb-item a{
-    text-decoration: underline !important;
     color: var(--black-color);
     &:hover{
       color: var(--green-color);

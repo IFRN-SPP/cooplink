@@ -4,6 +4,9 @@
             <a href="{% url 'index' %}" class="poppins-bold text-success hidden-logo">COOPPOTENGI</a>
         </div>
         <ul class="sidebar-nav">
+            <div class="d-flex justify-content-center">
+                <hr class="w-75">
+            </div>
             <li class="sidebar-item">
                 <a href="{% url 'index' %}" class="sidebar-link poppins-medium {% if request.resolver_match.url_name == 'index-admin' %}active{% endif %}"> Início </a>
             </li>
@@ -31,12 +34,11 @@
             <div class="d-flex justify-content-center">
                 <hr class="w-75">
             </div>
-
-            <li class="sidebar-item">
+            <li class="sidebar-item mobile-display">
                 <div class="poppins-medium">Olá, <span class="fw-semibold text-success">{{request.user.get_full_name}}</span></div>
             </li>
 
-            <li class="sidebar-item">
+            <li class="sidebar-item mobile-display">
                 <a href="{% url 'logout' %}" class="sidebar-link poppins-medium"> Sair </a>
             </li>
         </ul>
