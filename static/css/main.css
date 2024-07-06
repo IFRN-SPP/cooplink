@@ -3,7 +3,7 @@
   --main-bg2-color: #bfc6ca88;
   --white-color: #f8fbf9;
   --black-color: #0E0E0E;
-  --green-color: #00870E;
+  --green-color: #198754;
 
   --border-radius: 3px;
   --content-border-radius: 3px;
@@ -191,5 +191,19 @@ table{
 .inline-margin{
   .mb-3{
     margin: 0 !important;
+  }
+}
+
+.breadcrumb{
+  background-color: var(--white-color);
+  border-radius: var(--border-radius);
+  margin: 0;
+  padding: .3rem .6rem;
+  .breadcrumb-item a{
+    text-decoration: underline !important;
+    color: var(--black-color);
+    &:hover{
+      color: var(--green-color);
+    }
   }
 }

@@ -5,6 +5,8 @@
 {% block content %}
 
 <div class="container">
+    {% include 'partials/breadcrumb.html' %}
+
     <div class="table-background">
         <h3 class="poppins-bold">AVALIAR PEDIDO {{order.pk}} - CHAMADA {{order.call.number }}</h3>
         <hr>

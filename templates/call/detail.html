@@ -3,7 +3,8 @@
 {% block title %}Chamada{% endblock %}
 {% block content %}
 <div class="container">
-  <div class="table-background">
+    {% include 'partials/breadcrumb.html' %}
+    <div class="table-background">
     <div class="d-flex content-header justify-content-between">
       <div class="d-flex align-items-baseline gap-3">
         <h3 class="poppins-bold">CHAMADA {{ call.number }}</h3>
