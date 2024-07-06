@@ -4,56 +4,81 @@
 {% block title %}Chamadas{% endblock title %}
 
 {% block content %}
-
-    <div class="table-background container justify-content-center">
-
+<div class="container">
+    {% include 'partials/breadcrumb.html' %}
+    <div class="table-background">
         <div class="content-header">
-            <h3 class="poppins-bold">Cadastrar Chamada</h3>
-            <p class="lead">Preencha todos os campos obrigatórios:</p>
+            <h3 class="poppins-bold">CADASTRAR CHAMADA</h3>
+            <p class="lead my-2">Preencha todos os campos obrigatórios <span class="asteriskField fw-semibold">*</span></p>
         </div>
-    
         <hr>
-
+        <div class="my-2">
         <form action="" method="POST">
-            {% csrf_token %}
-
-            <div class="w-25">
-                {{ form|crispy }}
-            </div>
-
-            {% if form_product %}
-                <h3>Produtos da Chamada</h3>
-                {{ form_product.management_form}} 
-                <div class="table-responsive">
-                    <table class="table ">
-                        <thead>
-                            <tr>
-                                <td>Produtos</td>
-                                <td>Preço (R$)</td>
-                                <td>Saldo do Produto</td>
-                                <td>Apagar</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                        {% for form in form_product %}
-                            <tr class='inlineform'>
-                                <td>{{ form.product|as_crispy_field }}</td>
-                                <td>{{ form.price|as_crispy_field }}</td>
-                                <td>{{ form.balance|as_crispy_field }}</td>
-                                <td></td>
-                            </tr>
-                        {% endfor %}
-                    </table>    
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{error}}
+                    </div>
+                    {% endfor %}
+              {% endif %}
+                <div class="row">
+                    <div class="col-lg-5">
+                        {{form.number|as_crispy_field}}
+                    </div>
+                    <div class="col-lg-5">
+                        {{form.institution|as_crispy_field}}
+                    </div>
+                    <div class="col-lg-5">
+                        {{form.start|as_crispy_field}}
+                    </div>
+                    <div class="col-lg-5">
+                        {{form.end|as_crispy_field}}
+                    </div>
                 </div>
-            
-            {% endif %}
+                {{form.active|as_crispy_field}}
 
-            <button type="submit" class="btn btn-success">Cadastrar</button>
-        </form>
-
+                {% if form_product %}
+                    <h4 class="poppins-bold">PRODUTOS DA CHAMADA</h3>
+                    {{ form_product.management_form}}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>PRODUTOS</th>
+                                    <th>PREÇO (R$)</th>
+                                    <th>SALDO DO PRODUTO</th>
+                                    <th>APAGAR</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for form in form_product %}
+                                <tr class="inlineform">
+                                    <td class="inline-margin">{{ form.product|as_crispy_field }}</td>
+                                    <td class="inline-margin">{{ form.price|as_crispy_field }}</td>
+                                    <td class="inline-margin">{{ form.balance|as_crispy_field }}</td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+                <hr>
+                <div class="d-flex gap-3 my-3">
+                    <a href="{% url 'call-list' %}"class="btn btn-danger btn-gap">
+                        <i class="bi bi-x-circle"></i>
+                        CANCELAR
+                    </a>
+                    <button type="submit" class="btn btn-success btn-gap">
+                        <i class="bi bi-check-circle"></i>
+                        CADASTRAR
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 {% endblock content %}
 
 {% block script %}
@@ -61,10 +86,12 @@
         $(function() {
             $('.inlineform').formset({
                 prefix: '{{ form_product.prefix }}',
-                addText: '<button type="submit" class="btn btn-success btn-sm">+</button>',
-                deleteText: '<button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3-fill"></i></button>',
-                //hideLastAddForm: true,
+                addText: '<button type="submit" class="btn btn-success btn-gap"><i class="bi bi-plus-circle"></i>ADICIONAR PRODUTO</button>',
+                deleteText: '<button type="submit" class="btn btn-danger btn-sm ms-2"><i class="bi bi-trash3-fill"></i></button>',
             });
         })
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="{% static 'js/jqueryMasks.js' %}"></script>
+    <script src="{% static 'js/activeBadge.js' %}"></script>
 {% endblock script %}

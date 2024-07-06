@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Usuário{% endblock %}
+{% block content %}
+<div class="container">
+    {% include 'partials/breadcrumb.html' %}
+    <div class="content-background">
+    <h3 class="poppins-bold ">ALTERAR ATIVIDADE DO USUÁRIO</h3>
+    <hr>
+    <div class=" alert-box my-3">
+      <div class="d-md-flex align-items-baseline gap-2 text-uppercase fw-semibold">
+        <i class="bi bi-exclamation-triangle me-2 fs-5"></i>
+        {% if form.instance.is_active %}
+        Ao confirmar, você estará <span class="text-danger">desativando</span> o usuário <strong>{% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}. Retirando seu acesso ao sistema!</strong>
+        {% else %}
+        Ao confirmar, você estará <span class="text-danger">ativando</span> o usuário <strong>{% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}. Retornando seu acesso ao sistema!</strong>
+        {% endif %}
+      </div>
+    </div>
+    <div class="my-2">
+      <form action="{% url 'update-user-active' form.instance.pk %}" method="post">
+        {% csrf_token %}
+        {% if form.instance.is_active %}
+        <div class="poppins-medium my-3 fs-5">Desativar o Usuário: {% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}?</div>
+        {% else %}
+        <div class="poppins-medium my-3 fs-5">Ativar o Usuário: {% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}?</div>
+        {% endif %}
+        <div class="d-none">{{form.as_p}}</div>
+        <hr>
+        <div class="d-flex gap-3 mt-2">
+          <a href="{% url 'call-list' %}" class="btn btn-danger btn-gap my-1">
+            <i class="bi bi-x-circle"></i>
+            CANCELAR
+          </a>
+          <button class="btn btn-success btn-gap my-1" type="submit" btn-gap my-1>
+            <i class="bi bi-check-circle"></i>
+            CONFIRMAR
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/activeBadge.js' %}"></script>
+{% endblock script %}

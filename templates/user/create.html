@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}Cadastrar Usuário{% endblock title %}
+
+{% block content %}
+<div class="container">
+    {% include 'partials/breadcrumb.html' %}
+    <div class="table-background">
+        <div class="content-header">
+            <h3 class="poppins-bold">CADASTRAR USUÁRIO</h3>
+            <p class="lead my-2">Preencha todos os campos obrigatórios <span class="asteriskField fw-semibold">*</span></p>
+        </div>
+        <hr>
+        <div class="my-2">
+        <form action="{% url 'create-user' %}" method="POST">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{error}}
+                    </div>
+                    {% endfor %}
+              {% endif %}
+                <div class="row">
+                  <div class="col-lg-5">
+                    {{form.username|as_crispy_field}}
+                  </div>
+                  <div class="col-lg-5">
+                    {{form.institution|as_crispy_field}}
+                  </div>
+                  <div class="col-lg-5">
+                      {{form.first_name|as_crispy_field}}
+                  </div>
+                  <div class="col-lg-5">
+                      {{form.last_name|as_crispy_field}}
+                  </div>
+                    <div class="col-lg-5">
+                        {{form.password1|as_crispy_field}}
+                    </div>
+                    <div class="col-lg-5">
+                        {{form.password2|as_crispy_field}}
+                    </div>
+                </div>
+                <hr>
+                <div class="d-flex gap-3 my-3">
+                    <a href="{% url 'user-list' %}"class="btn btn-danger btn-gap">
+                        <i class="bi bi-x-circle"></i>
+                        CANCELAR
+                    </a>
+                    <button type="submit" class="btn btn-success btn-gap">
+                        <i class="bi bi-check-circle"></i>
+                        CADASTRAR
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'js/showPassword.js' %}"></script>
+{% endblock script %}

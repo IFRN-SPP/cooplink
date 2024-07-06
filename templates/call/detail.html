@@ -1,64 +1,61 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}
-  Chamada
-{% endblock %}
+{% block title %}Chamada{% endblock %}
 {% block content %}
-  <div class="container justify-content-center table-background">
-    <div class="d-flex justify-content-between">
-      <div class="d-flex align-items-baseline gap-3 mb-3">
-        <h3 class="poppins-bold">Chamada {{ call.number }}</h3>
+<div class="container">
+    {% include 'partials/breadcrumb.html' %}
+    <div class="table-background">
+    <div class="d-flex content-header justify-content-between">
+      <div class="d-flex align-items-baseline gap-3">
+        <h3 class="poppins-bold">CHAMADA {{ call.number }}</h3>
         <div class="">
-          <span class="badge text-uppercase fs-4 py-2
-              {% if call.active %}
-              text-bg-success
-              {% else %}
-              text-bg-warning
-              {% endif %}
-              ">
-              
+          <span class="badge text-uppercase fs-4 py-2{% if call.active %} text-bg-success {% else %} text-bg-warning {% endif %}">
               {% if call.active %}
               Ativa
               {% else %}
               Inativa
               {% endif %}
           </span>
+        </div>
       </div>
-      </div>
-
-      <div class="content-header">
-        {% if user.is_staff %}
-          <a href="{% url 'update-call-product' call.pk %}" class="btn btn-warning">Editar Produtos</a>
-          <a href="{% url 'call-list' %}" class="btn btn-outline-success">Chamadas</a>
-          <a href="{% url 'update-call' call.pk %}" class="btn btn-success">Editar Chamada <i class="bi bi-pencil-fill"></i></a>
-        {% endif %}
+      {% if user.is_staff %}
+      <div class="d-md-flex gap-2">
+          <a href="{% url 'update-call' call.pk %}" class="btn btn-success btn-gap my-1">
+            <i class="bi bi-pencil-fill"></i>
+            Editar Chamada
+          </a>
+        </div>
+      {% endif %}
+    </div>
+    <hr>
+    <div class="content-header my-3">
+      {% if user.is_staff %}
+      <p><strong>INSITITUIÇÃO</strong>: {{ call.institution }}</p>
+      {% endif %}
+      <div class="d-md-flex gap-5">
+        <p class="m-0"><strong>INÍCIO</strong>: {{ call.start|date:"SHORT_DATE_FORMAT" }}</p>
+        <p class="m-0"><strong>TÉRMINO</strong>: {{ call.end|date:"SHORT_DATE_FORMAT" }}</p>
       </div>
     </div>
-
-    <div class="d-flex flex-column mb-3">
-      <div>
-        <p>
-          <b>Instituição:</b> {{ call.institution }}
-        </p>
+    <div class="d-md-flex align-items-baseline">
+      <h4 class="poppins-bold">PRODUTOS DA CHAMADA</h4>
+      {% if user.is_staff %}
+      <div class="ms-auto">
+        <a href="{% url 'update-call-product' call.pk %}" class="btn btn-success btn-gap my-1">
+          <i class="bi bi-pencil-fill"></i>
+          Editar Produtos
+        </a>
       </div>
-      <div class="d-flex gap-3">
-        <p>
-          <b>Início:</b> {{ call.start }}
-        </p>
-        <p>
-          <b>Término:</b> {{ call.end }}
-        </p>
-      </div>
+      {% endif %}
     </div>
-
-    <table class="table table-striped mt-4">
+    <table class="table table-striped">
       <thead>
-        <th>Produto</th>
-        <th>Saldo</th>
-        <th>Unidade</th>
-        <th>Preço</th>
+        <th>PRODUTO</th>
+        <th>SALDO</th>
+        <th>UNIDADE</th>
+        <th>PREÇO</th>
         {% if user.is_staff %}
-          <th>Deletar?</th>
+          <th>DELETAR?</th>
         {% endif %}
       </thead>
       <tbody  class="table-group-divider">
@@ -74,8 +71,13 @@
               </td>
             {% endif %}
           </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5">Sem Produtos nessa Chamada.</td>
+        </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
+</div>
 {% endblock %}

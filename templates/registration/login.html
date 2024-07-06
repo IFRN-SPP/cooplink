@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-
-{% block title %} Login {% endblock title %}
+{% load static %}
+{% block title %}Login{% endblock title %}
 {% block navbar %}{% endblock navbar %}
 
 {% block content %}
@@ -12,9 +12,10 @@
           <h3 class="text-secondary poppins-bold">COOPPOTENGI</h3>
       </div>
 
-      <hr class="divider opacity-50">
+      <hr class="divider">
 
-      <form action="" method="post">
+      <div class="login">
+        <form action="{% url 'login' %}" method="post">
           <div class="d-flex flex-column form-box">
             {% csrf_token %}
 
@@ -35,7 +36,12 @@
 
               <button type="submit" class="btn btn-success mt-3">ENTRAR</button>
           </div>
-      </form>
+        </form>
+      </div>
   </div>
 </div>
 {% endblock content %}
+
+{% block script %}
+<script src="{% static 'js/showPassword.js' %}"></script>
+{% endblock script %}

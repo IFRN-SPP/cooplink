@@ -36,10 +36,10 @@ class CallForm(forms.ModelForm):
         current_date = timezone.now().date()
         if start_date and end_date:
             if start_date >= end_date:
-                raise forms.ValidationError("A data de início deve ser anterior à data de término.")
+                self.add_error('start', 'A data de início deve ser anterior à data de término.')
             elif end_date <= current_date:
                 current_date_formatted = current_date.strftime('%d/%m/%Y')
-                raise forms.ValidationError(f'A data de término deve ser maior que a data atual: {current_date_formatted}')
+                self.add_error('end', f'A data de término deve ser maior que a data atual: {current_date_formatted}')
         return cleaned_data
 
 
@@ -64,7 +64,7 @@ class CallProductForm(forms.ModelForm):
 class CallUpdateForm(forms.ModelForm):
     class Meta:
         model = Call
-        fields = ['number', 'institution', 'start', 'end']
+        fields = ("__all__")
         widgets = {
             "start": forms.DateInput(format = ('%Y-%m-%d'), attrs = {'type': 'date', 'class': 'form-control'}),
             "end": forms.DateInput(format = ('%Y-%m-%d'), attrs = {'type': 'date', 'class': 'form-control'}),
@@ -77,10 +77,10 @@ class CallUpdateForm(forms.ModelForm):
         current_date = timezone.now().date()
         if start_date and end_date:
             if start_date >= end_date:
-                raise forms.ValidationError("A data de início deve ser anterior à data de término.")
+                self.add_error('start', 'A data de início deve ser anterior à data de término.')
             elif end_date <= current_date:
                 current_date_formatted = current_date.strftime('%d/%m/%Y')
-                raise forms.ValidationError(f'A data de término deve ser maior que a data atual: {current_date_formatted}')
+                self.add_error('end', f'A data de término deve ser maior que a data atual: {current_date_formatted}')
         return cleaned_data
 
 
@@ -117,12 +117,28 @@ class UserCreateForm(UserCreationForm):
     class Meta:
         model = UserProfile
         fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "institution",)
+        labels = {
+            'first_name': 'Nome',
+            'last_name': 'Sobrenome',
+            'username': 'Nome de Usuário',
+        }
 
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ("username", "first_name", "institution")
+        fields = ("username", "institution", "first_name", "last_name",)
+        labels = {
+            'first_name': 'Nome',
+            'last_name': 'Sobrenome',
+            'username': 'Nome de Usuário',
+        }
+
+class UserActiveForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ("is_active",)
+        help_texts = {'is_active': None}
 
 
 class PermissionForm(forms.ModelForm):
@@ -132,7 +148,7 @@ class PermissionForm(forms.ModelForm):
 
 
 class ConfirmPasswordForm(forms.ModelForm):
-    confirm_password = forms.CharField(widget=forms.PasswordInput())
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'autofocus':True}), label='Senha')
 
     class Meta:
         model = UserProfile

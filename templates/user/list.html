@@ -1,39 +1,42 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load ajax_tags %}
-
-{% block title %}
-  Usuários
-{% endblock %}
+{% block title %}Usuários{% endblock %}
 {% block content %}
-  {% include 'partials/modal-form.html' %}
 
-    <div class="container justify-content-center table-background">
+{% include 'partials/modal-form.html' %}
 
-      <div class="content-header d-flex justify-content-between">
-        <h3 class="poppins-bold">Usuários</h3>
-        <div>
-          <button class="js-create btn btn-success" type="button" data-url="{% url 'js-create-user' %}"> <i class="bi bi-plus-circle"></i> Cadastrar Usuário</button>
-        </div>
+<div class="container">
+    {% include 'partials/breadcrumb.html' %}
+    <div class="table-background">
+    <div class="content-header d-md-flex justify-content-between align-items-baseline">
+      <h3 class="poppins-bold">USUÁRIOS</h3>
+      <div>
+        <a class="btn btn-success btn-gap my-1" type="button" href="{% url 'create-user' %}">
+          <i class="bi bi-plus-circle"></i>
+          CADASTRAR USUÁRIO
+        </a>
       </div>
-
-      <table id="{% table_id %}" class="table table-striped mt-4">
-        <thead>
-          <th>N°</th>
-          <th>NOME DE USUÁRIO</th>
-          <th>NOME</th>
-          <th>INSTITUIÇÃO</th>
-          <th>ATIVO</th>
-          <th>ADMINISTRADOR</th>
-          <th>OPÇÕES</th>
-        </thead>
-        <tbody class="table-group-divider ">
-          {% include 'partials/user/list.html' %}
-        </tbody>
-      </table>
-
-      {% include 'partials/pagination.html' %}
     </div>
+    <hr>
+    <table id="{% table_id %}" class="table table-striped">
+      <thead>
+        <th>N°</th>
+        <th>NOME DE USUÁRIO</th>
+        <th>NOME</th>
+        <th>INSTITUIÇÃO</th>
+        <th>ATIVO</th>
+        <th>ADMINISTRADOR</th>
+        <th>OPÇÕES</th>
+      </thead>
+      <tbody class="table-group-divider ">
+        {% include 'partials/user/list.html' %}
+      </tbody>
+    </table>
+
+    {% include 'partials/pagination.html' %}
+  </div>
+</div>
 {% endblock %}
 
 {% block script %}

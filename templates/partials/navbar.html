@@ -7,18 +7,21 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mb-2 mb-lg-0 justify-content-end align-items-center flex-grow-1">
         <li class="nav-item">
-          <a class="nav-link poppins-medium" aria-current="page" href="{% url 'index' %}">Início</a>
+          <a class="nav-link poppins-medium {% if request.resolver_match.url_name == 'index' %}active{% endif %}" aria-current="page" href="{% url 'index' %}">Início</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link poppins-medium" href="{% url 'order-list' %}">Meus pedidos</a>
+          <a class="nav-link poppins-medium {% if 'order' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'order-list' %}">Meus pedidos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link poppins-medium" href="{% url 'call-list' %}">Minhas chamadas</a>
+          <a class="nav-link poppins-medium {% if 'call' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'call-list' %}">Minhas chamadas</a>
+        </li>
+        <li class="nav-item mx-4">
+          <div class=" poppins-medium">Olá, <span class="fw-semibold text-success">{{request.user.get_full_name}}</span></div>
         </li>
         <li>
-          <form class="btn" action="{% url 'logout' %}" method="post">
+          <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
-            <button type="submit" class="btn btn-outline-secondary">Sair</button>
+            <button type="submit" class="nav-link poppins-medium">Sair</button>
           </form>
         </li>
       </ul>

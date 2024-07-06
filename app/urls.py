@@ -1,7 +1,7 @@
 from django.urls import path, include
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView
 
-from .views.index import index, index_admin
+from .views.main import index, index_admin, logout_view
 from .views.order import get_calls, get_products, get_balance
 
 from .routes import institution, user, product, call, order
@@ -13,7 +13,7 @@ urlpatterns = [
 
     # Autenticação
     path("login/", LoginView.as_view(), name="login"),
-    path("logout/", LogoutView.as_view(), name="logout"),
+    path("logout/", logout_view, name="logout"),
 
     # Objetos
     path('instituicoes/', include(institution)),
