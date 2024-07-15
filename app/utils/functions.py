@@ -59,6 +59,19 @@ def get_week_end(monday):
     return end_of_week
 
 
+def is_weekend(today):
+    """
+    Checks if today is a weekend (Saturday or Sunday).
+
+    Args:
+        today (datetime): The date to check.
+
+    Returns:
+        bool: True if today is Saturday or Sunday, False otherwise.
+    """
+    return today.weekday() in [5, 6]
+
+
 def get_report_orders(week_start, week_end):
     """
     Gets approved or delivered orders within a certain time interval.

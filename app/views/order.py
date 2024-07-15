@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from app.forms import OrderForm, OrderedProductFormSet, OrderedProductForm
 from app.models import Call, CallProduct, Order, OrderedProduct, Product, Institution
 from app.utils.decorators import staff_required, confirm_password, order_owner, order_evaluated
-from app.utils.functions import render_to_pdf, get_report_orders, calculate_total_products, get_week_end, get_week_start
+from app.utils.functions import render_to_pdf, get_report_orders, calculate_total_products, get_week_end, get_week_start, is_weekend
 
 from ajax.views import AjaxListView, AjaxDeleteView
 from ajax.utils import is_ajax
@@ -162,6 +162,11 @@ def OrderCreate(request):
 
     if call == None:
         messages.error(request, f"{institution} não possui uma Chamada ATIVA para Pedidos.")
+        return redirect('index')
+
+    today = timezone.now().date()
+    if is_weekend(today):
+        messages.warning(request, f"Não é possivel fazer Pedidos hoje. Tente novamente nos proximo dia útil.")
         return redirect('index')
 
     if request.method == 'GET':
