@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -369,6 +370,9 @@ def OrderReport(request, pk):
     today = timezone.now().date()
     data['today'] = today
 
+    static_url = request.build_absolute_uri(settings.STATIC_URL)
+    data['logo'] = static_url+'assets/logo-pb.png'
+
     if request.method == 'GET':
         pdf = render_to_pdf(template_name, data)
         return HttpResponse(pdf, content_type='application/pdf')
@@ -391,6 +395,9 @@ def WeekReport(request):
     data['orders'] = orders
     total_products = calculate_total_products(orders)
     data['total_products'] = total_products
+
+    static_url = request.build_absolute_uri(settings.STATIC_URL)
+    data['logo'] = static_url+'assets/logo-pb.png'
 
     if request.method == 'GET':
         pdf = render_to_pdf(template_name, data)

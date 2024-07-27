@@ -1,3 +1,4 @@
+{% load static %}
 <div class="wrapper">
 
     {% include 'partials/sidebar.html' %}
@@ -5,7 +6,10 @@
     <div class="main">
       <nav class="navbar navbar-expand mobile-display navbar-bg-color">
         <div class="container container-fluid">
-          <a class="navbar-brand poppins-bold text-success" href="{% url 'index' %}">COOPPOTENGI</a>
+          <a class="navbar-brand poppins-bold text-success" href="{% url 'index' %}">
+            <img class="navbar-logo" src="{% static 'assets/logo-colorida.png' %}" alt="logo-cooppotengi">
+            COOPPOTENGI
+          </a>
           <button class="btn btn-rounded btn-outline-success" type="button"><span class="navbar-toggler-icon"></span></button>
         </div>
       </nav>
