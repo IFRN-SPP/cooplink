@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -10,7 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from app.forms import OrderForm, OrderedProductFormSet, OrderedProductForm
 from app.models import Call, CallProduct, Order, OrderedProduct, Product, Institution
 from app.utils.decorators import staff_required, confirm_password, order_owner, order_evaluated
-from app.utils.functions import render_to_pdf, get_report_orders, calculate_total_products, get_week_end, get_week_start
+from app.utils.functions import render_to_pdf, get_report_orders, calculate_total_products, get_week_end, get_week_start, is_weekend
 
 from ajax.views import AjaxListView, AjaxDeleteView
 from ajax.utils import is_ajax
@@ -162,6 +163,11 @@ def OrderCreate(request):
 
     if call == None:
         messages.error(request, f"{institution} não possui uma Chamada ATIVA para Pedidos.")
+        return redirect('index')
+
+    today = timezone.now().date()
+    if is_weekend(today):
+        messages.warning(request, f"Não é possivel fazer Pedidos hoje. Tente novamente nos proximo dia útil.")
         return redirect('index')
 
     if request.method == 'GET':
@@ -364,6 +370,9 @@ def OrderReport(request, pk):
     today = timezone.now().date()
     data['today'] = today
 
+    static_url = request.build_absolute_uri(settings.STATIC_URL)
+    data['logo'] = static_url+'assets/logo-pb.png'
+
     if request.method == 'GET':
         pdf = render_to_pdf(template_name, data)
         return HttpResponse(pdf, content_type='application/pdf')
@@ -386,6 +395,9 @@ def WeekReport(request):
     data['orders'] = orders
     total_products = calculate_total_products(orders)
     data['total_products'] = total_products
+
+    static_url = request.build_absolute_uri(settings.STATIC_URL)
+    data['logo'] = static_url+'assets/logo-pb.png'
 
     if request.method == 'GET':
         pdf = render_to_pdf(template_name, data)
