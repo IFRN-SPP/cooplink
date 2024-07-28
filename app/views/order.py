@@ -135,8 +135,8 @@ def get_balance(request):
     if request.method == 'GET' and is_ajax(request):
         product_id = request.GET.get('product_id')
 
-        if product_id == '':
-            balance = None
+        if not product_id:
+            balance = 'Erro: Produto não encontrado'
         else:
             call_product = CallProduct.objects.get(id=product_id)
             product = Product.objects.get(id=call_product.product.id)
