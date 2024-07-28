@@ -112,7 +112,7 @@ $(function() {
 
   $('#id_institution').on('change', getCalls);
   $('#id_call').on('change', getProducts)
-  $(document).on('change', '[id$="call_product"]', getBalance);
+  $(document).on('change', 'select[id$="call_product"]', getBalance);
 
   $('.add-row').click(function() {
     var callId = $('#id_call').val();
