@@ -109,8 +109,8 @@ def get_products(request):
     if request.method == 'GET' and is_ajax(request):
         call_id = request.GET.get('call_id')
 
-        products = CallProduct.objects.filter(call_id=call_id)
-        products_dict = [{'id': product.id, 'text': str(product)} for product in products]
+        call_products = CallProduct.objects.filter(call_id=call_id)
+        products_dict = [{'id': call_product.id, 'text': str(call_product.product)} for call_product in call_products]
         data['products'] = products_dict
 
     else:

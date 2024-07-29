@@ -38,7 +38,7 @@ class InstitutionCreate(AjaxCreateView):
     form_class = InstitutionForm
     template_name = 'partials/institution/create.html'
     success_url = reverse_lazy('institution-list')
-    message = "Instituição CADASTRADA com sucesso!"
+    message = "Instituição cadastrada com sucesso!"
     message_class = "alert-success"
 
 
@@ -46,7 +46,7 @@ class InstitutionUpdate(AjaxUpdateView):
     form_class = InstitutionForm
     template_name = 'partials/institution/update.html'
     success_url = reverse_lazy('institution-list')
-    message = "Instituição ATUALIZADA com sucesso!"
+    message = "Instituição atualizado com sucesso!"
     message_class = "alert-success"
 
 
@@ -54,7 +54,7 @@ class InstitutionDelete(AjaxDeleteView):
     model = Institution
     template_name = 'partials/institution/delete.html'
     success_url = reverse_lazy('institution-list')
-    message = "Instituição DELETADO com sucesso!"
+    message = "Instituição deletado com sucesso!"
     message_class = "alert-primary"
 
 @login_required

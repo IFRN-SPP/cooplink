@@ -9,7 +9,7 @@ from app.forms import UserCreateForm, UserUpdateForm, PermissionForm, UserActive
 from app.models import UserProfile
 from app.utils.mixins import ConfirmPasswordMixin, StaffRequiredMixin
 
-from ajax.views import AjaxListView, AjaxCreateView, AjaxUpdateView, AjaxDeleteView
+from ajax.views import AjaxListView, AjaxUpdateView, AjaxDeleteView
 
 
 # CRUD USUARIO
@@ -91,7 +91,7 @@ class UserUpdateActive(StaffRequiredMixin, ConfirmPasswordMixin, UpdateView):
 
     def form_valid(self, form):
         if form.instance.is_active == True:
-            messages.success(self.request, f'{form.instance.first_name} {form.instance.last_name}  foi ativado com sucesso!')
+            messages.success(self.request, f'{form.instance.first_name} {form.instance.last_name} foi ativado com sucesso!')
         if form.instance.is_active == False:
             messages.success(self.request, f'{form.instance.first_name} {form.instance.last_name} foi desativado com sucesso!')
         return super().form_valid(form)
@@ -101,6 +101,6 @@ class UserDelete(AjaxDeleteView):
     model = UserProfile
     template_name =  'partials/user/delete.html'
     success_url = reverse_lazy('user-list')
-    message = "Usuário DELETADO com sucesso!"
+    message = "Usuário deletado com sucesso!"
     message_class = "alert-primary"
 
