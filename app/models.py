@@ -73,6 +73,8 @@ class Product(models.Model):
     CHOICES = [
         ('KG', 'KG'),
         ('UNI', 'UNI'),
+        ('BDJ', 'BDJ'),
+        ('L', 'L'),
     ]
     name = models.CharField(max_length=100, verbose_name="Nome do Produto")
     unit = models.CharField(max_length=3, choices=CHOICES, verbose_name="Unidade de Medida")
