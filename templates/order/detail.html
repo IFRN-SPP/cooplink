@@ -46,13 +46,15 @@
             </div>
             <hr>
         </div>
-        <div class="content-header d-flex align-items-baseline my-2">
+        <div class="alert-box content-header d-flex align-items-baseline my-2">
             <div>
-                <p><strong>AUTOR</strong>: {{ order.user.get_full_name}}</p>
-                {% if user.is_staff %}
-                <p><strong>INSTITUIÇÃO</strong>: {{ order.institution }}</p>
-                {% endif %}
-                <p><strong>FEITO EM</strong>: {{ order.timestamp|date:"SHORT_DATETIME_FORMAT"}}</p>
+                <div class="d-md-flex gap-5">
+                    <p><strong>AUTOR</strong>: {{ order.user.get_full_name}}</p>
+                    {% if user.is_staff %}
+                    <p><strong>INSTITUIÇÃO</strong>: {{ order.institution }}</p>
+                    {% endif %}
+                    <p><strong>FEITO EM</strong>: {{ order.timestamp|date:"SHORT_DATETIME_FORMAT"}}</p>
+                </div>
             </div>
         </div>
         <h4 class="poppins-bold">PRODUTOS DO PEDIDO</h4>
@@ -145,11 +147,14 @@
                 {% if order.status == 'approved' %}
                 <div class="d-flex gap-3 align-items-baseline">
                     <i class="bi bi-exclamation-triangle fs-4"></i>
+                    {% if request.user == order.user or request.user.institution == order.institution %}
                         Ao receber seu pedido, confirme a entrega.
-                    </div>
-                    <a href="{% url 'order-delivered' order.pk %}" class="btn btn-success m-1">
-                        CONFIRMAR ENTREGA
-                    </a>
+                        <a href="{% url 'order-delivered' order.pk %}" class="btn btn-success m-1">
+                            CONFIRMAR ENTREGA
+                        </a>
+                    {% else %}
+                        A confirmação de entrega deve ser feita pelos representantes da instituição.
+                    {% endif %}
                 </div>
                 {% elif order.status == 'delivered' %}
                 <div class="d-flex align-items-center">
