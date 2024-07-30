@@ -1,21 +1,31 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Produtos das Chamadas{% endblock title %}
+{% block title %}Produtos da Chamada{% endblock title %}
 
 {% block content %}
-    <div class="container justify-content-center bg-light p-4 rounded-4">
-        <h3>Excluir Produto da Chamada</h3>
-        <p class="lead">Confirme para excluir o registro definitivamente.</p>
-
+<div class="container">
+    {% include 'partials/breadcrumb.html' %}
+    <div class="content-background">
+        <h3 class="poppins-bold">Excluir Produto da Chamada</h3>
         <hr>
-
+        <div class="alert-box my-2 align-items-baseline d-flex fs-5">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <div>Deseja excluir este produto? <b>{{ call_product.product }} {{call_product.price}}</b>?</div>
+        </div>
+        <hr>
         <form action="" method="POST">
             {% csrf_token %}
-
-            <p>Deseja excluir este produto? <b>{{ call_product }}</b>?</p>
-
-            <button type="submit" class="btn btn-danger">Excluir</button>
+            <div class="d-flex gap-3 mt-2">
+                <a href="{% url 'detail-call' call_product.call.pk %}" class="btn btn-secondary btn-gap my-1">
+                  <i class="bi bi-x-circle"></i>
+                  CANCELAR
+                </a>
+                <button class="btn btn-danger btn-gap my-1" type="submit" btn-gap my-1>
+                  <i class="bi bi-check-circle"></i>
+                  EXCLUIR
+                </button>
+            </div>
         </form>
-
     </div>
+</div>
 {% endblock content %}
