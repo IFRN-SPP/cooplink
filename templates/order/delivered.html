@@ -1,25 +1,32 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Confirmar Entrega{% endblock title %}
-
 {% block content %}
-    <div class="container justify-content-center">
-        <h3>Confirmar Entrega</h3>
-        <p class="lead">Ao confirmar, você estará garantindo que a entrega foi definida.</p>
-
+<div class="container justify-content-center">
+    <div class="content-background">
+        <h3 class="poppins-bold">CONFIRMAR ENTREGA DO PEDIDO</h3>
         <hr>
-
+        <div class="alert-box my-2 align-items-baseline d-flex fs-5">
+            <div><b>PEDIDO {{order.pk}}</b> FEITO EM <b>{{order.timestamp.date|date:"SHORT_DATE_FORMAT"}}</b> às <b>{{order.timestamp.time}}</b>.</div>
+        </div>
+        <div class="alert-box my-2 align-items-baseline d-flex">
+            <i class="bi bi-exclamation-triangle me-2 fs-5"></i>
+            <div>Ao confirmar, você estará garantindo que a entrega foi definida. <strong>A ação será irreversível.</strong></div>
+        </div>
+        <hr>
         <form action="" method="POST">
             {% csrf_token %}
-
-            <p>Confirmar entrega?<br>
-                <b>Pedido {{ order.pk }}</b><br>
-                <b>Feito em: {{order.timestamp}}</b><br>
-            </p>
-
-            <button type="submit" class="btn btn-primary">Confirmar</button>
-            <p class='text-muted'>Ao clicar no botão de confirmação, a ação será irreversível.</p>
+            <div class="d-flex gap-3 mt-2">
+                <a href="{% url 'detail-order' order.pk %}" class="btn btn-danger btn-gap my-1">
+                  <i class="bi bi-x-circle"></i>
+                  CANCELAR
+                </a>
+                <button class="btn btn-success btn-gap my-1" type="submit" btn-gap my-1>
+                  <i class="bi bi-check-circle"></i>
+                  CONFIRMAR
+                </button>
+              </div>
         </form>
-
     </div>
+</div>
 {% endblock content %}
