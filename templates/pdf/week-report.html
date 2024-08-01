@@ -28,6 +28,15 @@
       text-align: center;
       border: 1.5px solid #000; 
     }
+
+    itens,h2{
+      margin-top: 2rem;
+    }
+    h2{
+      padding-bottom: 3px;
+    }
+    
+    
     
   </style>
   </head>
@@ -77,7 +86,7 @@
 
       <itens>
         {% for order in orders %}
-        <h3>{{order.institution}}</h3>
+        <h4>{{order.institution}}</h4>
         <table>
           <thead>
             <tr>
