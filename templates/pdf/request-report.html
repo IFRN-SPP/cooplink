@@ -51,7 +51,7 @@
   
         <itens>
           <h2>PRODUTOS TOTAIS</h2>
-          {% if total_products.items %}
+          {% if total_requests.items %}
           <table>
             <thead>
               <tr>
@@ -60,7 +60,7 @@
               </tr>
             </thead>
             <tbody>
-              {% for product_name, quantity in total_products.items %}
+              {% for product_name, quantity in total_requests.items %}
               <tr>
                 <td> {{product_name}}</td>
                 <td> {{quantity.quantity}} {{quantity.unit}}</td>
