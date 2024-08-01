@@ -403,3 +403,28 @@ def WeekReport(request):
         pdf = render_to_pdf(template_name, data)
         return HttpResponse(pdf, content_type='application/pdf')
 
+
+@login_required
+@staff_required
+def RequestReport(request):
+    template_name = 'pdf/request-report.html'
+    data = {}
+
+    today = timezone.now().date()
+    data['today'] = today
+    monday = get_week_start(today)
+    data['monday'] = monday
+    friday = get_week_end(monday)
+    data['friday'] = friday
+
+    orders = get_report_orders(monday, friday)
+    data['orders'] = orders
+    total_products = calculate_total_products(orders)
+    data['total_products'] = total_products
+
+    static_url = request.build_absolute_uri(settings.STATIC_URL)
+    data['logo'] = static_url+'assets/logo-pb.png'
+
+    if request.method == 'GET':
+        pdf = render_to_pdf(template_name, data)
+        return HttpResponse(pdf, content_type='application/pdf')
