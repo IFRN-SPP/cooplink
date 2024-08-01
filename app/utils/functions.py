@@ -120,3 +120,54 @@ def calculate_total_products(orders):
                     total_products[product_name] = {'quantity': ordered_quantity, 'unit': product_unit}
 
     return total_products
+
+# #########
+
+def get_report_products(week_start, week_end):
+    """
+    Gets approved or pending orders within a certain time interval.
+
+    Args:
+        week_start (datetime): The start of the time interval.
+        week_end (datetime): The end of the time interval.
+
+    Returns:
+        QuerySet: Returns the filtered orders within the specified time interval.
+    """
+    orders = Order.objects.filter(
+        timestamp__gte=week_start,
+        timestamp__lt=week_end,
+        status__in=('approved', 'pending')
+    )
+    return orders
+
+
+def calculate_request_product(orders):
+    """
+    Calculates the total products ordered in a list of orders.
+
+    Args:
+        orders (QuerySet): A list of orders.
+
+    Returns:
+        dict: A dictionary containing the product name as key and the total ordered quantity as value.
+    """
+    total_requests = {}
+    for order in orders:
+        if (order.status == 'approved') or (order.status == 'pending'):
+            for ordered_product in order.call_products.all():
+                product_name = ordered_product.call_product.product.name
+                product_unit = ordered_product.call_product.product.unit
+                if ordered_product.status == 'available':
+                    ordered_quantity = ordered_product.ordered_quantity
+                elif ordered_product.status == 'parcial':
+                    ordered_quantity = ordered_product.available_quantity
+                else:
+                    continue
+
+                if product_name in total_requests:
+                    total_requests[product_name]['quantity'] += ordered_quantity
+                else:
+                    total_requests[product_name] = {'quantity': ordered_quantity, 'unit': product_unit}
+
+    return total_requests
