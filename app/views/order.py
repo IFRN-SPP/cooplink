@@ -11,7 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from app.forms import OrderForm, OrderedProductFormSet, OrderedProductForm
 from app.models import Call, CallProduct, Order, OrderedProduct, Product, Institution
 from app.utils.decorators import staff_required, confirm_password, order_owner, order_evaluated
-from app.utils.functions import render_to_pdf, get_report_orders, calculate_total_products, get_week_end, get_week_start, is_weekend
+from app.utils.functions import render_to_pdf, get_report_orders, calculate_total_products, get_week_end, get_week_start, is_weekend, get_report_products,calculate_request_product
 
 from ajax.views import AjaxListView, AjaxDeleteView
 from ajax.utils import is_ajax
@@ -403,3 +403,28 @@ def WeekReport(request):
         pdf = render_to_pdf(template_name, data)
         return HttpResponse(pdf, content_type='application/pdf')
 
+
+@login_required
+@staff_required
+def RequestReport(request):
+    template_name = 'pdf/request-report.html'
+    data = {}
+
+    today = timezone.now().date()
+    data['today'] = today
+    monday = get_week_start(today)
+    data['monday'] = monday
+    friday = get_week_end(monday)
+    data['friday'] = friday
+
+    orders = get_report_products(monday, friday)
+    data['orders'] = orders
+    total_requests = calculate_request_product(orders)
+    data['total_requests'] = total_requests
+
+    static_url = request.build_absolute_uri(settings.STATIC_URL)
+    data['logo'] = static_url+'assets/logo-pb.png'
+
+    if request.method == 'GET':
+        pdf = render_to_pdf(template_name, data)
+        return HttpResponse(pdf, content_type='application/pdf')

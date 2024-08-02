@@ -142,6 +142,15 @@ class Order(models.Model):
             for product in products:
                 total_price += float(product.get_quantity_price.replace(',', '.'))
         return "{:.2f}".format(total_price).replace('.', ',') if total_price else None
+    
+    @property
+    def request_products(self):
+        if (self.status == 'approved') or (self.status == 'pending') :
+            products = OrderedProduct.objects.filter(
+                order=self,
+                status__in=('parcial', 'available')
+            )
+            return products
 
 
 class OrderedProduct(models.Model):

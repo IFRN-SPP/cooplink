@@ -12,6 +12,7 @@ from app.views.order import (
   OrderDelivered,
   OrderReport,
   WeekReport,
+  RequestReport,
 )
 
 # Adicione suas URLs aqui
@@ -32,4 +33,5 @@ urlpatterns = [
     path('<int:pk>/confirmar-entrega/',OrderDelivered, name='order-delivered'),
     path('relatorio/semanal/', WeekReport, name='week-report'),
     path('<int:pk>/relatorio/', OrderReport, name='order-report'),
+     path('relatorio/solicitacoes/', RequestReport, name='request-report'),
 ]
