@@ -34,7 +34,7 @@ class ProductCreate(AjaxCreateView):
     form_class = ProductForm
     template_name = 'partials/product/create.html'
     success_url = reverse_lazy('product-list')
-    message = "Produto ADICIONADO com sucesso!"
+    message = "Produto adicionado com sucesso!"
     message_class = "alert-success"
 
 
@@ -42,7 +42,7 @@ class ProductUpdate(AjaxUpdateView):
     form_class = ProductForm
     template_name = 'partials/product/update.html'
     success_url = reverse_lazy('product-list')
-    message = "Produto ATUALIZADO com sucesso!"
+    message = "Produto atualizado com sucesso!"
     message_class = "alert-success"
 
 
@@ -50,5 +50,5 @@ class ProductDelete(AjaxDeleteView):
     model = Product
     template_name = 'partials/product/delete.html'
     success_url = reverse_lazy('product-list')
-    message = "Produto DELETADO com sucesso!"
+    message = "Produto deletado com sucesso!"
     message_class = "alert-primary"

@@ -1,38 +1,38 @@
 $(function() {
   var getProducts = function() {
-    var callId = $(this).val(); 
+    var callId = $(this).val();
     if (callId) {
       var productSelects = $('.product-select select');
-      
+
       productSelects.each(function() {
         var currentSelect = $(this);
         var selectId = currentSelect.attr('id');
         var selectedOption = currentSelect.find('option:selected');
         currentSelect.data(selectId + '-selected-option', selectedOption);
       });
-    
+
       $.ajax({
         url: '/get_products/',
         type: 'GET',
-        data: {'call_id': callId}, 
+        data: {'call_id': callId},
         success: function(data) {
           productSelects.each(function() {
             var currentSelect = $(this);
             currentSelect.empty();
-            
+
             currentSelect.prepend($('<option>', {
               value: '',
               text: '---------',
               selected: true
             }));
-          
+
             $.each(data.products, function(index, product) {
               currentSelect.append($('<option>', {
                 value: product.id,
                 text: product.text,
               }));
             });
-    
+
             var selectId = currentSelect.attr('id');
             if (currentSelect.data(selectId + '-selected-option')) {
               var selectedOption = currentSelect.data(selectId + '-selected-option');
@@ -90,13 +90,18 @@ $(function() {
   };
 
   var getBalance = function() {
-    var productSelect = $(this); 
-    var productRow = productSelect.closest('.inlineform'); 
-    var productBalance = productRow.find('.product-balance'); 
-    var productId = productSelect.val(); 
-    
+    var productSelect = $(this);
+    var productRow = productSelect.closest('.inlineform');
+    var productBalance = productRow.find('.product-balance');
+    var productId = productSelect.val();
+
+    if (!productId) {
+      productBalance.text('. . .');
+      return;
+    }
+
     $.ajax({
-      url: '/get_balance/', 
+      url: '/get_balance/',
       type: 'GET',
       data: {'product_id': productId},
       success: function(data) {
@@ -106,10 +111,8 @@ $(function() {
   };
 
   $('#id_institution').on('change', getCalls);
-
   $('#id_call').on('change', getProducts)
-  
-  $(document).on('change', '[id$="call_product"]', getBalance);
+  $(document).on('change', 'select[id$="call_product"]', getBalance);
 
   $('.add-row').click(function() {
     var callId = $('#id_call').val();
@@ -124,4 +127,4 @@ $(function() {
     })
   }
 
-});        
+});
