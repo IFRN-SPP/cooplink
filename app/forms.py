@@ -116,23 +116,38 @@ OrderedProductFormSet = inlineformset_factory(
 class UserCreateForm(UserCreationForm):
     class Meta:
         model = UserProfile
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "institution",)
-        labels = {
-            'first_name': 'Nome',
-            'last_name': 'Sobrenome',
-            'username': 'Nome de Usuário',
-        }
+        fields = UserCreationForm.Meta.fields + ("first_name", "institution",)
+
+    def clean_email(self):
+        email = self.cleaned_data['username']
+        if UserProfile.objects.filter(username=email).exists():
+            raise ValidationError(f"O email {email} já está em uso.")
+        return email
+
+    def __init__(self, *args, **kwargs):
+        super(UserCreateForm, self).__init__(*args, **kwargs)
+        email = self.fields['username']
+        email.help_text = "Evite usar um email que já está em uso."
+        email.attrs = {"autofocus": True}
 
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ("username", "institution", "first_name", "last_name",)
-        labels = {
-            'first_name': 'Nome',
-            'last_name': 'Sobrenome',
-            'username': 'Nome de Usuário',
-        }
+        fields = ("username", "institution", "first_name",)
+
+    def clean_email(self):
+        email = self.cleaned_data['username']
+        if UserProfile.objects.filter(username=email).exists():
+            raise ValidationError(f"O email {email} já está em uso.")
+        return email
+
+    def __init__(self, *args, **kwargs):
+        super(UserUpdateForm, self).__init__(*args, **kwargs)
+        email = self.fields['username']
+        email.help_text = "Evite usar um email que já está em uso."
+        email.attrs = {"autofocus": True}
+
 
 class UserActiveForm(forms.ModelForm):
     class Meta:

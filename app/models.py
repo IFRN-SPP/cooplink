@@ -27,9 +27,11 @@ class Institution(models.Model):
 
 
 class UserProfile(AbstractUser):
+    username = models.EmailField(verbose_name="Email", max_length=150, unique=True)
+    first_name = models.CharField(verbose_name="Nome Completo", max_length=150)
     institution = models.ForeignKey(Institution, on_delete=models.PROTECT, null=True, verbose_name="Instituição")
 
-    REQUIRED_FIELDS = ['institution']
+    REQUIRED_FIELDS = ["institution", "first_name"]
 
     def __str__(self):
         return self.username
