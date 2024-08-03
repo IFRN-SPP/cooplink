@@ -34,7 +34,7 @@ class UserProfile(AbstractUser):
     REQUIRED_FIELDS = ["institution", "first_name"]
 
     def __str__(self):
-        return self.username
+        return self.get_full_name()
 
     class Meta:
         ordering = ['-id']
@@ -48,7 +48,7 @@ class Call(models.Model):
     active = models.BooleanField(default=False, verbose_name="Situação")
 
     def __str__(self):
-        return f'Chamada - {self.number}'
+        return f'Chamada - {self.number} de {self.institution.name}'
 
     def clean(self):
         if self.active:
@@ -116,7 +116,7 @@ class Order(models.Model):
     status = models.CharField(max_length=10, choices=CHOICES, default='pending', verbose_name="Situação")
 
     def __str__(self):
-        return f'Pedido de {self.institution} ({self.call}) feito por {self.user}'
+        return f'Pedido de {self.institution} (Chamada {self.call.number}) feito por {self.user}'
 
     class Meta:
         ordering = ['-timestamp']
