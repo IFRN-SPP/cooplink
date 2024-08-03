@@ -12,9 +12,9 @@
         <div class="d-md-flex align-items-baseline gap-2 text-uppercase fw-semibold">
           <i class="bi bi-exclamation-triangle me-2 fs-5"></i>
           {% if form.instance.is_staff %}
-          Ao confirmar, você estará <span class="text-danger">removendo o acesso administrativo</span> de <strong>{% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}</strong>
+          Ao confirmar, você estará <span class="text-danger">removendo o acesso administrativo</span> de <strong>{{form.instance.get_full_name}}</strong>.
           {% else %}
-          Ao confirmar, você estará <span class="text-danger">permitindo acesso administrativo</span> para <strong>{% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}</strong>
+          Ao confirmar, você estará <span class="text-danger">permitindo acesso administrativo</span> para <strong>{{form.instance.get_full_name}}</strong>.
           {% endif %}
         </div>
       </div>
@@ -43,9 +43,9 @@
       <form action="" method="post">
         {% csrf_token %}
         {% if form.instance.is_staff %}
-        <div class="poppins-medium my-3 fs-5">Remover Permissão <span class="text-danger text-uppercase">administrativa</span> de {% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}?</div>
+        <div class="poppins-medium my-3 fs-5">Remover Permissão <span class="text-danger text-uppercase">administrativa</span> de {{form.instance.get_full_name}}?</div>
         {% else %}
-        <div class="poppins-medium my-3 fs-5">Adicionar Permissão <span class="text-danger text-uppercase">administrativa</span> a {% if form.instance.get_full_name %}{{form.instance.get_full_name}}{% else %}{{form.instance}}{% endif %}?</div>
+        <div class="poppins-medium my-3 fs-5">Adicionar Permissão <span class="text-danger text-uppercase">administrativa</span> a {{form.instance.get_full_name}}?</div>
         {% endif %}
 
         <div class="d-none">{{form.as_p}}</div>
