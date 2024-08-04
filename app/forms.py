@@ -42,6 +42,9 @@ class CallForm(forms.ModelForm):
                 self.add_error('end', f'A data de término deve ser maior que a data atual: {current_date_formatted}')
         return cleaned_data
 
+    def __init__(self, *args, **kwargs):
+        super(CallForm, self).__init__(*args, **kwargs)
+        self.fields['number'].widget.attrs.update({"autofocus": True})
 
 
 class CallActiveForm(forms.ModelForm):
@@ -82,6 +85,10 @@ class CallUpdateForm(forms.ModelForm):
                 current_date_formatted = current_date.strftime('%d/%m/%Y')
                 self.add_error('end', f'A data de término deve ser maior que a data atual: {current_date_formatted}')
         return cleaned_data
+
+    def __init__(self, *args, **kwargs):
+        super(CallUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['number'].widget.attrs.update({"autofocus": True})
 
 
 CallProductFormSet = inlineformset_factory(
