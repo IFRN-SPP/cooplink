@@ -2,6 +2,7 @@
   --main-bg-color: #B1C1CA;
   --main-bg2-color: #bfc6ca88;
   --white-color: #f8fbf9;
+  --gray-color: #6c757d;
   --black-color: #0E0E0E;
   --green-color: #198754;
 
@@ -41,7 +42,8 @@ table{
   background-color: var(--white-color);
 }
 .active{
-  color: var(--green-color) !important
+  color: var(--white-color) !important;
+  background-color: var(--gray-color);
 }
 .poppins-semi-bold {
   font-family: "Poppins", sans-serif;
@@ -210,4 +212,11 @@ table{
 .navbar-logo{
   width: 5vh;
   margin-inline: 0.5vh;
+}
+
+.btn-nav{
+  border-radius: var(--border-radius);
+  &:hover{
+    background-color: var(--gray-color);
+  }
 }

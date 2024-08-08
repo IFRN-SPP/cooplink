@@ -4,7 +4,7 @@
     {% include 'partials/sidebar.html' %}
 
     <div class="main">
-      <nav class="navbar navbar-expand mobile-display navbar-bg-color">
+      <nav class="navbar fixed-top navbar-expand navbar-bg-color mb-3 mobile-display">
         <div class="container container-fluid">
           <a class="navbar-brand poppins-bold text-success" href="{% url 'index' %}">
             <img class="navbar-logo" src="{% static 'assets/logo-colorida.png' %}" alt="logo-cooppotengi">
@@ -16,6 +16,11 @@
 
       <nav class="navbar navbar-expand-lg navbar-bg-color mb-3 desktop-display">
         <div class="container container-fluid">
+          <a class="navbar-brand poppins-bold text-success" href="{% url 'index' %}">
+            <img class="navbar-logo" src="{% static 'assets/logo-colorida.png' %}" alt="logo-cooppotengi">
+            COOPPOTENGI
+          </a>
+
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -26,7 +31,7 @@
               <li>
                 <form action="{% url 'logout' %}" method="post">
                   {% csrf_token %}
-                  <button type="submit" class="nav-link poppins-medium">Sair</button>
+                  <button type="submit" class="nav-link poppins-medium btn-nav">Sair</button>
                 </form>
               </li>
             </ul>
@@ -34,4 +39,4 @@
         </div>
       </nav>
 
-      <main class="content px-md-3">
+      <main class="content px-md-3 main-mt">

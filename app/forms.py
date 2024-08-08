@@ -42,7 +42,11 @@ class CallForm(forms.ModelForm):
                 self.add_error('end', f'A data de término deve ser maior que a data atual: {current_date_formatted}')
         return cleaned_data
 
-
+    def __init__(self, *args, **kwargs):
+        super(CallForm, self).__init__(*args, **kwargs)
+        call_number = self.fields['number']
+        call_number.widget.attrs.update({"autofocus": True})
+        call_number.help_text = "A númeração tem o formato: 000/aa"
 
 class CallActiveForm(forms.ModelForm):
     class Meta:
@@ -83,6 +87,10 @@ class CallUpdateForm(forms.ModelForm):
                 self.add_error('end', f'A data de término deve ser maior que a data atual: {current_date_formatted}')
         return cleaned_data
 
+    def __init__(self, *args, **kwargs):
+        super(CallUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['number'].widget.attrs.update({"autofocus": True})
+
 
 CallProductFormSet = inlineformset_factory(
     Call, CallProduct, form=CallProductForm,
@@ -116,23 +124,38 @@ OrderedProductFormSet = inlineformset_factory(
 class UserCreateForm(UserCreationForm):
     class Meta:
         model = UserProfile
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "institution",)
-        labels = {
-            'first_name': 'Nome',
-            'last_name': 'Sobrenome',
-            'username': 'Nome de Usuário',
-        }
+        fields = UserCreationForm.Meta.fields + ("first_name", "institution",)
+
+    def clean_email(self):
+        email = self.cleaned_data['username']
+        if UserProfile.objects.filter(username=email).exists():
+            raise ValidationError(f"O email {email} já está em uso.")
+        return email
+
+    def __init__(self, *args, **kwargs):
+        super(UserCreateForm, self).__init__(*args, **kwargs)
+        email = self.fields['username']
+        email.help_text = "Evite usar um email que já está em uso."
+        email.attrs = {"autofocus": True}
 
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ("username", "institution", "first_name", "last_name",)
-        labels = {
-            'first_name': 'Nome',
-            'last_name': 'Sobrenome',
-            'username': 'Nome de Usuário',
-        }
+        fields = ("username", "institution", "first_name",)
+
+    def clean_email(self):
+        email = self.cleaned_data['username']
+        if UserProfile.objects.filter(username=email).exists():
+            raise ValidationError(f"O email {email} já está em uso.")
+        return email
+
+    def __init__(self, *args, **kwargs):
+        super(UserUpdateForm, self).__init__(*args, **kwargs)
+        email = self.fields['username']
+        email.help_text = "Evite usar um email que já está em uso."
+        email.attrs = {"autofocus": True}
+
 
 class UserActiveForm(forms.ModelForm):
     class Meta:

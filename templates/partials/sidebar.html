@@ -1,46 +1,45 @@
 <aside id="sidebar" class="collapsed">
-    <div class="h-100">
-        <div class="sidebar-logo d-flex justify-content-center">
-            <a href="{% url 'index' %}" class="poppins-bold text-success hidden-logo">COOPPOTENGI</a>
-        </div>
+    <div0 class="h-100">
+        <div class="sidebar-margin"/>
         <ul class="sidebar-nav">
             <div class="d-flex justify-content-center">
                 <hr class="w-75">
             </div>
-            <li class="sidebar-item">
-                <a href="{% url 'index' %}" class="sidebar-link poppins-medium {% if request.resolver_match.url_name == 'index-admin' %}active{% endif %}"> Início </a>
-            </li>
+            <a href="{% url 'index' %}" class="sidebar-link poppins-medium">
+                <li class="sidebar-item {% if request.resolver_match.url_name == 'index-admin' %}active{% endif %}">Início</li>
+            </a>
 
-            <li class="sidebar-item">
-                <a href="{% url 'order-list' %}" class="sidebar-link poppins-medium {% if 'order' in request.resolver_match.url_name  %}active{% endif %}"> Pedidos </a>
-            </li>
+            <a href="{% url 'order-list' %}" class="sidebar-link poppins-medium">
+                <li class="sidebar-item {% if 'order' in request.resolver_match.url_name  %}active{% endif %}">Pedidos</li>
+            </a>
 
-            <li class="sidebar-item">
-                <a href="{% url 'call-list' %}" class="sidebar-link poppins-medium {% if 'call' in request.resolver_match.url_name  %}active{% endif %}"> Chamadas </a>
-            </li>
+            <a href="{% url 'call-list' %}" class="sidebar-link poppins-medium ">
+                <li class="sidebar-item {% if 'call' in request.resolver_match.url_name  %}active{% endif %}">Chamadas</li>
+            </a>
 
-            <li class="sidebar-item">
-                <a href="{% url 'institution-list' %}" class="sidebar-link poppins-medium {% if 'institution' in request.resolver_match.url_name  %}active{% endif %}"> Instituições </a>
-            </li>
+            <a href="{% url 'institution-list' %}" class="sidebar-link poppins-medium">
+                <li class="sidebar-item {% if 'institution' in request.resolver_match.url_name  %}active{% endif %}">Instituições</li>
+            </a>
 
-            <li class="sidebar-item">
-                <a href="{% url 'product-list' %}" class="sidebar-link poppins-medium {% if 'product' in request.resolver_match.url_name  %}active{% endif %}"> Produtos </a>
-            </li>
+            <a href="{% url 'product-list' %}" class="sidebar-link poppins-medium">
+                <li class="sidebar-item {% if 'product' in request.resolver_match.url_name  %}active{% endif %}">Produtos</li>
+            </a>
 
-            <li class="sidebar-item">
-                <a href="{% url 'user-list' %}" class="sidebar-link poppins-medium {% if 'user' in request.resolver_match.url_name  %}active{% endif %}"> Usuários </a>
-            </li>
+            <a href="{% url 'user-list' %}" class="sidebar-link poppins-medium">
+                <li class="sidebar-item {% if 'user' in request.resolver_match.url_name  %}active{% endif %}">Usuários</li>
+            </a>
 
             <div class="d-flex justify-content-center">
                 <hr class="w-75">
             </div>
+
             <li class="sidebar-item mobile-display">
                 <div class="poppins-medium">Olá, <span class="fw-semibold text-success">{{request.user.get_full_name}}</span></div>
             </li>
 
-            <li class="sidebar-item mobile-display">
-                <a href="{% url 'logout' %}" class="sidebar-link poppins-medium"> Sair </a>
-            </li>
+            <a href="{% url 'logout' %}" class="sidebar-link poppins-medium">
+                <li class="sidebar-item mobile-display">Sair</li>
+            </a>
         </ul>
     </div>
 </aside>

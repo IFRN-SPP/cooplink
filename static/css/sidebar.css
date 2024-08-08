@@ -35,8 +35,8 @@ li {
   transition: all 0.35s ease-in-out;
 }
 
-.sidebar-logo {
-  padding: 1.15rem 1.5rem;
+.sidebar-margin{
+  padding-block: 3.8rem;
 }
 
 .sidebar-logo a {
@@ -61,14 +61,20 @@ li {
   position: relative;
   display: block;
   font-size: 1rem;
-  margin-inline-start: .5em;
+  margin: .4em .4em;
+  border-radius: var(--border-radius);
+  transition: ease-in-out all 0.2s;
+  &:hover{
+    color: var(--white-color);
+    background-color: var(--gray-color);
+  }
 }
 
 .sidebar-link, .nav-link{
   color: var(--black-color);
   transition: ease-in-out all 0.2s;
   &:hover{
-    color: var(--green-color) !important
+    color: var(--white-color);
   }
 }
 
@@ -120,7 +126,8 @@ li {
   .desktop-display, .hidden-logo{
     display: none;
   }
-  .sidebar-logo{
-    padding-block: 2rem;
+
+  .main-mt{
+    margin-top: 9.5vh;
   }
 }

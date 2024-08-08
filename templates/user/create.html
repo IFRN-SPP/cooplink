@@ -23,18 +23,15 @@
                     {% endfor %}
               {% endif %}
                 <div class="row">
-                  <div class="col-lg-5">
-                    {{form.username|as_crispy_field}}
-                  </div>
-                  <div class="col-lg-5">
-                    {{form.institution|as_crispy_field}}
-                  </div>
-                  <div class="col-lg-5">
-                      {{form.first_name|as_crispy_field}}
-                  </div>
-                  <div class="col-lg-5">
-                      {{form.last_name|as_crispy_field}}
-                  </div>
+                    <div class="col-lg-5">
+                        {{form.username|as_crispy_field}}
+                    </div>
+                    <div class="col-lg-5">
+                        {{form.institution|as_crispy_field}}
+                    </div>
+                    <div class="col-lg-10">
+                        {{form.first_name|as_crispy_field}}
+                    </div>
                     <div class="col-lg-5">
                         {{form.password1|as_crispy_field}}
                     </div>
