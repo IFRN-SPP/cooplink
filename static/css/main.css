@@ -42,10 +42,8 @@ table{
   background-color: var(--white-color);
 }
 .active{
-  color: var(--green-color) !important;
-  &:hover{
-    color: var(--white-color) !important;
-  }
+  color: var(--white-color) !important;
+  background-color: var(--gray-color);
 }
 .poppins-semi-bold {
   font-family: "Poppins", sans-serif;
