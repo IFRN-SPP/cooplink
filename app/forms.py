@@ -44,8 +44,9 @@ class CallForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CallForm, self).__init__(*args, **kwargs)
-        self.fields['number'].widget.attrs.update({"autofocus": True})
-
+        call_number = self.fields['number']
+        call_number.widget.attrs.update({"autofocus": True})
+        call_number.help_text = "A númeração tem o formato: 000/aa"
 
 class CallActiveForm(forms.ModelForm):
     class Meta:
