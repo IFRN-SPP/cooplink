@@ -7,7 +7,7 @@
             left: 50pt; width: 512pt; top: 20pt; height: 40pt;
         }
         @frame content_frame {          /* Content Frame */
-            left: 50pt; width: 492pt; top: 60pt; height: 662pt;
+            left: 50pt; width: 492pt; top: 60pt; height: 700pt;
         }
         @frame footer_frame {           /* Another static Frame */
             -pdf-frame-content: footer_content;
@@ -24,18 +24,14 @@
         line-height: 1.5px;
       }
       itens th, itens td{
-        padding: 4px; 
+        padding: 4px;
         text-align: center;
-        border: 1.5px solid #000; 
+        border: 1.5px solid #000;
       }
 
       itens,h2{
         margin-top: 2rem;
       }
-      h2{
-        text-align:center;
-      }
-      
     </style>
     </head>
     <body>
@@ -43,19 +39,19 @@
         <header id="header_content">
           {% include "pdf/header.html" %}
         </header>
-    
+
         <!-- Content for Static Frame 'footer_frame' -->
         <div id="footer_content">Página <pdf:pagenumber>
             de <pdf:pagecount>
         </div>
-    
+
         <!-- HTML Content -->
         <div style="border: 1.5px solid #000; text-align:center;">
           <h1 style="font-size: 16px; font-weight: 600; padding: 10px;">
             RELATÓRIO DE SOLICITAÇÕES DE &nbsp;{{monday|date:"SHORT_DATE_FORMAT"}}&nbsp; A &nbsp;{{friday|date:"SHORT_DATE_FORMAT"}}&nbsp;
           </h1>
         </div>
-  
+
         <itens>
           <h2>PRODUTOS SOLICITADOS</h2>
           {% if total_requests.items %}
@@ -79,12 +75,13 @@
           <i>&nbsp;SEM PRODUTOS</i>
           {% endif %}
         </itens>
-  
-        {% comment %} <h2>INSTITUIÇÕES</h2>
-  
+        <p align="right">* O Relatório de Solicitações inclui Pedidos <strong>Pendentes</strong> e <strong>Aprovados</strong>.</p>
+
+        <h2>INSTITUIÇÕES</h2>
+
         <itens>
           {% for order in orders %}
-          <h3>{{order.institution}}</h3>
+          <h3>{{order.institution}} - PEDIDO {{order.id}}</h3>
           <table>
             <thead>
               <tr>
@@ -93,7 +90,7 @@
               </tr>
             </thead>
             <tbody>
-              {% for ordered_product in order.available_products %}
+              {% for ordered_product in order.request_products %}
               <tr>
                   <td>{{ ordered_product.call_product.product.name }}</td>
                   {% if ordered_product.status == 'available' %}
@@ -103,14 +100,14 @@
                   {% endif %}
                 </tr>
               {% endfor %}
-  
+
             </tbody>
           </table>
           <br>
           {% empty %}
-          <i>&nbsp;SEM INSTITUIÇÔES</i>
+            <i/>
           {% endfor %}
-        </itens> {% endcomment %}
-  
+        </itens>
+
     </body>
     </html>

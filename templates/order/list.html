@@ -13,6 +13,10 @@
         <div class="d-md-flex gap-3">
           {% if user.is_staff %}
             <a href="{% url 'create-order-admin' %}" class="btn btn-success btn-gap my-1"><i class="bi bi-plus-circle"></i> NOVO PEDIDO</a>
+            <a href="{% url 'request-report' %}" class="btn btn-success btn-gap my-1" target="_blank">
+              <i class="bi bi-newspaper"></i>
+              RELÁTORIO DE SOLICITAÇÕES
+            </a>
             <a href="{% url 'week-report' %}" class="btn btn-success btn-gap my-1" target="_blank"><i class="bi bi-newspaper"></i> RELÁTORIO SEMANAL</a>
           {% else %}
             <a href="{% url 'create-order' %}" class="btn btn-success btn-gap my-1"><i class="bi bi-plus-circle"></i> NOVO PEDIDO</a>

@@ -7,7 +7,7 @@
           left: 50pt; width: 512pt; top: 20pt; height: 40pt;
       }
       @frame content_frame {          /* Content Frame */
-          left: 50pt; width: 492pt; top: 60pt; height: 662pt;
+          left: 50pt; width: 492pt; top: 60pt; height: 700pt;
       }
       @frame footer_frame {           /* Another static Frame */
           -pdf-frame-content: footer_content;
@@ -24,9 +24,9 @@
       line-height: 1.5px;
     }
     itens th, itens td{
-      padding: 4px; 
+      padding: 4px;
       text-align: center;
-      border: 1.5px solid #000; 
+      border: 1.5px solid #000;
     }
 
     itens,h2{
@@ -35,9 +35,7 @@
     h2{
       padding-bottom: 3px;
     }
-    
-    
-    
+
   </style>
   </head>
   <body>
@@ -45,12 +43,12 @@
       <header id="header_content">
         {% include "pdf/header.html" %}
       </header>
-  
+
       <!-- Content for Static Frame 'footer_frame' -->
       <div id="footer_content">Página <pdf:pagenumber>
           de <pdf:pagecount>
       </div>
-  
+
       <!-- HTML Content -->
       <div style="border: 1.5px solid #000; text-align:center;">
         <h1 style="font-size: 16px; font-weight: 600; padding: 10px;">
@@ -81,6 +79,7 @@
         <i>&nbsp;SEM PRODUTOS</i>
         {% endif %}
       </itens>
+      <p align="right">* O Relatório Semanal inclui Pedidos <strong>Aprovados</strong> e <strong>Entregues</strong>.</p>
 
       <h2>INSTITUIÇÕES</h2>
 
