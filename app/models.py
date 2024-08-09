@@ -92,7 +92,7 @@ class CallProduct(models.Model):
     call = models.ForeignKey(Call, on_delete=models.CASCADE, related_name='product', verbose_name="Chamada")
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='call', verbose_name="Produto")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Preço")
-    balance = models.DecimalField(max_digits=4, decimal_places=1, verbose_name="Saldo")
+    balance = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Saldo")
 
     def __str__(self):
         return f'{self.product} {self.price} - {self.call.number}'
@@ -144,7 +144,7 @@ class Order(models.Model):
             for product in products:
                 total_price += float(product.get_quantity_price.replace(',', '.'))
         return "{:.2f}".format(total_price).replace('.', ',') if total_price else None
-    
+
     @property
     def request_products(self):
         if (self.status == 'approved') or (self.status == 'pending') :
@@ -164,8 +164,8 @@ class OrderedProduct(models.Model):
 
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='call_products', verbose_name="Pedido")
     call_product = models.ForeignKey(CallProduct, on_delete=models.PROTECT, related_name='order', verbose_name="Produto da Chamada")
-    ordered_quantity = models.DecimalField(max_digits=4, decimal_places=1, verbose_name="Quant. Pedida")
-    available_quantity = models.DecimalField(max_digits=4, decimal_places=1, null=True, blank=True, verbose_name="Quant. Disponível")
+    ordered_quantity = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Quant. Pedida")
+    available_quantity = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True, verbose_name="Quant. Disponível")
     status = models.CharField(max_length=10, choices=CHOICES, default='available', verbose_name="Situação")
 
     def __str__(self):
