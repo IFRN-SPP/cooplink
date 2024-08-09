@@ -84,7 +84,7 @@ def get_calls(request):
         else:
             calls = Call.objects.filter(institution_id=institution_id, active=True)
 
-        calls_dict = [{'id': call.id, 'text': str(call)} for call in calls]
+        calls_dict = [{'id': call.id, 'text': f"Chamada {call.number}"} for call in calls]
         data['calls'] = calls_dict
 
     else:
