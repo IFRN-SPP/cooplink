@@ -85,13 +85,6 @@ pip install -r requirements.txt
 python scripts/env_gen.py
 ```
 
-**.env**
-```
-SECRET_KEY={secret-key}
-DEBUG=True
-ALLOWED_HOSTS=.localhost, .127.0.0.1
-```
-
 > Se necessário, mude as configurações do  arquivo ``.env``
 
 - Faça as migrações necessárias
@@ -154,8 +147,8 @@ Os mais sinceros agradecimentos para as pessoas que tornaram esse projeto possí
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/wendersonvibes" title="Wenderson Nascimento">
-        <img src="https://avatars.githubusercontent.com/wendersonvibes" width="100px;" alt="collaborators pictures"/><br>
+      <a href="https://github.com/devwenderson" title="Wenderson Nascimento">
+        <img src="https://avatars.githubusercontent.com/devwenderson" width="100px;" alt="collaborators pictures"/><br>
         <sub>
           <b>Wenderson Nascimento</b>
         </sub>
