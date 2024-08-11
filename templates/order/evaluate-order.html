@@ -35,14 +35,14 @@
                         {% for object in order.products %}
                         <tr>
                             <td><strong>{{ object.call_product.product.name }}</strong></td>
-                            <td>{{ object.ordered_quantity }} {{ object.call_product.product.unit }}</td>
+                            <td id="id_product_ordered_quantity_{{object.pk}}">{{ object.ordered_quantity }} {{ object.call_product.product.unit }}</td>
                             <td class="w-25">
-                                <input class="form-control w-75" type="number" name="product_available_quantity_{{ object.pk }}" id="id_product_available_quantity_{{ object.pk }}" placeholder="Se Parcial...">
+                                <input class="form-control w-75" type="number" step="0.01" name="product_available_quantity_{{ object.pk }}" id="id_product_available_quantity_{{ object.pk }}" required>
                             </td>
                             <td>{{ object.call_product.balance }} {{ object.call_product.product.unit }}</td>
                             <td>
-                                <select class="form-select" name="product_status_{{ object.pk }}">
-                                    <option value="available" {% if object.status == available%}selected{% endif %}>Disponivel</option>
+                                <select class="form-select" name="product_status_{{ object.pk }}" id="id_product_status_{{ object.pk }}" readonly="readonly" tabindex="-1" aria-disabled="true">
+                                    <option value="available" {% if object.status == available%}selected{% endif %}>Disponível</option>
                                     <option value="parcial" {% if object.status == parcial %}selected{% endif %}>Parcial</option>
                                     <option value="denied" {% if object.status == denied %}selected{% endif %}>Negado</option>
                                 </select>
@@ -51,9 +51,13 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                <div class="d-flex justify-content-end mb-3">
+                    <span class="fw-light fst-italic">*Digite 0 para "Negado"</span>
+                </div>
                 <hr>
             </div>
             <div class="d-flex align-items-baseline mt-3 gap-3">
+                <a href="javascript:history.back()" class="btn btn-secondary btn-gap">CANCELAR</a>
                 <button type="button" class="btn btn-danger btn-gap" data-bs-toggle="modal" data-bs-target="#denied-modal">
                     <i class="bi bi-x-circle"></i> NEGAR PEDIDO
                 </button>
@@ -63,7 +67,7 @@
                 </button>
             </div>
 
-            {% include "partials/modal.html" with modal_id="confirm-modal" modal_title="Aprovar Pedido" modal_text="<h5>Tem certeza que deseja <strong>APROVAR</strong> esse Pedido?</h5>" btn_text="Confirmar" btn_class="btn-success"%}
+            {% include "partials/modal.html" with modal_id="confirm-modal" modal_title="Aprovar Pedido" modal_text="<h5>Tem certeza que deseja <strong>APROVAR</strong> esse Pedido?</h5>  <div><span>*Aprovar o Pedido irá reduzir o Saldo da Chamada.</span></div>" btn_text="Confirmar" btn_class="btn-success"%}
 
         </form>
 
@@ -75,4 +79,28 @@
 </div>
 
 {% endblock content %}
+{% block script %}
+<script>
+    $(document).ready(function(){
+        //{% for object in order.products %}
+        $('#id_product_available_quantity_{{object.pk}}').on('input', function() {
+            var statusSelect = $('#id_product_status_{{object.pk}}')
+            quantityValue = parseFloat($(this).val().replace(',', '.'))
+            var orderedQuantity = parseFloat($('#id_product_ordered_quantity_{{object.pk}}').text().replace(',', '.'))
 
+            if (!isNaN(quantityValue)) {
+                if (quantityValue > 0 && quantityValue < orderedQuantity) {
+                    statusSelect.val('parcial')
+                } else if (quantityValue <= 0) {
+                    statusSelect.val('denied')
+                } else if (quantityValue >= orderedQuantity) {
+                    statusSelect.val('available')
+                }
+            } else {
+                statusSelect.val('available')
+            }
+        })
+        //{% endfor %}
+    })
+</script>
+{% endblock script %}

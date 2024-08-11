@@ -286,30 +286,20 @@ def EvaluateOrder(request, pk):
     if request.method == 'POST':
         for product in order.products:
             form_status = request.POST.get(f'product_status_{product.pk}')
+            print(form_status)
             form_available_quantity = request.POST.get(f'product_available_quantity_{product.pk}')
 
-            if form_status:
-                product.status = form_status
+            product.status = form_status
+            available_quantity = float(form_available_quantity)
+            product_balance = float(product.call_product.balance)
 
-            product_balance = int(product.call_product.balance)
-            if product.status == 'available':
-                if form_available_quantity:
-                    messages.warning(request, f'Se o produto {product.call_product.product} está disponivel, remova a quantidade parcial.')
-                    return redirect('evaluate-order', pk=order.pk)
+            if (available_quantity > product_balance):
+                messages.error(request, f"A quantidade disponível de {product.call_product.product} é maior que o seu saldo.")
+                return redirect('evaluate-order', pk=order.pk)
 
-                product_ordered_quantity = int(product.ordered_quantity)
-                product.call_product.balance = product_balance - product_ordered_quantity
-
-            if product.status == 'parcial':
-                if not form_available_quantity:
-                    messages.warning(request, f"Adicione a quantidade parcial disponível ao Produto {product.call_product.product}")
-                    return redirect('evaluate-order', pk=order.pk)
-
-                product.available_quantity = int(form_available_quantity)
-                product.call_product.balance = product_balance - product.available_quantity
-
-            if product.status == 'denied':
-                pass
+            if (product.status == 'available') or (product.status == 'parcial'):
+                product.available_quantity = available_quantity
+                product.call_product.balance = product_balance -  product.available_quantity
 
             product.call_product.save()
             product.save()
@@ -332,6 +322,10 @@ def EvaluateOrderDenied(request, pk):
     context['order'] = order
 
     if request.method == 'POST':
+        for product in order.products:
+            product.status = 'denied'
+            product.save()
+
         order.status = 'denied'
         order.save()
         return redirect('detail-order', pk=order.pk)
