@@ -21,7 +21,7 @@
                         {{error}}
                     </div>
                     {% endfor %}
-              {% endif %}
+                {% endif %}
                 <div class="row">
                     <div class="col-lg-5">
                         {{form.number|as_crispy_field}}
@@ -36,7 +36,16 @@
                         {{form.end|as_crispy_field}}
                     </div>
                 </div>
-                {{form.active|as_crispy_field}}
+                <div>
+                    <label for="active-checkbox" class="my-2">
+                        Situação da Chamada<span class="asteriskField">*</span>
+                        <span class="badge fs-6 fw-semibold pointer text-bg-warning" id="status_badge"></span>
+                    </label>
+                    <div id="active-checkbox" class="d-flex gap-3 ms-2">
+                        {{form.active_true|as_crispy_field}}
+                        {{form.active_false|as_crispy_field}}
+                    </div>
+                </div>
 
                 {% if form_product %}
                     <h4 class="poppins-bold">PRODUTOS DA CHAMADA</h3>

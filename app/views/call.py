@@ -43,7 +43,7 @@ class CallList(LoginRequiredMixin, AjaxListView):
 
 class CallUpdate(LoginRequiredMixin, StaffRequiredMixin, UpdateView):
     model = Call
-    form_class = CallUpdateForm
+    form_class = CallForm
     template_name = 'call/create.html'
     success_url = reverse_lazy('call-list')
 
