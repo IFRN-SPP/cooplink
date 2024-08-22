@@ -1,33 +1,22 @@
 $(document).ready(function() {
+  $('fieldset > div').first().addClass('d-flex gap-3');
 
-  const badge = $('#status_badge');
-  const activeTrue = $('#id_active_true');
-  const activeFalse = $('#id_active_false');
+  var legend = $('legend.form-label.requiredField');
+  var badge = $('<span class="badge fs-6 fw-semibold text-bg-success" id="status_badge">ATIVA</span>');
+  legend.append(badge);
 
   function updateBadge() {
-    if (activeTrue.is(':checked')) {
-        badge.removeClass('text-bg-warning').addClass('text-bg-success').text('ATIVA')
-    } else {
-        badge.removeClass('text-bg-success').addClass('text-bg-warning').text('INATIVA')
-    }
+      var checkedValue = $('input[name="active_choice"]:checked').val();
+      if (checkedValue === 'true') {
+          badge.text('ATIVA').removeClass('text-bg-warning').addClass('text-bg-success');
+      } else if (checkedValue === 'false') {
+          badge.text('INATIVA').removeClass('text-bg-success').addClass('text-bg-warning');
+      }
   }
 
-  activeTrue.change(function() {
-    if ($(this).is(':checked')) {
-        activeFalse.prop('checked', false)
-    } else {
-      activeTrue.prop('checked', true)
-    }
-    updateBadge()
-  })
-  activeFalse.change(function() {
-    if ($(this).is(':checked')) {
-        activeTrue.prop('checked', false)
-    } else {
-      activeFalse.prop('checked', true)
-    }
-    updateBadge()
-  })
+  updateBadge();
 
-  updateBadge()
+  $('input[name="active_choice"]').change(function() {
+      updateBadge();
+  });
 });

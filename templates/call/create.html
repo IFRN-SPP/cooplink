@@ -36,18 +36,9 @@
                         {{form.end|as_crispy_field}}
                     </div>
                 </div>
-                <div>
-                    <label for="active-checkbox" class="my-2">
-                        Situação da Chamada<span class="asteriskField">*</span>
-                        <span class="badge fs-6 fw-semibold pointer text-bg-warning" id="status_badge"></span>
-                    </label>
-                    <div id="active-checkbox" class="d-flex gap-3 ms-2">
-                        {{form.active_true|as_crispy_field}}
-                        {{form.active_false|as_crispy_field}}
-                    </div>
-                </div>
-
+                {{form.active_choice|as_crispy_field}}
                 {% if form_product %}
+                <hr class="mb-3">
                     <h4 class="poppins-bold">PRODUTOS DA CHAMADA</h3>
                     {{ form_product.management_form}}
                     <div class="table-responsive">

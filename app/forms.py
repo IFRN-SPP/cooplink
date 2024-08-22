@@ -21,8 +21,11 @@ class ProductForm(forms.ModelForm):
 
 
 class CallForm(forms.ModelForm):
-    active_true = forms.BooleanField(required=False, label='Ativa')
-    active_false = forms.BooleanField(required=False, label='Inativa', initial=True)
+    CHOICES = [
+        ("true", "Ativa"),
+        ("false", "Inativa"),
+    ]
+    active_choice = forms.ChoiceField(widget=forms.RadioSelect, required=True, choices=CHOICES, label="Situação da Chamada", initial="false")
 
     class Meta:
         model = Call
@@ -47,16 +50,9 @@ class CallForm(forms.ModelForm):
                 self.add_error('end', f'A data de término deve ser maior que a data atual: {current_date_formatted}')
 
 
-        active_true = cleaned_data.get('active_true')
-        active_false = cleaned_data.get('active_false')
+        active_choice = cleaned_data.get('active_choice')
 
-        if active_true and active_false:
-            raise forms.ValidationError("Você deve marcar apenas um dos campos, Ativo ou Inativo.")
-
-        if not active_true and not active_false:
-            raise forms.ValidationError("Você deve marcar um dos campos, Ativo ou Inativo.")
-
-        if active_true:
+        if active_choice == "true":
             institution = cleaned_data.get('institution')
             if institution:
                 active_calls = Call.objects.filter(institution=institution, active=True)
@@ -72,33 +68,25 @@ class CallForm(forms.ModelForm):
 
     def save(self, commit=True):
         instance = super().save(commit=False)
-        if self.cleaned_data.get('active_true'):
-            instance.active = True
-        else:
-            instance.active = False
+        active_choice = self.cleaned_data.get('active_choice')
+        instance.active = (active_choice == "true")
 
         if commit:
-            instance.save()
+            instance.save()     
         return instance
 
 
     def __init__(self, *args, **kwargs):
         super(CallForm, self).__init__(*args, **kwargs)
 
-        active_true = self.fields['active_true']
-        active_false = self.fields['active_false']
-
+        active_choice = self.fields['active_choice'] 
         if self.instance and self.instance.pk:
-            if self.instance.active:
-                active_true.initial = True
-                active_false.initial = False
-            else:
-                active_true.initial = False
-                active_false.initial = True
+            active_choice.initial = "true" if self.instance.active else "false"
 
         call_number = self.fields['number']
         call_number.widget.attrs.update({"autofocus": True})
         call_number.help_text = "A numeração tem o formato: 000/ano"
+
 
 class CallActiveForm(forms.ModelForm):
     class Meta:

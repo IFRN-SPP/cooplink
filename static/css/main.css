@@ -38,6 +38,9 @@ table{
     vertical-align: middle;
   }
 }
+legend{
+  font-size: medium !important;
+}
 .navbar-bg-color {
   background-color: var(--white-color);
 }
