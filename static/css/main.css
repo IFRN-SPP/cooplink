@@ -38,6 +38,9 @@ table{
     vertical-align: middle;
   }
 }
+legend{
+  font-size: medium !important;
+}
 .navbar-bg-color {
   background-color: var(--white-color);
 }
@@ -219,4 +222,10 @@ table{
   &:hover{
     background-color: var(--gray-color);
   }
+}
+
+select[readonly] {
+  background: var(--white-color);
+  pointer-events: none;
+  touch-action: none;
 }

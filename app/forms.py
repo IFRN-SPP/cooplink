@@ -21,6 +21,12 @@ class ProductForm(forms.ModelForm):
 
 
 class CallForm(forms.ModelForm):
+    CHOICES = [
+        ("true", "Ativa"),
+        ("false", "Inativa"),
+    ]
+    active_choice = forms.ChoiceField(widget=forms.RadioSelect, required=True, choices=CHOICES, label="Situação da Chamada", initial="false")
+
     class Meta:
         model = Call
         fields = ("__all__")
@@ -31,22 +37,56 @@ class CallForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
+
         start_date = cleaned_data.get("start")
         end_date = cleaned_data.get("end")
         current_date = timezone.now().date()
+
         if start_date and end_date:
             if start_date >= end_date:
                 self.add_error('start', 'A data de início deve ser anterior à data de término.')
             elif end_date <= current_date:
                 current_date_formatted = current_date.strftime('%d/%m/%Y')
                 self.add_error('end', f'A data de término deve ser maior que a data atual: {current_date_formatted}')
+
+
+        active_choice = cleaned_data.get('active_choice')
+
+        if active_choice == "true":
+            institution = cleaned_data.get('institution')
+            if institution:
+                active_calls = Call.objects.filter(institution=institution, active=True)
+
+                if self.instance.pk:
+                    active_calls = active_calls.exclude(pk=self.instance.pk)
+
+                if active_calls.exists():
+                    raise forms.ValidationError("Já existe uma chamada ativa para esta instituição.")
+
         return cleaned_data
+
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        active_choice = self.cleaned_data.get('active_choice')
+        instance.active = (active_choice == "true")
+
+        if commit:
+            instance.save()     
+        return instance
+
 
     def __init__(self, *args, **kwargs):
         super(CallForm, self).__init__(*args, **kwargs)
+
+        active_choice = self.fields['active_choice'] 
+        if self.instance and self.instance.pk:
+            active_choice.initial = "true" if self.instance.active else "false"
+
         call_number = self.fields['number']
         call_number.widget.attrs.update({"autofocus": True})
-        call_number.help_text = "A númeração tem o formato: 000/aa"
+        call_number.help_text = "A numeração tem o formato: 000/ano"
+
 
 class CallActiveForm(forms.ModelForm):
     class Meta:

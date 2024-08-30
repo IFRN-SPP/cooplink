@@ -19,20 +19,22 @@
       </div>
     </div>
     <hr>
-    <table id="{% table_id %}" class="table table-striped">
-      <thead>
-        <th>N°</th>
-        <th>EMAIL</th>
-        <th>NOME COMPLETO</th>
-        <th>INSTITUIÇÃO</th>
-        <th>ATIVO</th>
-        <th>ADMINISTRADOR</th>
-        <th>OPÇÕES</th>
-      </thead>
-      <tbody class="table-group-divider ">
-        {% include 'partials/user/list.html' %}
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table id="{% table_id %}" class="table table-striped">
+        <thead>
+          <th>N°</th>
+          <th>EMAIL</th>
+          <th>NOME COMPLETO</th>
+          <th>INSTITUIÇÃO</th>
+          <th>ATIVO</th>
+          <th>ADMINISTRADOR</th>
+          <th>OPÇÕES</th>
+        </thead>
+        <tbody class="table-group-divider ">
+          {% include 'partials/user/list.html' %}
+        </tbody>
+      </table>
+    </div>
 
     {% include 'partials/pagination.html' %}
   </div>

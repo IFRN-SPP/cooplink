@@ -21,7 +21,7 @@
                         {{error}}
                     </div>
                     {% endfor %}
-              {% endif %}
+                {% endif %}
                 <div class="row">
                     <div class="col-lg-5">
                         {{form.number|as_crispy_field}}
@@ -36,9 +36,9 @@
                         {{form.end|as_crispy_field}}
                     </div>
                 </div>
-                {{form.active|as_crispy_field}}
-
+                {{form.active_choice|as_crispy_field}}
                 {% if form_product %}
+                <hr class="mb-3">
                     <h4 class="poppins-bold">PRODUTOS DA CHAMADA</h3>
                     {{ form_product.management_form}}
                     <div class="table-responsive">

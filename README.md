@@ -85,14 +85,7 @@ pip install -r requirements.txt
 python scripts/env_gen.py
 ```
 
-**.env**
-```
-SECRET_KEY={secret-key}
-DEBUG=True
-ALLOWED_HOSTS=.localhost, .127.0.0.1
-```
-
-> Se necessário, mude as configurações do  arquivo ``.env``
+> Se necessário, mude as configurações do  arquivo `.env`
 
 - Faça as migrações necessárias
 
@@ -104,18 +97,12 @@ python manage.py makemigrations && python manage.py migrate
 
 ### Rodando o servidor
 
-- Execute o terminal interativo do Django
+- Execute o arquivo `scripts/setup.py` para configuração inicial
 
 ```bash
-python manage.py shell
+python scripts/setup.py
 ```
-
-- Execute o arquivo ``initial_setup.py``
-
-```bash
-exec(open('scripts/initial_setup.py').read())
-```
-> **ATENÇÃO**: Você receberá um usuário e senha para entrar no sistema.
+> ! ATENÇÃO: Você receberá um usuário e senha para entrar no sistema.
 
 - Rode o servidor
 
@@ -131,7 +118,7 @@ python manage.py runserver
 
 ## Colaboradores
 
-Os mais sinceros agradecimentos para as pessoas que tornaram esse projeto possível. ❤️‍🩹
+Os mais sinceros agradecimentos para as pessoas que tornaram esse projeto possível. ❤️
 
 ### Alunos
 
@@ -141,7 +128,7 @@ Os mais sinceros agradecimentos para as pessoas que tornaram esse projeto possí
       <a href="https://github.com/dvanael" title="Ana Barbosa">
         <img src="https://avatars.githubusercontent.com/dvanael" width="100px;" alt="collaborators pictures"/><br>
         <sub>
-          <b>Ana Barbosa</b>
+          <b>Ana Barbosa 🐋</b>
         </sub>
       </a>
     </td>
@@ -149,15 +136,15 @@ Os mais sinceros agradecimentos para as pessoas que tornaram esse projeto possí
       <a href="https://github.com/poliana-dev" title="Poliana Pinheiro">
         <img src="https://avatars.githubusercontent.com/poliana-dev" width="100px;" alt="collaborators pictures"/><br>
         <sub>
-          <b>Poliana Pinheiro</b>
+          <b>Poliana Pinheiro 🐸</b>
         </sub>
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/wendersonvibes" title="Wenderson Nascimento">
-        <img src="https://avatars.githubusercontent.com/wendersonvibes" width="100px;" alt="collaborators pictures"/><br>
+      <a href="https://github.com/devwenderson" title="Wenderson Nascimento">
+        <img src="https://avatars.githubusercontent.com/devwenderson" width="100px;" alt="collaborators pictures"/><br>
         <sub>
-          <b>Wenderson Nascimento</b>
+          <b>Wenderson Nascimento 🦆</b>
         </sub>
       </a>
     </td>
@@ -172,7 +159,7 @@ Os mais sinceros agradecimentos para as pessoas que tornaram esse projeto possí
       <a href="https://github.com/dvcirilo" title="Diego Cirilo">
         <img src="https://avatars.githubusercontent.com/dvcirilo" width="100px;" alt="collaborators pictures"/><br>
         <sub>
-          <b>Diego Cirilo</b>
+          <b>Diego Cirilo 🐧</b>
         </sub>
       </a>
     </td>

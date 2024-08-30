@@ -52,7 +52,6 @@
             {% endif %}
           {% endif %}
 
-          <!-- admin ter o direito de deletar um pedido que foi negado -->
           {% if object.status == 'denied' %}
             {% if user.is_staff %}
               <li>
@@ -66,6 +65,6 @@
   </tr>
 {% empty %}
   <tr>
-    <td colspan="4">Nenhum pedido até o momento</td>
+    <td colspan="6">Nenhum pedido até o momento</td>
   </tr>
 {% endfor %}
