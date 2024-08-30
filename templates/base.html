@@ -8,10 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}{% endblock %} - CoopPotengi</title>
 
-    <!-- CSS -->
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon" />
-    <link  rel="stylesheet" href="{% static 'dist/css/bootstrap.min.css' %}"/>
-    <!-- Bootstrap icons -->
+    <link rel="stylesheet" href="{% static 'dist/css/bootstrap.min.css' %}"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
     <link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
@@ -20,7 +18,6 @@
     <link rel="stylesheet" href="{% static 'css/scrollbar.css' %}" />
   </head>
   <body>
-    <!-- NAVBAR -->
     {% block navbar %}
       {% if user.is_staff %}
         {% include 'partials/sidebar_template_1.html' %}
@@ -29,12 +26,10 @@
       {% endif %}
     {% endblock %}
 
-    <!-- MENSAGENS -->
     <div class="container">
       {% include 'partials/messages.html' %}
       <div id="{% message_id %}"></div>
     </div>
-    <!-- CONTEUDO -->
     {% block content %}
     {% endblock %}
 
@@ -42,7 +37,6 @@
       {% include 'partials/sidebar_template_2.html' %}
     {% endif %}
 
-    <!-- JavaScript -->
     <script src="{% static 'dist/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'dist/js/jquery-3.7.1.min.js' %}"></script>
     <script src="{% static 'js/jquery.formset.js' %}"></script>
