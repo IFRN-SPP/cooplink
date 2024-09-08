@@ -229,3 +229,6 @@ select[readonly] {
   pointer-events: none;
   touch-action: none;
 }
+.table-responsive{
+  min-height:350px;
+}
