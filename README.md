@@ -23,7 +23,17 @@
 
 ## Sobre
 
+O CoopPotengi é sistema web criado para o controle administrativo dos pedidos de produtos feitos à Cooperativa de Agricultura Familiar e Economia Solidária da região Potengi. 
 
+O sistema possui as seguintes funciolalidades:
+
+- Login, cadastro e administração de usuários
+
+- Gerencimento de produtos, chamadas públicas, instituições e pedidos de produtos
+
+- Relátorios de pedidos em PDF gerados automaticamente
+
+- Diferentes interfaces para administradores e usuários comuns
 
 ---
 
@@ -43,7 +53,6 @@ Essas são as tecnologias usadas nesse projeto.
 
 ## Instalação
 
-
 ### Configurando o ambiente
 
  - Clone o [repositório](https://github.com/IFRN-SPP/cooppotengi)
@@ -61,8 +70,8 @@ python -m venv .venv
 - Ative o ambiente virtual
 
 _windows_
-```bash
-source .venv/Scripts/activate
+```powershell
+.venv/Scripts/activate
 ```
 _linux, macOs_
 ```bash
@@ -90,7 +99,7 @@ python scripts/env_gen.py
 - Faça as migrações necessárias
 
 ```bash
-python manage.py makemigrations && python manage.py migrate
+python manage.py migrate
 ```
 
 ---
