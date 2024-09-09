@@ -1,0 +1,4 @@
+-r requirements.txt
+gunicorn==23.0.0
+mysqlclient==2.2.4
+packaging==24.1
