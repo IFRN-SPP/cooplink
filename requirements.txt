@@ -15,7 +15,6 @@ django-crispy-forms==2.1
 html5lib==1.1
 idna==3.7
 lxml==5.2.1
-mysqlclient==2.2.4
 oscrypto==1.3.0
 pillow==10.3.0
 pycparser==2.22

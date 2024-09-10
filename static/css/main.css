@@ -229,3 +229,13 @@ select[readonly] {
   pointer-events: none;
   touch-action: none;
 }
+
+.table-responsive{
+  overflow-x: visible !important;
+}
+
+@media (max-width: 768px){
+  .table-responsive{
+    overflow-x: auto !important;
+  }
+}

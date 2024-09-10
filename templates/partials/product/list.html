@@ -4,7 +4,7 @@
   <td>{{object.name}}</td>
   <td>{{object.unit}}</td>
   <td>
-    <div class="dropdown">
+    <div class="dropstart">
       <button class="btn btn-outline-success btn-rounded ms-2" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></button>
       <ul class="dropdown-menu">
         <li>
@@ -19,5 +19,9 @@
       </ul>
     </div>
   </td> 
+</tr>
+{% empty %}
+<tr>
+  <td colspan="4">Nenhum produto até o momento</td>
 </tr>
 {% endfor %}
