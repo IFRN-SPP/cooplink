@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.http import JsonResponse
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 
 from ajax.views import AjaxListView, AjaxDeleteView
+from ajax.utils import is_ajax
 from app.forms import CallForm, CallProductFormSet, CallActiveForm, CallUpdateForm
-from app.models import Call, CallProduct, Institution
+from app.models import Call, CallProduct, Institution, Product
 from app.utils.decorators import staff_required
 from app.utils.mixins import StaffRequiredMixin
 
@@ -109,6 +111,26 @@ def CallCreate(request):
     context['form_product'] = form_product
     return render(request, template_name, context)
 
+
+def get_unit(request):
+    data = {}
+
+    if request.method == 'GET' and is_ajax(request):
+        product_id = request.GET.get('product_id')
+
+        if not product_id:
+            unit = 'Erro: Produto não encontrado'
+        else:
+            product = Product.objects.get(id=product_id)
+            unit = product.unit
+
+        data['unit'] = unit
+
+    else:
+        messages.warning(request, "Algum erro aconteceu")
+        return redirect('index')
+
+    return JsonResponse(data)
 
 @login_required
 @staff_required

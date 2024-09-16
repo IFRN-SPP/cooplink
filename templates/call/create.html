@@ -56,7 +56,7 @@
                                 <tr class="inlineform">
                                     <td class="inline-margin">{{ form.product|as_crispy_field }}</td>
                                     <td class="inline-margin">{{ form.price|as_crispy_field }}</td>
-                                    <td class="inline-margin">{{ form.balance|as_crispy_field }}</td>
+                                    <td class="product-unit inline-margin">{{ form.balance|as_crispy_field }}</td>
                                     <td></td>
                                 </tr>
                             {% endfor %}
@@ -94,4 +94,5 @@
     <script src="{% static 'dist/js/jquery.mask.min.js' %}"></script>
     <script src="{% static 'js/jqueryMasks.js' %}"></script>
     <script src="{% static 'js/activeBadge.js' %}"></script>
+    <script src="{% static 'js/get_products.js' %}"></script>
 {% endblock script %}

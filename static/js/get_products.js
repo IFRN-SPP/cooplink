@@ -110,9 +110,31 @@ $(function() {
     });
   };
 
+  var getUnit = function() {
+    var productSelect = $(this);
+    var productRow = productSelect.closest('.inlineform');
+    var productUnit = productRow.find('.product-unit');
+    var productId = productSelect.val();
+
+    if (!productId) {
+      productUnit.text('. . .');
+      return;
+    }
+
+    $.ajax({
+      url: '/get_unit/',
+      type: 'GET',
+      data: {'product_id': productId},
+      success: function(data) {
+        productUnit.after('<span>'+ data.unit +'<span>')
+      }
+    });
+  };
+
   $('#id_institution').on('change', getCalls);
   $('#id_call').on('change', getProducts)
   $(document).on('change', 'select[id$="call_product"]', getBalance);
+  $(document).on('change', 'select[id$="product"]', getUnit);
 
   $('.add-row').click(function() {
     var callId = $('#id_call').val();
