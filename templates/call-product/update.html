@@ -39,7 +39,7 @@
                                 <tr class="inlineform">
                                     <td class="inline-margin">{{ form.product|as_crispy_field }}</td>
                                     <td class="inline-margin">{{ form.price|as_crispy_field }}</td>
-                                    <td class="inline-margin">{{ form.balance|as_crispy_field }}</td>
+                                    <td class="inline-balance inline-margin d-flex align-items-center gap-2">{{ form.balance|as_crispy_field }}<span class="fw-bold product-unit">{{form.instance.product.unit}}</span></td>
                                     <td class="d-none">{{ form.id }}</td>
                                     <td class="d-none">{% if form.instance.pk %}{{ form.DELETE}}{% endif %}</td>
                                     <td></td>
@@ -76,5 +76,6 @@
         })
     </script>
 
+    <script src="{% static 'js/get_products.js' %}"></script>
     <script src="{% static 'js/get_products.js' %}"></script>
 {% endblock script %}

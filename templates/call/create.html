@@ -56,7 +56,7 @@
                                 <tr class="inlineform">
                                     <td class="inline-margin">{{ form.product|as_crispy_field }}</td>
                                     <td class="inline-margin">{{ form.price|as_crispy_field }}</td>
-                                    <td class="product-unit inline-margin">{{ form.balance|as_crispy_field }}</td>
+                                    <td class="inline-balance inline-margin d-flex align-items-center gap-2">{{ form.balance|as_crispy_field }}<span class="fw-bold product-unit"></span></td>
                                     <td></td>
                                 </tr>
                             {% endfor %}

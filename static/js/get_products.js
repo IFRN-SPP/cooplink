@@ -113,7 +113,8 @@ $(function() {
   var getUnit = function() {
     var productSelect = $(this);
     var productRow = productSelect.closest('.inlineform');
-    var productUnit = productRow.find('.product-unit');
+    var productTd = productRow.find('.inline-balance');
+    var productUnit = productTd.find('.product-unit');
     var productId = productSelect.val();
 
     if (!productId) {
@@ -126,7 +127,7 @@ $(function() {
       type: 'GET',
       data: {'product_id': productId},
       success: function(data) {
-        productUnit.after('<span>'+ data.unit +'<span>')
+        productUnit.text(data.unit)
       }
     });
   };
