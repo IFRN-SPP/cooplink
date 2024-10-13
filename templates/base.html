@@ -28,7 +28,7 @@
       {% endif %}
     {% endblock %}
 
-    <div class="container">
+    <div id="id-messages" class="container">
       {% include 'partials/messages.html' %}
       <div id="{% message_id %}"></div>
     </div>
@@ -43,6 +43,7 @@
     <script src="{% static 'dist/js/jquery-3.7.1.min.js' %}"></script>
     <script src="{% static 'js/jquery.formset.js' %}"></script>
     <script src="{% static 'js/sidebar.js' %}"></script>
+    <script src="{% static 'js/removeMessages.js' %}"></script>
     {% comment %} <script src="{% static "js/dropdowns_infront.js" %}"></script> {% endcomment %}
 
     {% block script %}
