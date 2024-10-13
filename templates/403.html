@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Acesso Proibido{% endblock title %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'css/error.css' %}">
+{% endblock styles %}
+
+{% block navbar %}{% endblock navbar %}
+
+{% block content %}
+<div class="error-container">
+  <div class="error-message">
+    <h1>Erro 403</h1>
+    <h2>Acesso Proibido!</h2>
+    <p>
+      Você não tem permissão para acessar esta página.
+    </p>
+    <p>
+      Tente voltar à <a href="{% url 'index' %}">página inicial</a> para encontrar o que você precisa.
+    </p>
+    <p>
+      Se você acha que isso é um erro, entre em contato com o administrador do site.
+    </p>
+    <a href="{% url 'index' %}" class="btn btn-success fs-5">Voltar para Página Inicial</a>
+  </div>
+</div>
+{% endblock content %}
