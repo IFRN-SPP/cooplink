@@ -1,0 +1,35 @@
+@import url(main.css);
+
+.error-container {
+  height: 80dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-message {
+  line-height: 1.8rem;
+  width: 95vw;
+  padding: 1.5rem 2rem;
+  background-color: var(--white-color);
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  @media screen and (min-width: 768px) {
+    width: 45vw;
+  }
+}
+
+.error-message h1{
+  font-weight: 700;
+  font-size: 3rem;
+}
+
+.error-message p {
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 0.7rem;
+}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Página não encontrada{% endblock title %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'css/error.css' %}">
+{% endblock styles %}
+
+{% block navbar %}{% endblock navbar %}
+
+{% block content %}
+<div class="error-container">
+  <div class="error-message">
+    <h1>Erro 404</h1>
+    <h2>Página não encontrada!</h2>
+    <p>
+      Ops! A página que você está procurando não foi encontrada.
+    </p>
+    <p>
+      Tente voltar à <a href="{% url 'index' %}">página inicial</a> para encontrar o que você precisa.
+    </p>
+    <p>
+      Se o problema persistir, entre em contato com o suporte.
+    </p>
+    <a href="{% url 'index' %}" class="btn btn-success fs-5">Voltar para Página Inicial</a>
+  </div>
+</div>
+{% endblock content %}
