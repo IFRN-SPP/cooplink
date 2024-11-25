@@ -3,8 +3,8 @@
   <div class="container container-fluid">
 
     <a class="navbar-brand poppins-bold text-success" href="{% url 'index' %}">
-      <img class="navbar-logo" src="{% static 'assets/logo-colorida.png' %}" alt="logo-cooppotengi">
-      COOPPOTENGI
+      <img src="{% static cooperative.logo %}" alt="{{ cooperative.name }}" class="navbar-logo">
+      {{ cooperative.name }}
     </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
