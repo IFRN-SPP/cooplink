@@ -7,6 +7,9 @@ from django.db import models
 
 class Cooperative(models.Model):
     name = models.CharField(max_length=100, verbose_name="Nome da Cooperativa")
+    extended_name = models.CharField(max_length=100, verbose_name="Nome Extensivo da Cooperativa",)
+    catch_phrase = models.CharField(max_length=100, verbose_name="Frase de Apresentação da Cooperativa",)
+    location = models.CharField(max_length=100, verbose_name="Localidade da Cooperativa",)
     logo = models.CharField(
         max_length=255,
         verbose_name="Caminho para a Logo da Cooperativa",
