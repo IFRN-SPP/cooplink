@@ -7,8 +7,8 @@
       <nav class="navbar fixed-top navbar-expand navbar-bg-color mb-3 mobile-display">
         <div class="container container-fluid">
           <a class="navbar-brand poppins-bold text-success" href="{% url 'index' %}">
-            <img class="navbar-logo" src="{% static 'assets/logo-colorida.png' %}" alt="logo-cooppotengi">
-            COOPPOTENGI
+            <img class="navbar-logo" src="{% static cooperative.logo %}" alt="{{cooperative.name}}">
+            {{cooperative.name}}
           </a>
           <button class="btn btn-rounded btn-outline-success" type="button"><span class="navbar-toggler-icon"></span></button>
         </div>
@@ -17,8 +17,8 @@
       <nav class="navbar navbar-expand-lg navbar-bg-color mb-3 desktop-display">
         <div class="container container-fluid">
           <a class="navbar-brand poppins-bold text-success" href="{% url 'index' %}">
-            <img class="navbar-logo" src="{% static 'assets/logo-colorida.png' %}" alt="logo-cooppotengi">
-            COOPPOTENGI
+            <img class="navbar-logo" src="{% static cooperative.logo %}" alt="{{cooperative.name}}">
+              {{cooperative.name}}
           </a>
 
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>

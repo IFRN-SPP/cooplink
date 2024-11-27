@@ -6,7 +6,7 @@
 [JQUERY__BADGE]: https://img.shields.io/badge/-Jquery-0d1117?style=for-the-badge&logo=jquery&logoColor
 [BOOTSTRAP_BADGE]: https://img.shields.io/badge/-Bootstrap-0d1117?style=for-the-badge&logo=bootstrap&logoColor
 
-<h1 align="center" style="font-weight: bold;">CoopPotengi</h1>
+<h1 align="center" style="font-weight: bold;">CoopLink</h1>
 
 <p align="center">
   <a href="#sobre">Sobre</a> •
@@ -23,7 +23,7 @@
 
 ## Sobre
 
-O CoopPotengi é sistema web criado para o controle administrativo dos pedidos de produtos feitos à Cooperativa de Agricultura Familiar e Economia Solidária da região Potengi. 
+O CoopLink é sistema web criado para o controle administrativo dos pedidos de produtos feitos à cooperativas de agricultura familiar e economia solidária.
 
 O sistema possui as seguintes funciolalidades:
 
@@ -55,10 +55,10 @@ Essas são as tecnologias usadas nesse projeto.
 
 ### Configurando o ambiente
 
- - Clone o [repositório](https://github.com/IFRN-SPP/cooppotengi)
+ - Clone o [repositório](https://github.com/IFRN-SPP/cooplink)
 
 ```bash
-git clone https://github.com/IFRN-SPP/cooppotengi.git
+git clone https://github.com/IFRN-SPP/cooplink.git
 ```
 
 - Crie um ambiente virtual

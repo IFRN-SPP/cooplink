@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from app.forms import OrderForm, OrderedProductFormSet, OrderedProductForm
-from app.models import Call, CallProduct, Order, OrderedProduct, Product, Institution
+from app.models import Call, CallProduct, Order, OrderedProduct, Product, Institution, Cooperative
 from app.utils.decorators import staff_required, confirm_password, order_owner, order_evaluated
 from app.utils.functions import render_to_pdf, get_report_orders, calculate_total_products, get_week_end, get_week_start, is_weekend, get_report_products,calculate_request_product
 
@@ -355,12 +355,14 @@ def OrderReport(request, pk):
     template_name = "pdf/order-report.html"
     data = {}
     order = get_object_or_404(Order, pk=pk)
+    cooperative = Cooperative.get_instance()
 
     if (order.status != 'approved') and (order.status != 'delivered'):
         messages.warning(request, "Não é possível gerar o relatório de um Pedido que não foi aprovado ou entregue")
         return redirect('detail-order', pk)
 
     data['order'] = order
+    data['cooperative'] = cooperative
     today = timezone.now().date()
     data['today'] = today
 

@@ -2,12 +2,12 @@
 <table>
   <tr>
     <td style="display: flex; justify-content: center; width: 70px;">
-      <img src="{{ logo }}" alt="logo">
+      <img src="{% static cooperative.logo %}" alt="logo">
     </td>
       <td style="text-align: center; width: 600px; font-size: 16px; font-weight:bold;">
-      <p >Cooperativa de Agricultura Familiar e Economia Solidária do Potengi
+      <p >{{cooperative.extended_name}}
       </p>
-      <p >"Fortalecimento a Agricultura Familiar pelo Cooperativismo!"
+      <p >{{cooperative.catch_phrase}}
       </p>
     </td>
   </tr>
