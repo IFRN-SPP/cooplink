@@ -9,6 +9,7 @@ DB_USER=''
 DB_PASSWORD=''
 DB_HOST=''
 DB_PORT=''
+STATIC_ROOT=''
 """.strip() % get_random_secret_key()
 
 # Writing our configuration file to '.env'
