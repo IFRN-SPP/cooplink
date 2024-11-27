@@ -26,6 +26,9 @@ def main():
     logo_path = input(
         "Enter the relative path to the logo file from 'static/': "
     ).strip()
+    extended_name = input("Enter the extended name for the cooperative: ").strip()
+    catch_phrase = input("Enter the catch phrase for the cooperative: ").strip()
+    location = input("Enter the location for the cooperative (Cidade / UF): ").strip()
 
     try:
         # Validate the logo path
@@ -37,7 +40,11 @@ def main():
 
         # Create or update the cooperative
         cooperative, created_coop = Cooperative.objects.update_or_create(
-            defaults={"logo": logo_path}, name=coop_name
+            defaults={"logo": logo_path},
+            name=coop_name,
+            extended_name=extended_name,
+            catch_phrase=catch_phrase,
+            location=location
         )
         if created_coop:
             print(f"Cooperative '{coop_name}' created successfully.")
