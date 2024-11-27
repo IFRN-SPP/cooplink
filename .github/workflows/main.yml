@@ -24,6 +24,6 @@ jobs:
         ssh-keyscan -H ${{ secrets.IP }} >> ~/.ssh/known_hosts
     - name: Run Deployment
       run: |
-        ssh -i ~/.ssh/id_ed25519 ${{ secrets.SERVER }} "bash deploy.sh cooppotengi"
+        ssh -i ~/.ssh/id_ed25519 ${{ secrets.SERVER }} "bash deploy.old.sh cooppotengi"
       env:
         ACTIONS_RUNNER_DEBUG: false
