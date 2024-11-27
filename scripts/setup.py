@@ -10,6 +10,7 @@ import django
 django.setup()
 
 from app.models import Cooperative, UserProfile, Institution
+from django.conf import settings
 
 
 def main():
@@ -33,7 +34,7 @@ def main():
     try:
         # Validate the logo path
         if logo_path:
-            static_logo_path = os.path.join("static", logo_path)
+            static_logo_path = os.path.join(settings.STATIC_ROOT, logo_path)
             if not os.path.isfile(static_logo_path):
                 print(f"Error: The file '{static_logo_path}' does not exist.")
                 return
