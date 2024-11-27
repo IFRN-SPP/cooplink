@@ -1,3 +1,4 @@
+{% load static %}
 <head>
   <style>
     @page {
@@ -52,7 +53,7 @@
           <br>
           ____________________________________, CPF ___________________ 
           <br>
-          recebeu em _____/_____/_____ da CoopPotengi os produtos abaixo relacionados:
+          recebeu em _____/_____/_____ da {{cooperative.name}} os produtos abaixo relacionados:
         </p>
       </div>
 
@@ -108,7 +109,7 @@
           <br>
         </p>
       </div>
-        <p align="right">São Paulo do Potengi/RN {{today}}</p>
+        <p align="right">{{cooperative.location}} {{today}}</p>
       <br>
       <div  align="center">
         <p>__________________________________________________</p>
@@ -116,7 +117,7 @@
         <p>CPF:</p>
   
         <p>__________________________________________________</p>
-        <p>CoopPotengi</p>
+        <p>{{cooperative.name}}</p>
       </div>
 
   </body>
