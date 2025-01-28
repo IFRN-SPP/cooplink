@@ -18,10 +18,10 @@ from django.views.generic.edit import UpdateView
 
 class CallList(LoginRequiredMixin, AjaxListView):
     model = Call
-    template_name = 'call/list.html'
-    partial_list = 'partials/call/list.html'
+    template_name = "call/list.html"
+    partial_list = "partials/call/list.html"
     paginate_by = 6
-    object_list = 'calls'
+    object_list = "calls"
 
     def get_queryset(self):
         user = self.request.user
@@ -29,75 +29,75 @@ class CallList(LoginRequiredMixin, AjaxListView):
         if not user.is_staff:
             queryset = Call.objects.filter(institution=user.institution)
 
-        number = self.request.GET.get('search', '')
+        number = self.request.GET.get("search", "")
         if number:
             queryset = queryset.filter(number__icontains=number)
         return queryset
 
     def get_context(self):
         context = {}
-        number = self.request.GET.get('search', '')
-        context['number'] = number
+        number = self.request.GET.get("search", "")
+        context["number"] = number
         if self.paginate_by:
-            context['filter'] = f'&search={number}'
+            context["filter"] = f"&search={number}"
         return context
 
 
 class CallUpdate(LoginRequiredMixin, StaffRequiredMixin, UpdateView):
     model = Call
     form_class = CallForm
-    template_name = 'call/create.html'
-    success_url = reverse_lazy('call-list')
+    template_name = "call/create.html"
+    success_url = reverse_lazy("call-list")
 
 
 @login_required
 @staff_required
 def CallUpdateActive(request, pk):
-    template_name = 'call/change-active.html'
+    template_name = "call/change-active.html"
     context = {}
     call = get_object_or_404(Call, pk=pk)
-    context['call'] = call
+    context["call"] = call
 
     institution = get_object_or_404(Institution, pk=call.institution.pk)
     active_call = Call.objects.filter(institution=institution, active=True).first()
-    if (active_call == call):
+    if active_call == call:
         active_call = None
 
-    if request.method == 'GET':
+    if request.method == "GET":
         form = CallActiveForm(instance=call)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CallActiveForm(request.POST, instance=call)
         if form.is_valid():
             form.save()
-            if form.cleaned_data['active']:
-                messages.success(request, f'A {call} agora está ATIVA!')
+            if form.cleaned_data["active"]:
+                messages.success(request, f"A {call} agora está ATIVA!")
             else:
-                messages.warning(request, f'A {call} agora está INATIVA!')
-            return redirect('call-list')
+                messages.warning(request, f"A {call} agora está INATIVA!")
+            return redirect("call-list")
 
-    context['form'] = form
-    context['active_call'] = active_call
+    context["form"] = form
+    context["active_call"] = active_call
     return render(request, template_name, context)
 
 
 class CallDelete(LoginRequiredMixin, StaffRequiredMixin, AjaxDeleteView):
-    model= Call
-    template_name = 'partials/call/delete.html'
-    success_url = reverse_lazy('call-list')
+    model = Call
+    template_name = "partials/call/delete.html"
+    success_url = reverse_lazy("call-list")
 
 
 @login_required
 @staff_required
 def CallCreate(request):
-    template_name = 'call/create.html'
+    template_name = "call/create.html"
     context = {}
 
-    if request.method == 'GET':
+    if request.method == "GET":
         form = CallForm()
         form_product = CallProductFormSet()
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CallForm(request.POST)
         form_product = CallProductFormSet(request.POST)
         if form.is_valid() and form_product.is_valid():
@@ -105,47 +105,49 @@ def CallCreate(request):
             form_product.instance = call
             form_product.save()
             messages.success(request, f"{form.instance} foi cadastrada com sucesso!")
-            return redirect('call-list')
+            return redirect("call-list")
 
-    context['form'] = form
-    context['form_product'] = form_product
+    context["form"] = form
+    context["form_product"] = form_product
     return render(request, template_name, context)
 
 
 def get_unit(request):
     data = {}
 
-    if request.method == 'GET' and is_ajax(request):
-        product_id = request.GET.get('product_id')
+    if request.method == "GET" and is_ajax(request):
+        product_id = request.GET.get("product_id")
 
         if not product_id:
-            unit = 'Erro: Produto não encontrado'
+            unit = "Erro: Produto não encontrado"
         else:
-            product = Product.objects.get(id=product_id)
+            call_product = get_object_or_404(CallProduct, pk=product_id)
+            product = get_object_or_404(Product, pk=call_product.product.id)
             unit = product.unit
 
-        data['unit'] = unit
+        data["unit"] = unit
 
     else:
         messages.warning(request, "Algum erro aconteceu")
-        return redirect('index')
+        return redirect("index")
 
     return JsonResponse(data)
+
 
 @login_required
 @staff_required
 def CallProductUpdate(request, pk):
-    template_name = 'call-product/update.html'
+    template_name = "call-product/update.html"
     context = {}
 
     call = get_object_or_404(Call, pk=pk)
-    context['call'] = call
+    context["call"] = call
 
-    if request.method == 'GET':
+    if request.method == "GET":
         form_product = CallProductFormSet(instance=call, queryset=call.products)
-        context['form_product'] = form_product
+        context["form_product"] = form_product
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form_product = CallProductFormSet(request.POST, instance=call)
 
         if form_product.is_valid():
@@ -153,16 +155,18 @@ def CallProductUpdate(request, pk):
                 if form.instance.pk:
                     form.instance.delete()
             form_product.save()
-            messages.success(request, f"Produtos da {call} foram atualizados com sucesso!")
-            return redirect('detail-call', pk=call.pk)
+            messages.success(
+                request, f"Produtos da {call} foram atualizados com sucesso!"
+            )
+            return redirect("detail-call", pk=call.pk)
 
-    context['form_product'] = form_product
+    context["form_product"] = form_product
     return render(request, template_name, context)
 
 
 @login_required
 def CallDetail(request, pk):
-    template_name = 'call/detail.html'
+    template_name = "call/detail.html"
     context = {}
     user = request.user
 
@@ -171,24 +175,23 @@ def CallDetail(request, pk):
 
     if (not user.is_staff) and (institution != user.institution):
         messages.warning(request, "Você não tem acesso a essa página.")
-        return redirect('index')
+        return redirect("index")
 
-    context['call'] = call
+    context["call"] = call
     return render(request, template_name, context)
 
 
 @login_required
 @staff_required
 def CallProductDelete(request, pk):
-    template_name = 'call-product/delete.html'
+    template_name = "call-product/delete.html"
     context = {}
 
     call_product = get_object_or_404(CallProduct, pk=pk)
-    context['call_product'] = call_product
+    context["call_product"] = call_product
 
-    if request.method == 'POST':
+    if request.method == "POST":
         call_product.delete()
-        return redirect('detail-call', pk=call_product.call.pk)
+        return redirect("detail-call", pk=call_product.call.pk)
 
     return render(request, template_name, context)
-
