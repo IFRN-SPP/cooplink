@@ -1,44 +1,46 @@
+'use strict';
+
 $(function() {
-  var getProducts = function() {
-    var callId = $(this).val();
+  const getProducts = function() {
+    const callId = $(this).val();
+    const dataUrl = $(this).attr('data-url');
+
+    if (!dataUrl) return;
+
     if (callId) {
-      var productSelects = $('.product-select select');
+      const productSelects = $('.product-select select');
 
       productSelects.each(function() {
-        var currentSelect = $(this);
-        var selectId = currentSelect.attr('id');
-        var selectedOption = currentSelect.find('option:selected');
-        currentSelect.data(selectId + '-selected-option', selectedOption);
+        const currentSelect = $(this);
+        const selectId = currentSelect.attr('id');
+        const selectedOption = currentSelect.find('option:selected');
+        currentSelect.data(`${selectId}-selected-option`, selectedOption);
       });
 
       $.ajax({
-        url: '/get_products/',
+        url: dataUrl,
         type: 'GET',
         data: {'call_id': callId},
         success: function(data) {
           productSelects.each(function() {
-            var currentSelect = $(this);
-            currentSelect.empty();
-
-            currentSelect.prepend($('<option>', {
+            const currentSelect = $(this);
+            currentSelect.empty().prepend($('<option>', {
               value: '',
               text: '---------',
               selected: true
             }));
 
-            $.each(data.products, function(index, product) {
+            $.each(data.products, (index, product) => {
               currentSelect.append($('<option>', {
                 value: product.id,
                 text: product.text,
               }));
             });
 
-            var selectId = currentSelect.attr('id');
-            if (currentSelect.data(selectId + '-selected-option')) {
-              var selectedOption = currentSelect.data(selectId + '-selected-option');
-              if (selectedOption) {
-                currentSelect.val(selectedOption.val());
-              }
+            const selectId = currentSelect.attr('id');
+            const selectedOption = currentSelect.data(`${selectId}-selected-option`);
+            if (selectedOption) {
+              currentSelect.val(selectedOption.val());
             }
           });
         }
@@ -46,108 +48,86 @@ $(function() {
     }
   };
 
-  var getCalls = function() {
-    var institutionId = $(this).val();
-    var callSelects = $('#id_call');
+  const getCalls = function() {
+    const institutionId = $('#id_institution').val();
+    const dataUrl = $(this).attr('data-url');
+    const callSelects = $('#id_call');
+
+    if (!dataUrl) return;
 
     $.ajax({
-      url: '/get_calls/',
+      url: dataUrl,
       type: 'GET',
       data: {'institution_id': institutionId},
       success: function(data) {
-        callSelects.each(function() {
-          var currentSelect = $(this);
-          currentSelect.empty();
+        callSelects.empty();
 
-          if (data.calls.length === 0) {
-            currentSelect.append($('<option>', {
-              value: '',
-              text: 'Sem chamadas',
-              selected: true
-            }));
-          }
-          else {
-            currentSelect.prepend($('<option>', {
-              value: '',
-              text: '---------',
-              selected: true
-            }));
-          }
+        callSelects.append($('<option>', {
+          value: '',
+          text: data.calls.length === 0 ? 'Sem chamadas' : '---------',
+          selected: true
+        }));
 
-          $.each(data.calls, function(index, call) {
-            currentSelect.append($('<option>', {
-              value: call.id,
-              text: call.text,
-            }));
-          });
+        $.each(data.calls, (index, call) => {
+          callSelects.append($('<option>', {
+            value: call.id,
+            text: call.text,
+          }));
         });
 
         if (data.calls.length > 0) {
           getProducts.call($('#id_call'));
-      }
-      }
-    });
-  };
-
-  var getBalance = function() {
-    var productSelect = $(this);
-    var productRow = productSelect.closest('.inlineform');
-    var productBalance = productRow.find('.product-balance');
-    var productId = productSelect.val();
-
-    if (!productId) {
-      productBalance.text('. . .');
-      return;
-    }
-
-    $.ajax({
-      url: '/get_balance/',
-      type: 'GET',
-      data: {'product_id': productId},
-      success: function(data) {
-        productBalance.text(data.balance)
+        }
       }
     });
   };
 
-  var getUnit = function() {
-    var productSelect = $(this);
-    var productRow = productSelect.closest('.inlineform');
-    var productTd = productRow.find('.inline-balance');
-    var productUnit = productTd.find('.product-unit');
-    var productId = productSelect.val();
+  const getBalance = function() {
+    const dataUrl = $(this).attr('data-url-balance');
+    const productId = $(this).val();
 
-    if (!productId) {
-      productUnit.text('. . .');
-      return;
-    }
+    const productRow = $(this).closest('.inlineform');
+    const productBalance = productRow.find('.product-balance');
+
+    if (!dataUrl) return;
 
     $.ajax({
-      url: '/get_unit/',
+      url: dataUrl,
       type: 'GET',
       data: {'product_id': productId},
-      success: function(data) {
-        productUnit.text(data.unit)
-      }
+      success: (data) => productBalance.text(data.balance || '. . .')
+    });
+  };
+
+  const getUnit = function() {
+    const productId = $(this).val();
+    const dataUrl = $(this).attr('data-url-unit');
+
+    const productRow = $(this).closest('.inlineform');
+    const productTd = productRow.find('.inline-balance');
+    const productUnit = productTd.find('.product-unit');
+
+    if (!dataUrl) return;
+
+    $.ajax({
+      url: dataUrl,
+      type: 'GET',
+      data: {'product_id': productId},
+      success: (data) => productUnit.text(data.unit || '. . .')
     });
   };
 
   $('#id_institution').on('change', getCalls);
-  $('#id_call').on('change', getProducts)
+  $('#id_call').on('change', getProducts);
   $(document).on('change', 'select[id$="call_product"]', getBalance);
   $(document).on('change', 'select[id$="product"]', getUnit);
 
-  $('.add-row').click(function() {
-    var callId = $('#id_call').val();
-    if (callId) {
-      getProducts.call($('#id_call'))
-    }
+  $('.add-row').click(() => {
+    const callId = $('#id_call').val();
+    if (callId) getProducts.call($('#id_call'));
   });
 
-  if ($('[name="user_call"]').length){
-    $(document).ready(function() {
-      getProducts.call($('[name="user_call"]'))
-    })
+  if ($('[name="user_call"]').length) {
+    getProducts.call($('[name="user_call"]'));
   }
-
 });
