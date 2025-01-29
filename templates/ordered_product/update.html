@@ -20,7 +20,7 @@
 
         <form action="" method="POST">
             {% csrf_token %}
-            <input type="hidden" name="user_call" id="id_call" value="{{order.call.pk}}">
+            <input type="hidden" name="user_call" id="id_call" data-url="{% url 'get_products' %}" value="{{order.call.pk}}">
 
             {{ form_product.management_form }}
                 <h4 class="poppins-bold">PRODUTOS DO PEDIDOS</h4>

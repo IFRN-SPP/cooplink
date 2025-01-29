@@ -15,7 +15,7 @@
         <div class="mt-2">
             <form action="" method="POST">
                 {% csrf_token %}
-                <input type="hidden" name="user_call" id="id_call" value="{{call.pk}}">
+                <input type="hidden" name="user_call" id="id_call" data-url="{% url 'get_products' %}" value="{{call.pk}}">
 
                 {% if form_product %}
                 {{ form_product.management_form }}
@@ -72,5 +72,5 @@
         })
     </script>
 
-    <script src="{% static "js/get_products.js" %}"></script>
+    <script src="{% static 'js/get_products.js' %}"></script>
 {% endblock script %}
