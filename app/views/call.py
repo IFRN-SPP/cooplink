@@ -121,8 +121,7 @@ def get_unit(request):
         if not product_id:
             unit = "Erro: Produto não encontrado"
         else:
-            call_product = get_object_or_404(CallProduct, pk=product_id)
-            product = get_object_or_404(Product, pk=call_product.product.id)
+            product = get_object_or_404(Product, pk=product_id)
             unit = product.unit
 
         data["unit"] = unit
