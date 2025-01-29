@@ -211,7 +211,6 @@ class OrderedProductForm(forms.ModelForm):
         call_product.widget.attrs.update(
             {"data-url-balance": reverse_lazy("get_balance")}
         )
-        call_product.widget.attrs.update({"data-url-unit": reverse_lazy("get_unit")})
 
 
 OrderedProductFormSet = inlineformset_factory(
