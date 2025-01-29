@@ -120,7 +120,10 @@ $(function() {
   $('#id_institution').on('change', getCalls);
   $('#id_call').on('change', getProducts);
   $(document).on('change', 'select[id$="call_product"]', getBalance);
-  $(document).on('change', 'select[id$="product"]', getUnit);
+
+  if ($('.product-unit').length){
+    $(document).on('change', 'select[id$="product"]', getUnit);
+  }
 
   $('.add-row').click(() => {
     const callId = $('#id_call').val();
