@@ -7,9 +7,18 @@ from django.db import models
 
 class Cooperative(models.Model):
     name = models.CharField(max_length=100, verbose_name="Nome da Cooperativa")
-    extended_name = models.CharField(max_length=100, verbose_name="Nome Extensivo da Cooperativa",)
-    catch_phrase = models.CharField(max_length=100, verbose_name="Frase de Apresentação da Cooperativa",)
-    location = models.CharField(max_length=100, verbose_name="Localidade da Cooperativa",)
+    extended_name = models.CharField(
+        max_length=100,
+        verbose_name="Nome Extensivo da Cooperativa",
+    )
+    catch_phrase = models.CharField(
+        max_length=100,
+        verbose_name="Frase de Apresentação da Cooperativa",
+    )
+    location = models.CharField(
+        max_length=100,
+        verbose_name="Localidade da Cooperativa",
+    )
     logo = models.CharField(
         max_length=255,
         verbose_name="Caminho para a Logo da Cooperativa",
@@ -59,6 +68,12 @@ class Institution(models.Model):
     def calls(self):
         if self.id:
             calls = Call.objects.filter(institution=self.id)
+            return calls
+
+    @property
+    def active_calls(self):
+        if self.id:
+            calls = Call.objects.filter(institution=self.id, active=True)
             return calls
 
 

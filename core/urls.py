@@ -3,8 +3,8 @@ from django.conf import settings
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include('app.urls')),
+    path("", include("app.urls")),
 ]
 
 if settings.DEBUG:
-    urlpatterns += [path('admin/', admin.site.urls)]
+    urlpatterns += [path("admin/", admin.site.urls)]
