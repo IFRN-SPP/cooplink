@@ -396,7 +396,6 @@ def OrderReport(request, pk):
     template_name = "pdf/order-report.html"
     data = {}
     order = get_object_or_404(Order, pk=pk)
-    cooperative = Cooperative.get_instance()
 
     if (order.status != "approved") and (order.status != "delivered"):
         messages.warning(
@@ -406,12 +405,13 @@ def OrderReport(request, pk):
         return redirect("detail-order", pk)
 
     data["order"] = order
-    data["cooperative"] = cooperative
     today = timezone.now().date()
     data["today"] = today
 
+    cooperative = Cooperative.get_instance()
+    data["cooperative"] = cooperative
     static_url = request.build_absolute_uri(settings.STATIC_URL)
-    data["logo"] = static_url + "assets/logo-pb.png"
+    data["logo"] = static_url + cooperative.logo
 
     if request.method == "GET":
         pdf = render_to_pdf(template_name, data)
@@ -436,8 +436,10 @@ def WeekReport(request):
     total_products = calculate_total_products(orders)
     data["total_products"] = total_products
 
+    cooperative = Cooperative.get_instance()
+    data["cooperative"] = cooperative
     static_url = request.build_absolute_uri(settings.STATIC_URL)
-    data["logo"] = static_url + "assets/logo-pb.png"
+    data["logo"] = static_url + cooperative.logo
 
     if request.method == "GET":
         pdf = render_to_pdf(template_name, data)
@@ -462,8 +464,10 @@ def RequestReport(request):
     total_requests = calculate_request_product(orders)
     data["total_requests"] = total_requests
 
+    cooperative = Cooperative.get_instance()
+    data["cooperative"] = cooperative
     static_url = request.build_absolute_uri(settings.STATIC_URL)
-    data["logo"] = static_url + "assets/logo-pb.png"
+    data["logo"] = static_url + cooperative.logo
 
     if request.method == "GET":
         pdf = render_to_pdf(template_name, data)
