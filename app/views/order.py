@@ -374,7 +374,7 @@ def EvaluateOrderDenied(request, pk):
 
 
 @login_required
-@order_owner
+@staff_required
 @confirm_password
 def OrderDelivered(request, pk):
     template_name = "order/delivered.html"

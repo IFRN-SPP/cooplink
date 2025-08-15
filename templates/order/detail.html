@@ -147,13 +147,13 @@
                 {% if order.status == 'approved' %}
                 <div class="d-flex gap-3 align-items-baseline">
                     <i class="bi bi-exclamation-triangle fs-4"></i>
-                    {% if request.user == order.user or request.user.institution == order.institution %}
-                        Ao receber seu pedido, confirme a entrega.
+                    {% if request.user.is_staff %}
+                        Confirme a entrega do pedido.
                         <a href="{% url 'order-delivered' order.pk %}" class="btn btn-success m-1">
                             CONFIRMAR ENTREGA
                         </a>
                     {% else %}
-                        A confirmação de entrega deve ser feita pelos representantes da instituição.
+                        A confirmação de entrega deve ser feita pelos representantes da cooperativa.
                     {% endif %}
                 </div>
                 {% elif order.status == 'delivered' %}
