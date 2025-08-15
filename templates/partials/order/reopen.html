@@ -1,0 +1,14 @@
+<form method="post" class="js-update-form" action="{% url 'reopen-order' object.pk %}">
+  {% csrf_token %}
+  <div class="modal-header">
+    <h5 class="modal-title fw-bold">REABRIR PEDIDO</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <h5>Tem certeza que deseja marcar o pedido como pendente?</h5>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
+    <button type="submit" class="btn btn-success">CONFIRMAR</button>
+  </div>
+</form>
