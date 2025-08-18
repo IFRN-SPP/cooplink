@@ -1,16 +1,10 @@
-<section align="center">
-<p> INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA DO RIO GRANDE DO NORTE <p/>
-<p>
-JOÃO ANAEL BARBOSA SILVA <br/>
-MARIA POLIANA PINHEIRO DE PAIVA
-<p/>
-<h1> COOPLINK: UM SISTEMA ORGANIZACIONAL PARA AS COOPERATIVAS DE AGRICULTURA FAMILIAR (BACKEND) </h1>
-<p>
-SÃO PAULO DO POTENGI, RN <br/>
-2024
-</p>
-</section>
 
+<section align="center">
+<p>INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA DO RIO GRANDE DO NORTE </p>
+<p>JOÃO ANAEL BARBOSA SILVA <br/>MARIA POLIANA PINHEIRO DE PAIVA </p>
+<h1>COOPLINK: UM SISTEMA ORGANIZACIONAL PARA AS COOPERATIVAS DE AGRICULTURA FAMILIAR (BACKEND)</h1>
+<p>SÃO PAULO DO POTENGI, RN <br/>2024</p>
+</section>
 
 ---
 
@@ -91,10 +85,11 @@ The Potengi Family Agriculture and Solidarity Economy Cooperative serves as an i
   - [MODELO DE DADOS](#26-modelo-de-dados)
 - [RESULTADOS](#3-resultados)
 - [CONCLUSÃO](#4-conclusão)
+
 [REFERÊNCIAS](#referências)
 
 ---
-lo
+
 ## 1. INTRODUÇÃO
 O objetivo deste relatório é documentar a Prática Profissional dos alunos do Curso Técnico Integrado de Informática para Internet, por meio do registro das atividades realizadas no Projeto de Extensão IFSOL. Através deste projeto, foi atribuído aos alunos o desenvolvimento e implantação de uma aplicação web para a cooperativa local que está sob processo de incubação do projeto.
 
