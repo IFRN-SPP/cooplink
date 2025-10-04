@@ -26,6 +26,8 @@
                                     <th>PRODUTOS</th>
                                     <th>QUANTIDADE</th>
                                     <th>SALDO DO PRODUTO</th>
+                                    <th>VALOR UNITÁRIO</th>
+                                    <th>VALOR TOTAL</th>
                                     <th>APAGAR</th>
                                 </tr>
                             </thead>
@@ -34,11 +36,20 @@
                                     <tr class="inlineform" id="form-row-{{ form.prefix }}">
                                         <td class="inline-margin product-select">{{ form.call_product|as_crispy_field }}</td>
                                         <td class="inline-margin">{{ form.ordered_quantity|as_crispy_field }}</td>
-                                        <td  class="product-balance"> </td>
+                                        <td class="product-balance"></td>
+                                        <td class="unit-price">0,00</td>
+                                        <td class="product-total">0,00</td>
                                         <td></td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td><strong>TOTAL R$</strong></td>
+                                    <td colspan="3"></td>
+                                    <td id="order-total" class="fw-bold">0,00</td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
 

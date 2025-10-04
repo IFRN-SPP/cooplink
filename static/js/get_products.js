@@ -34,6 +34,7 @@ $(function() {
               currentSelect.append($('<option>', {
                 value: product.id,
                 text: product.text,
+                'data-price': product.price
               }));
             });
 
@@ -43,6 +44,8 @@ $(function() {
               currentSelect.val(selectedOption.val());
             }
           });
+
+          getOrderTotal();
         }
       });
     }
@@ -117,9 +120,41 @@ $(function() {
     });
   };
 
+  const getOrderTotal = function() {
+    let orderTotal = 0;
+
+    $('tr.inlineform').each(function() {
+      const row = $(this);
+      const select = row.find('select[id$="call_product"]');
+      const quantityInput = row.find('input[id$="ordered_quantity"]');
+      const unitPriceCell = row.find('.unit-price');
+      const productTotalCell = row.find('.product-total');
+
+      const price = parseFloat(select.find('option:selected').data('price')) || 0;
+      const quantity = parseFloat(quantityInput.val()) || 0;
+      const productTotal = price * quantity;
+
+      unitPriceCell.text(price.toFixed(2).replace('.', ','));
+      unitPriceCell.attr('data-value', price.toFixed(2));
+
+      productTotalCell.text(productTotal.toFixed(2).replace('.', ','));
+      productTotalCell.attr('data-value', productTotal.toFixed(2));
+
+      orderTotal += productTotal;
+    });
+
+    $('#order-total').text(orderTotal.toFixed(2).replace('.', ','));
+  };
+
   $('#id_institution').on('change', getCalls);
   $('#id_call').on('change', getProducts);
-  $(document).on('change', 'select[id$="call_product"]', getBalance);
+
+  $(document).on('change', 'select[id$="call_product"]', function() {
+    getBalance.call(this);
+    getOrderTotal();
+  });
+
+  $(document).on('input change', 'input[id$="ordered_quantity"]', getOrderTotal);
 
   if ($('.product-unit').length){
     $(document).on('change', 'select[id$="product"]', getUnit);
@@ -133,4 +168,6 @@ $(function() {
   if ($('[name="user_call"]').length) {
     getProducts.call($('[name="user_call"]'));
   }
+
+  getOrderTotal();
 });
