@@ -75,6 +75,12 @@ class Institution(models.Model):
         if self.id:
             calls = Call.objects.filter(institution=self.id, active=True)
             return calls
+    
+    @property
+    def orders(self):
+        if self.id:
+            orders = Order.objects.filter(institution=self)
+            return orders
 
 
 class UserProfile(AbstractUser):
@@ -105,6 +111,12 @@ class Call(models.Model):
         auto_now=False, auto_now_add=False, verbose_name="Data de Término"
     )
     active = models.BooleanField(default=False, verbose_name="Situação")
+
+    @property
+    def orders(self):
+        if self.id:
+            orders = Order.objects.filter(call=self)
+            return orders
 
     def __str__(self):
         return f"Chamada - {self.number} de {self.institution.name}"

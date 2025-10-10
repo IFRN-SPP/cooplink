@@ -3,28 +3,29 @@
 {% block title %}Chamada{% endblock %}
 {% block content %}
 <div class="container">
-    {% include 'partials/breadcrumb.html' %}
-    <div class="table-background">
+  {% include 'partials/breadcrumb.html' %}
+  <div class="table-background">
     <div class="d-flex content-header justify-content-between">
       <div class="d-flex align-items-baseline gap-3">
         <h3 class="poppins-bold">CHAMADA {{ call.number }}</h3>
         <div class="">
-          <span class="badge text-uppercase fs-4 py-2{% if call.active %} text-bg-success {% else %} text-bg-warning {% endif %}">
-              {% if call.active %}
-              Ativa
-              {% else %}
-              Inativa
-              {% endif %}
+          <span
+            class="badge text-uppercase fs-4 py-2{% if call.active %} text-bg-success {% else %} text-bg-warning {% endif %}">
+            {% if call.active %}
+            Ativa
+            {% else %}
+            Inativa
+            {% endif %}
           </span>
         </div>
       </div>
       {% if user.is_staff %}
       <div class="d-md-flex gap-2">
-          <a href="{% url 'update-call' call.pk %}" class="btn btn-success btn-gap my-1">
-            <i class="bi bi-pencil-fill"></i>
-            Editar Chamada
-          </a>
-        </div>
+        <a href="{% url 'update-call' call.pk %}" class="btn btn-success btn-gap my-1">
+          <i class="bi bi-pencil-fill"></i>
+          Editar Chamada
+        </a>
+      </div>
       {% endif %}
     </div>
     <hr>
@@ -55,25 +56,67 @@
         <th>UNIDADE</th>
         <th>PREÇO</th>
         {% if user.is_staff %}
-          <th>DELETAR?</th>
+        <th>DELETAR?</th>
         {% endif %}
       </thead>
-      <tbody  class="table-group-divider">
+      <tbody class="table-group-divider">
         {% for product in call.products %}
-          <tr>
-            <td>{{ product.product }}</td>
-            <td>{{ product.balance }}</td>
-            <td>{{ product.product.unit }}</td>
-            <td>{{ product.price }}</td>
-            {% if user.is_staff %}
-              <td>
-                <a href="{% url 'delete-call-product' product.pk %}" class="btn btn-danger btn-sm" title="Excluir"><i class="bi bi-trash3-fill"></i> Excluir </a>
-              </td>
-            {% endif %}
-          </tr>
+        <tr>
+          <td>{{ product.product }}</td>
+          <td>{{ product.balance }}</td>
+          <td>{{ product.product.unit }}</td>
+          <td>{{ product.price }}</td>
+          {% if user.is_staff %}
+          <td>
+            <a href="{% url 'delete-call-product' product.pk %}" class="btn btn-danger btn-sm" title="Excluir"><i
+                class="bi bi-trash3-fill"></i> Excluir </a>
+          </td>
+          {% endif %}
+        </tr>
         {% empty %}
         <tr>
           <td colspan="5">Sem Produtos nessa Chamada.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="d-md-flex align-items-baseline">
+      <h4 class="poppins-bold">PEDIDOS DA CHAMADA</h4>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>STATUS</th>
+          <th>PREÇO TOTAL</th>
+          <th>AÇÃO</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in call.orders %}
+        <tr>
+          <td>{{order.pk}}</td>
+          <td>
+            {% if order.status == 'approved' %}
+            <div class="badge text-bg-success">APROVADO</div>
+            {% elif order.status == 'pending' %}
+            <div class="badge text-bg-warning">PENDENTE</div>
+            {% elif order.status == 'delivered' %}
+            <div class="badge text-bg-success">ENTREGUE</div>
+            {% else %}
+            <div class="badge text-bg-danger">NEGADO</div>
+            {% endif %}
+          </td>
+          <td>R$ {{order.get_total_price}}</td>
+          <td>
+            <a class="btn btn-outline-success" href="{% url 'detail-order' order.pk  %}"><i class="bi bi-eye-fill"></i>
+              Detalhar</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4">Essa Instituição não possui Representantes.</td>
         </tr>
         {% endfor %}
       </tbody>
