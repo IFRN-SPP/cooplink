@@ -129,7 +129,7 @@ def get_products(request):
         request (HttpRequest): The HttpRequest object containing the request data.
 
     Returns:
-        dict: A dictionary containing the products in the format {'id': product_id, 'text': product_text}.
+        dict: A dictionary containing the products in the format {'id': product_id, 'text': product_text}, 'price': product_price}.
     """
     data = {}
 
@@ -139,7 +139,7 @@ def get_products(request):
 
         call_products = call.products
         products_dict = [
-            {"id": call_product.id, "text": str(call_product.product)}
+            {"id": call_product.id, "text": str(call_product.product), 'price': str(call_product.price)}
             for call_product in call_products
         ]
         data["products"] = products_dict

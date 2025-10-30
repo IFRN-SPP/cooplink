@@ -221,6 +221,16 @@ class Order(models.Model):
             for product in products:
                 total_price += float(product.get_quantity_price.replace(",", "."))
         return "{:.2f}".format(total_price).replace(".", ",") if total_price else None
+    
+    @property
+    def get_pending_total_price(self):
+        total = 0.0
+        for product in OrderedProduct.objects.filter(order=self).exclude(status='denied'):
+            if product.call_product and product.ordered_quantity:
+                price = float(product.call_product.price)
+                quantity = float(product.ordered_quantity)
+                total += price * quantity
+        return "{:.2f}".format(total).replace(".", ",") if total else "0,00"
 
     @property
     def request_products(self):
