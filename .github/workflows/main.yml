@@ -22,17 +22,22 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+    - name: Add server to known_hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.SERVER }} >> ~/.ssh/known_hosts
+
     - name: Deploy code via rsync
       run: |
         rsync -az --delete \
           --exclude=".git" \
           --exclude=".github" \
           --exclude=".env" \
-          ./ ${{ secrets.SERVER }}:${{ secrets.LOCATION }}
+          ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }}:${{ secrets.LOCATION }}
 
     - name: Restart Docker Compose
       run: |
-        ssh ${{ secrets.SERVER }} << 'EOF'
+        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }} << 'EOF'
         cd ${{ secrets.LOCATION }}
         docker compose pull || true
         docker compose build --no-cache
