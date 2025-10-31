@@ -52,6 +52,14 @@
             {% endif %}
           {% endif %}
 
+          {% if object.status == 'approved' or object.status == 'denied' %}
+            {% if user.is_staff %}
+              <li>
+                <a href="#" class="dropdown-item btn-gap js-update" data-url="{% url 'reopen-order' object.pk %}"><i class="bi bi-arrow-clockwise"></i> Marcar como Pendente</a>
+              </li>
+            {% endif %}
+          {% endif %}
+
           {% if object.status == 'denied' %}
             {% if user.is_staff %}
               <li>
@@ -59,6 +67,7 @@
               </li>
             {% endif %}
           {% endif %}
+          
         </ul>
       </div>
     </td>

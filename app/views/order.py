@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.http import HttpResponse, JsonResponse
 
@@ -128,7 +129,7 @@ def get_products(request):
         request (HttpRequest): The HttpRequest object containing the request data.
 
     Returns:
-        dict: A dictionary containing the products in the format {'id': product_id, 'text': product_text}.
+        dict: A dictionary containing the products in the format {'id': product_id, 'text': product_text}, 'price': product_price}.
     """
     data = {}
 
@@ -138,7 +139,7 @@ def get_products(request):
 
         call_products = call.products
         products_dict = [
-            {"id": call_product.id, "text": str(call_product.product)}
+            {"id": call_product.id, "text": str(call_product.product), 'price': str(call_product.price)}
             for call_product in call_products
         ]
         data["products"] = products_dict
@@ -373,7 +374,7 @@ def EvaluateOrderDenied(request, pk):
 
 
 @login_required
-@order_owner
+@staff_required
 @confirm_password
 def OrderDelivered(request, pk):
     template_name = "order/delivered.html"
@@ -389,6 +390,69 @@ def OrderDelivered(request, pk):
 
     return render(request, template_name, context)
 
+
+# Reabrir pedido
+@login_required
+@staff_required
+def ReopenOrder(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+
+    if is_ajax(request):
+        data = {}
+
+        if request.method == "POST":
+            if order.status in ["approved", "denied"]:
+                for product in order.products:
+                    if product.status in ["available", "parcial"]:
+                        product.call_product.balance += product.available_quantity or 0
+                        product.call_product.save()
+
+                        product.available_quantity = 0
+                        product.status = "pending"
+                        product.save()
+
+                order.status = "pending"
+                order.save()
+
+                data["form_is_valid"] = True
+                data["success_url"] = reverse_lazy("order-list")
+                data["message"] = f"Pedido #{order.pk} foi marcado como pendente com sucesso!"
+                data["message_class"] = "alert-success"
+
+            else:
+                data["form_is_valid"] = False
+                data["message"] = "Esse pedido não pode ser reaberto."
+                data["message_class"] = "alert-warning"
+
+            return JsonResponse(data)
+
+        context = {"object": order}
+        data["html_form"] = render_to_string("partials/order/reopen.html", context, request=request)
+        return JsonResponse(data)
+
+    if request.method == "POST":
+        if order.status in ["approved", "denied"]:
+            for product in order.products:
+                if product.status in ["available", "parcial"]:
+                    product.call_product.balance += product.available_quantity or 0
+                    product.call_product.save()
+
+                    product.available_quantity = 0
+                    product.status = "pending"
+                    product.save()
+
+            order.status = "pending"
+            order.save()
+
+            messages.success(
+                request,
+                f"Pedido #{order.pk} foi marcado como pendente com sucesso!",
+            )
+        else:
+            messages.warning(request, "Esse pedido não está em um estado que permita reabertura.")
+
+        return redirect("order-list")
+    
 
 @login_required
 @staff_required

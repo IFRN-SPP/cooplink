@@ -119,13 +119,23 @@
                         </tr>
                     {% endfor %}
                 </tbody>
-                {% if order.status == 'approved' or order.status == 'delivered' %}
+                {% if order.status in 'approved delivered pending' %}
                 <tfoot class="text-center">
                     <td> <strong>TOTAL R$</strong></td>
                     <td colspan="4"></td>
-                    <td>{{order.get_total_price}}</td>
+                    <td>
+                        <strong>
+                        {% if order.status == 'pending' %}
+                            {{ order.get_pending_total_price }}
+                        {% else %}
+                            {{ order.get_total_price }}
+                        {% endif %}
+                        </strong>
+                        
+                    </td>
                     <td></td>
                 </tfoot>
+
                 {% endif %}
             </table>
         </div>
@@ -147,13 +157,13 @@
                 {% if order.status == 'approved' %}
                 <div class="d-flex gap-3 align-items-baseline">
                     <i class="bi bi-exclamation-triangle fs-4"></i>
-                    {% if request.user == order.user or request.user.institution == order.institution %}
-                        Ao receber seu pedido, confirme a entrega.
+                    {% if request.user.is_staff %}
+                        Confirme a entrega do pedido.
                         <a href="{% url 'order-delivered' order.pk %}" class="btn btn-success m-1">
                             CONFIRMAR ENTREGA
                         </a>
                     {% else %}
-                        A confirmação de entrega deve ser feita pelos representantes da instituição.
+                        A confirmação de entrega deve ser feita pelos representantes da cooperativa.
                     {% endif %}
                 </div>
                 {% elif order.status == 'delivered' %}
