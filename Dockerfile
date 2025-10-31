@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     musl-dev \
     libpq-dev \
+    pkg-config libcairo2-dev libpango1.0-dev libffi-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
