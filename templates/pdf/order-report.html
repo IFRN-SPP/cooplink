@@ -8,7 +8,7 @@
           left: 50pt; width: 512pt; top: 20pt; height: 40pt;
       }
       @frame content_frame {          /* Content Frame */
-          left: 50pt; width: 492pt; top: 60pt; height: 862pt;
+          left: 50pt; width: 492pt; top: 60pt; height: 700pt;
       }
       @frame footer_frame {           /* Another static Frame */
           -pdf-frame-content: footer_content;
@@ -39,6 +39,11 @@
       <header id="header_content">
         {% include "pdf/header.html" %}
       </header>
+
+      <!-- Content for Static Frame 'footer_frame' -->
+      <div id="footer_content">Página <pdf:pagenumber>
+          de <pdf:pagecount>
+      </div>
 
       <!-- HTML Content -->
       <div style="border: 1.5px solid #000;  line-height: 27px; text-align: center;">
