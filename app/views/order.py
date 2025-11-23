@@ -461,13 +461,6 @@ def OrderReport(request, pk):
     data = {}
     order = get_object_or_404(Order, pk=pk)
 
-    if (order.status != "approved") and (order.status != "delivered"):
-        messages.warning(
-            request,
-            "Não é possível gerar o relatório de um Pedido que não foi aprovado ou entregue",
-        )
-        return redirect("detail-order", pk)
-
     available_products = order.available_products.order_by('call_product__product__name')
     
     data["order"] = order
@@ -536,20 +529,17 @@ def RequestReport(request):
 
     orders = get_report_products(monday, friday)
     
-    ordered_products_list = []
     for order in orders:
-        ordered_products = order.call_products.all().order_by('call_product__product__name')
-        for ordered_product in ordered_products:
-            ordered_products_list.append({
-                'order': order,
-                'ordered_product': ordered_product,
-                'product_name': ordered_product.call_product.product.name,
-                'product_unit': ordered_product.call_product.product.unit
-            })
+        if order.status == "pending":
+            order.request_products_sorted = order.call_products.exclude(
+                status='denied'
+            ).order_by('call_product__product__name')
+        else:
+            order.request_products_sorted = order.call_products.filter(
+                status__in=['available', 'parcial']
+            ).order_by('call_product__product__name')
     
-    ordered_products_list.sort(key=lambda x: x['product_name'])
-    data["ordered_products"] = ordered_products_list
-    
+    data["orders"] = orders
     total_requests = calculate_request_product(orders)
     data["total_requests"] = total_requests
 
