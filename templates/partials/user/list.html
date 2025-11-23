@@ -3,7 +3,7 @@
   <td>{{object.pk}}</td>
   <td>{{object.username}}</td>
   <td>{{object.get_full_name}}</td>
-  <td>{{object.institution}}</td>
+  <td class="clickable institution-column" data-institution="{{ object.institution }}">{{object.institution}}</td>
   <td>
     {% if object.is_active %}
     <span class="badge text-bg-success ">ATIVO</span>
