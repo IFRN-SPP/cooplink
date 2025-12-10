@@ -120,3 +120,15 @@ table.dataTable thead > tr > th.dt-ordering-desc .dt-column-order:after {
     background-color: #dc3545;
     border-radius: 50%;
 }
+
+.dataTables_length select {
+    width: 90px !important;
+    min-width: 90px !important;
+    max-width: 100px !important;
+}
+
+.dataTables_length select {
+    width: auto !important;
+    min-width: 70px !important;
+    max-width: 100px !important;
+}

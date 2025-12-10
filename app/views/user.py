@@ -17,7 +17,6 @@ class UserList(LoginRequiredMixin, StaffRequiredMixin, AjaxListView):
     model = UserProfile
     template_name = 'user/list.html'
     partial_list = 'partials/user/list.html'
-    paginate_by = 6
 
 
 class UserCreate(LoginRequiredMixin, StaffRequiredMixin, CreateView):

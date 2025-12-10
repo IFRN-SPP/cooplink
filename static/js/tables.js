@@ -74,34 +74,135 @@ $(document).ready(function() {
 
     var dataTable = table.DataTable({
       "order": [[0, "desc"]],
-      "pageLength": 6,
-      "lengthChange": false,
-      "paging": false,
+      "pageLength": 5,
+      "lengthChange": true,
+      "lengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, 'Todos']],
+      "paging": true,
       "info": false,
       "searching": true,
+      "dom": '<"top"fB>lrt',
+      "pagingType": "simple",
       "language": {
-        "url": "https://cdn.datatables.net/plug-ins/2.0.0/i18n/pt-BR.json"
+        "url": "https://cdn.datatables.net/plug-ins/2.0.0/i18n/pt-BR.json",
+        "paginate": {
+          "next": "Próxima",
+          "previous": "Anterior"
+        },
       },
       "columnDefs": columnsConfig,
       colReorder: true,
-      dom: '<"top"fB>rt',
       buttons: [{
         extend: 'colvis',
         text: 'FILTRAR COLUNAS',
         className: 'btn btn-outline-success',
         columns: ':not(:last-child)',
         columnText: function ( dt, idx, title ) {
-            var th = $(dt.column(idx).header());
-            var columnTitle = th.find('.dt-column-title').clone().children().remove().end().text().trim();
-            return columnTitle || th.find('.dt-column-title').text().split('\n')[0].trim();
-          }
+          var th = $(dt.column(idx).header());
+          var columnTitle = th.find('.dt-column-title').clone().children().remove().end().text().trim();
+          return columnTitle || th.find('.dt-column-title').text().split('\n')[0].trim();
         }
-      ],
+      }],
       initComplete: function() {
         $('div.dt-search label').remove();
         $('div.dt-search input').attr('placeholder', 'Buscar...');
+        
+        fixAllToTodos();
+        
+        $('.dataTables_paginate').remove();
+        $('.dataTables_info').remove();
+        
+        createCustomPagination();
+      },
+      drawCallback: function() {
+        $('.dataTables_paginate').remove();
+        $('.dataTables_info').remove();
+        
+        updateCustomPagination();
+        
+        fixAllToTodos();
       }
     });
+
+    function fixAllToTodos() {
+      setTimeout(function() {
+        var $select = $('.dataTables_length select');
+        if ($select.length) {
+          $select.find('option').each(function() {
+            var $option = $(this);
+            var text = $option.text().trim();
+            
+            if (text === 'All' || $option.val() === '-1') {
+              $option.text('Todos');
+            }
+          });
+        }
+        
+        $('body').find('*').contents().filter(function() {
+          return this.nodeType === 3 && this.nodeValue.includes('All');
+        }).each(function() {
+          this.nodeValue = this.nodeValue.replace(/All/g, 'Todos');
+        });
+      }, 100);
+    }
+
+    function createCustomPagination() {
+      $('#custom-pagination').remove();
+      $('#ajax-pagination').remove();
+      
+      var $wrapper = $('#ajax-table').closest('.table-responsive');
+      if ($wrapper.length) {
+        $wrapper.after('<nav id="ajax-pagination" class="mt-3"></nav>');
+      } else {
+        $('#ajax-table_wrapper').append('<nav id="ajax-pagination" class="mt-3"></nav>');
+      }
+      
+      updateCustomPagination();
+    }
+
+    function updateCustomPagination() {
+      var info = dataTable.page.info();
+      var hasPrevious = info.page > 0;
+      var hasNext = info.page < info.pages - 1;
+      
+      var html = `
+        <ul class="pagination">
+          ${hasPrevious ? `
+            <li class="page-item">
+              <button class="page-link text-success js-page-prev">
+                Anterior
+              </button>
+            </li>
+          ` : ''}
+          
+          <li class="page-item">
+            <span class="page-link text-dark">
+              Página ${info.page + 1} de ${info.pages}
+            </span>
+          </li>
+          
+          ${hasNext ? `
+            <li class="page-item">
+              <button class="page-link text-success js-page-next">
+                Próxima
+              </button>
+            </li>
+          ` : ''}
+        </ul>
+      `;
+      
+      $('#ajax-pagination').html(html);
+      
+      $(document).off('click', '.js-page-prev');
+      $(document).off('click', '.js-page-next');
+      
+      $(document).on('click', '.js-page-prev', function() {
+        dataTable.page('previous').draw('page');
+      });
+      
+      $(document).on('click', '.js-page-next', function() {
+        dataTable.page('next').draw('page');
+      });
+    }
 
     var filters = {
       institution: '',
@@ -190,7 +291,7 @@ $(document).ready(function() {
       if (thText.includes('STATUS')) {
         th.find('.dropdown a').attr('id', 'status-filter-icon');
       } else if (thText.includes('SITUAÇÃO')) {
-        th.find('.dropdown a').attr('id', 'situation-filter-icon');
+        th.find('.dropdown a').attr('id', 'status-filter-icon');
       } else if (thText.includes('UNIDADE') || thText.includes('UNIT')) {
         th.find('.dropdown a').attr('id', 'unit-filter-icon');
       }
