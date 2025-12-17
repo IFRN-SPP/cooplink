@@ -1,9 +1,12 @@
 from django.conf import settings
 from django.utils import timezone
+from django.utils.dateparse import parse_date
+from datetime import timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.http import HttpResponse, JsonResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -461,14 +464,10 @@ def OrderReport(request, pk):
     data = {}
     order = get_object_or_404(Order, pk=pk)
 
-    if (order.status != "approved") and (order.status != "delivered"):
-        messages.warning(
-            request,
-            "Não é possível gerar o relatório de um Pedido que não foi aprovado ou entregue",
-        )
-        return redirect("detail-order", pk)
-
+    available_products = order.available_products.order_by('call_product__product__name')
+    
     data["order"] = order
+    data["available_products"] = available_products
     today = timezone.now().date()
     data["today"] = today
 
@@ -488,15 +487,35 @@ def WeekReport(request):
     template_name = "pdf/week-report.html"
     data = {}
 
+    week_param = request.GET.get('week')
+    
+    if week_param:
+        try:
+            reference_date = parse_date(week_param)
+            if not reference_date:
+                reference_date = timezone.now().date()
+        except:
+            reference_date = timezone.now().date()
+    else:
+        reference_date = timezone.now().date()
+    
     today = timezone.now().date()
     data["today"] = today
-    monday = get_week_start(today)
+    monday = get_week_start(reference_date)
     data["monday"] = monday
     friday = get_week_end(monday)
     data["friday"] = friday
 
     orders = get_report_orders(monday, friday)
-    data["orders"] = orders
+    
+    orders_sorted = sorted(orders, key=lambda order: order.institution.name)
+    
+    for order in orders_sorted:
+        order.available_products_sorted = order.products.filter(
+            status__in=['available', 'parcial']
+        ).order_by('call_product__product__name')
+    
+    data["orders"] = orders_sorted
     total_products = calculate_total_products(orders)
     data["total_products"] = total_products
 
@@ -516,14 +535,37 @@ def RequestReport(request):
     template_name = "pdf/request-report.html"
     data = {}
 
+    week_param = request.GET.get('week')
+    
+    if week_param:
+        try:
+            reference_date = parse_date(week_param)
+            if not reference_date:
+                reference_date = timezone.now().date()
+        except:
+            reference_date = timezone.now().date()
+    else:
+        reference_date = timezone.now().date()
+    
     today = timezone.now().date()
     data["today"] = today
-    monday = get_week_start(today)
+    monday = get_week_start(reference_date)
     data["monday"] = monday
     friday = get_week_end(monday)
     data["friday"] = friday
 
     orders = get_report_products(monday, friday)
+    
+    for order in orders:
+        if order.status == "pending":
+            order.request_products_sorted = order.products.exclude(
+                status='denied'
+            ).order_by('call_product__product__name')
+        else:
+            order.request_products_sorted = order.products.filter(
+                status__in=['available', 'parcial']
+            ).order_by('call_product__product__name')
+    
     data["orders"] = orders
     total_requests = calculate_request_product(orders)
     data["total_requests"] = total_requests
@@ -536,3 +578,153 @@ def RequestReport(request):
     if request.method == "GET":
         pdf = render_to_pdf(template_name, data)
         return HttpResponse(pdf, content_type="application/pdf")
+
+
+@login_required
+@staff_required
+def InstitutionReport(request, pk):
+    template_name = "pdf/institution-report.html"
+    data = {}
+    
+    week_param = request.GET.get('week')
+    
+    institution = get_object_or_404(Institution, pk=pk)
+    data["institution"] = institution
+    
+    if week_param:
+        try:
+            reference_date = parse_date(week_param)
+            if not reference_date:
+                reference_date = timezone.now().date()
+        except:
+            reference_date = timezone.now().date()
+    else:
+        reference_date = timezone.now().date()
+    
+    today = timezone.now().date()
+    data["today"] = today
+    monday = get_week_start(reference_date)
+    data["monday"] = monday
+    friday = get_week_end(monday)
+    data["friday"] = friday
+    
+    data["is_previous_week"] = monday < get_week_start(today)
+    data["reference_date"] = reference_date
+    
+    orders = Order.objects.filter(
+        institution=institution,
+        timestamp__date__range=[monday, friday]
+    ).order_by('timestamp')
+    
+    data["orders"] = orders
+    
+    total_products = {}
+    total_value = 0
+    
+    for order in orders:
+        for ordered_product in order.products.filter(status__in=['available', 'parcial']):
+            product_obj = None
+            product_name = "Produto"
+            unit = "un"
+            price = 0
+            
+            if hasattr(ordered_product, 'call_product') and ordered_product.call_product:
+                if hasattr(ordered_product.call_product, 'product'):
+                    product_obj = ordered_product.call_product.product
+                    product_name = product_obj.name
+                    unit = product_obj.unit
+                    price = ordered_product.call_product.price or 0
+            
+            elif hasattr(ordered_product, 'product') and ordered_product.product:
+                product_obj = ordered_product.product
+                product_name = product_obj.name
+                unit = product_obj.unit
+                try:
+                    call_product = CallProduct.objects.get(
+                        call=order.call,
+                        product=product_obj
+                    )
+                    price = call_product.price or 0
+                except CallProduct.DoesNotExist:
+                    price = 0
+            
+            quantity = ordered_product.available_quantity or 0
+            
+            if product_name not in total_products:
+                total_products[product_name] = {
+                    'quantity': 0,
+                    'unit': unit,
+                    'total': 0
+                }
+            
+            total_products[product_name]['quantity'] += quantity
+            total_products[product_name]['total'] += quantity * price
+            total_value += quantity * price
+    
+    data["total_products"] = total_products
+    data["total_value"] = total_value
+    
+    cooperative = Cooperative.get_instance()
+    data["cooperative"] = cooperative
+    static_url = request.build_absolute_uri(settings.STATIC_URL)
+    data["logo"] = static_url + cooperative.logo
+    
+    if request.method == "GET":
+        pdf = render_to_pdf(template_name, data)
+        return HttpResponse(pdf, content_type="application/pdf")
+
+
+@login_required
+@staff_required
+def ReportHistory(request):
+    template_name = "order/report-history.html"
+    context = {}
+    
+    page = request.GET.get('page', 1)
+    
+    today = timezone.now().date()
+    current_monday = get_week_start(today)
+    
+    all_weeks = []
+    for i in range(0, 52):
+        week_date = current_monday - timedelta(weeks=i)
+        week_monday = get_week_start(week_date)
+        week_friday = get_week_end(week_monday)
+        all_weeks.append({
+            'monday': week_monday,
+            'friday': week_friday,
+            'label': f"Semana {week_monday.strftime('%d/%m')} - {week_friday.strftime('%d/%m/%Y')}",
+            'value': week_monday.strftime('%Y-%m-%d')
+        })
+    
+    weeks_with_orders = []
+    
+    for week in all_weeks:
+        has_orders = Order.objects.filter(
+            timestamp__date__range=[week['monday'], week['friday']]
+        ).exists()
+        
+        if has_orders:
+            weeks_with_orders.append(week)
+        elif week['monday'] == current_monday:
+            weeks_with_orders.append(week)
+    
+    paginate_by = 6
+    paginator = Paginator(weeks_with_orders, paginate_by)
+    
+    try:
+        weeks_page = paginator.page(page)
+    except PageNotAnInteger:
+        weeks_page = paginator.page(1)
+    except EmptyPage:
+        weeks_page = paginator.page(paginator.num_pages)
+    
+    context['weeks'] = weeks_page.object_list
+    context['page'] = weeks_page
+    context['institutions'] = Institution.objects.all().order_by('name')
+    context['current_week'] = current_monday
+    
+    if is_ajax(request) and request.GET.get('table_only') == 'true':
+        template_name = "order/report-history.html"
+    
+    return render(request, template_name, context)
