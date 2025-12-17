@@ -1,7 +1,7 @@
 [DJANGO__BADGE]: https://img.shields.io/badge/-Django-0d1117?style=for-the-badge&logo=Django&logoColor=green
 [PYTHON__BADGE]: https://img.shields.io/badge/-Python-0d1117?style=for-the-badge&logo=Python
 [HTML__BADGE]: https://img.shields.io/badge/-HTML5-0d1117?style=for-the-badge&logo=html5&logoColor
-[CSS__BADGE]: https://img.shields.io/badge/-CSS3-0d1117?style=for-the-badge&logo=css3&logoColor=blue
+[CSS__BADGE]: https://img.shields.io/badge/-CSS3-0d1117?style=for-the-badge&logo=css&logoColor=blue
 [JAVASCRIPT__BADGE]: https://img.shields.io/badge/-JavaScript-0d1117?style=for-the-badge&logo=javascript&logoColor
 [JQUERY__BADGE]: https://img.shields.io/badge/-Jquery-0d1117?style=for-the-badge&logo=jquery&logoColor
 [BOOTSTRAP_BADGE]: https://img.shields.io/badge/-Bootstrap-0d1117?style=for-the-badge&logo=bootstrap&logoColor
@@ -25,7 +25,7 @@
 
 O CoopLink é sistema web criado para o controle administrativo dos pedidos de produtos feitos à cooperativas de agricultura familiar e economia solidária.
 
-O sistema possui as seguintes funciolalidades:
+O sistema possui as seguintes funcionalidades:
 
 - Login, cadastro e administração de usuários
 
@@ -78,6 +78,14 @@ Os mais sinceros agradecimentos para as pessoas que tornaram esse projeto possí
         <img src="https://avatars.githubusercontent.com/poliana-dev" width="100px;" alt="collaborators pictures"/><br>
         <sub>
           <b>Poliana Pinheiro 🐸</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/saramonalisa" title="Sara Carlos">
+        <img src="https://avatars.githubusercontent.com/saramonalisa" width="100px;" alt="collaborators pictures"/><br>
+        <sub>
+          <b>Sara Carlos 🦊</b>
         </sub>
       </a>
     </td>
