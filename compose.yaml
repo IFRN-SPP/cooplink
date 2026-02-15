@@ -13,6 +13,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    user: "0:${NGINX_GID:0}"
     volumes:
       - ${SERVER_STATIC_ROOT}:/app/staticfiles
       - ${SERVER_MEDIA_ROOT}:/app/media
