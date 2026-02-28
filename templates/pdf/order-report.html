@@ -71,7 +71,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for ordered_product in order.available_products %}
+            {% for ordered_product in available_products %}
             <tr>
               <td width="50px">{{forloop.counter}}</td>
               <td width="170px">{{ordered_product.call_product.product.name}}</td>

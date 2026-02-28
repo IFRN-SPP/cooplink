@@ -461,14 +461,10 @@ def OrderReport(request, pk):
     data = {}
     order = get_object_or_404(Order, pk=pk)
 
-    if (order.status != "approved") and (order.status != "delivered"):
-        messages.warning(
-            request,
-            "Não é possível gerar o relatório de um Pedido que não foi aprovado ou entregue",
-        )
-        return redirect("detail-order", pk)
-
+    available_products = order.available_products.order_by('call_product__product__name')
+    
     data["order"] = order
+    data["available_products"] = available_products
     today = timezone.now().date()
     data["today"] = today
 
@@ -496,7 +492,15 @@ def WeekReport(request):
     data["friday"] = friday
 
     orders = get_report_orders(monday, friday)
-    data["orders"] = orders
+    
+    orders_sorted = sorted(orders, key=lambda order: order.institution.name)
+    
+    for order in orders_sorted:
+        order.available_products_sorted = order.call_products.filter(
+            status__in=['available', 'parcial']
+        ).order_by('call_product__product__name')
+    
+    data["orders"] = orders_sorted
     total_products = calculate_total_products(orders)
     data["total_products"] = total_products
 
@@ -524,6 +528,17 @@ def RequestReport(request):
     data["friday"] = friday
 
     orders = get_report_products(monday, friday)
+    
+    for order in orders:
+        if order.status == "pending":
+            order.request_products_sorted = order.call_products.exclude(
+                status='denied'
+            ).order_by('call_product__product__name')
+        else:
+            order.request_products_sorted = order.call_products.filter(
+                status__in=['available', 'parcial']
+            ).order_by('call_product__product__name')
+    
     data["orders"] = orders
     total_requests = calculate_request_product(orders)
     data["total_requests"] = total_requests
