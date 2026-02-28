@@ -16,7 +16,6 @@ class InstitutionList(LoginRequiredMixin, StaffRequiredMixin, AjaxListView):
     model = Institution
     template_name = 'institution/list.html'
     partial_list = 'partials/institution/list.html'
-    paginate_by = 6
 
     def get_queryset(self):
         queryset = Institution.objects.all()

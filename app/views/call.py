@@ -20,7 +20,6 @@ class CallList(LoginRequiredMixin, AjaxListView):
     model = Call
     template_name = "call/list.html"
     partial_list = "partials/call/list.html"
-    paginate_by = 6
     object_list = "calls"
 
     def get_queryset(self):
