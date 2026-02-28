@@ -104,9 +104,12 @@ def calculate_total_products(orders):
     total_products = {}
     for order in orders:
         if (order.status == 'approved') or (order.status == 'delivered'):
-            for ordered_product in order.call_products.all():
+            ordered_products = order.call_products.all().order_by('call_product__product__name')
+            
+            for ordered_product in ordered_products:
                 product_name = ordered_product.call_product.product.name
                 product_unit = ordered_product.call_product.product.unit
+                
                 if ordered_product.status == 'available':
                     ordered_quantity = ordered_product.ordered_quantity
                 elif ordered_product.status == 'parcial':
@@ -119,7 +122,8 @@ def calculate_total_products(orders):
                 else:
                     total_products[product_name] = {'quantity': ordered_quantity, 'unit': product_unit}
 
-    return total_products
+    sorted_products = {k: v for k, v in sorted(total_products.items())}
+    return sorted_products
 
 # #########
 
@@ -155,9 +159,12 @@ def calculate_request_product(orders):
     total_requests = {}
     for order in orders:
         if (order.status == 'approved') or (order.status == 'pending'):
-            for ordered_product in order.call_products.all():
+            ordered_products = order.call_products.all().order_by('call_product__product__name')
+            
+            for ordered_product in ordered_products:
                 product_name = ordered_product.call_product.product.name
                 product_unit = ordered_product.call_product.product.unit
+
                 if ordered_product.status == 'available':
                     ordered_quantity = ordered_product.ordered_quantity
                 elif ordered_product.status == 'parcial':
@@ -170,4 +177,32 @@ def calculate_request_product(orders):
                 else:
                     total_requests[product_name] = {'quantity': ordered_quantity, 'unit': product_unit}
 
-    return total_requests
+    sorted_requests = {k: v for k, v in sorted(total_requests.items())}
+    return sorted_requests
+
+
+def get_ordered_products_for_report(orders):
+    """
+    Returns ordered products sorted alphabetically for detailed reports.
+    
+    Args:
+        orders (QuerySet): A list of orders.
+        
+    Returns:
+        list: List of ordered products sorted by product name.
+    """
+    ordered_products_list = []
+    
+    for order in orders:
+        ordered_products = order.call_products.all().order_by('call_product__product__name')
+        
+        for ordered_product in ordered_products:
+            ordered_products_list.append({
+                'order': order,
+                'ordered_product': ordered_product,
+                'product_name': ordered_product.call_product.product.name,
+                'product_unit': ordered_product.call_product.product.unit
+            })
+    
+    ordered_products_list.sort(key=lambda x: x['product_name'])
+    return ordered_products_list
