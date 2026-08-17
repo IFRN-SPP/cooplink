@@ -45,7 +45,6 @@ class OrderList(LoginRequiredMixin, AjaxListView):
     model = Order
     template_name = "order/list.html"
     partial_list = "partials/order/list.html"
-    paginate_by = 6
     object_list = "orders"
 
     def get_queryset(self):
