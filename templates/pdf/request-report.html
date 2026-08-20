@@ -90,15 +90,21 @@
               </tr>
             </thead>
             <tbody>
-              {% for ordered_product in order.request_products %}
+              {% for ordered_product in order.request_products_sorted %}
               <tr>
                   <td>{{ ordered_product.call_product.product.name }}</td>
-                  {% if ordered_product.status == 'available' %}
-                    <td>{{ ordered_product.ordered_quantity }}  {{ ordered_product.call_product.product.unit }}</td>
-                  {% elif ordered_product.status == 'parcial' %}
-                    <td>{{ ordered_product.available_quantity }}  {{ ordered_product.call_product.product.unit }}</td>
-                  {% endif %}
+                  <td>
+                    {% if ordered_product.status == 'available' or ordered_product.status == 'pending' %}
+                      {{ ordered_product.ordered_quantity }} {{ ordered_product.call_product.product.unit }}
+                    {% elif ordered_product.status == 'parcial' %}
+                      {{ ordered_product.available_quantity }} {{ ordered_product.call_product.product.unit }}
+                    {% endif %}
+                  </td>
                 </tr>
+              {% empty %}
+              <tr>
+                <td colspan="2" style="text-align: center;">Nenhum produto solicitado</td>
+              </tr>
               {% endfor %}
 
             </tbody>

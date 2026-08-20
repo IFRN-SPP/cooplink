@@ -94,7 +94,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for ordered_product in order.available_products %}
+            {% for ordered_product in order.available_products_sorted %}
             <tr>
                 <td>{{ ordered_product.call_product.product.name }}</td>
                 {% if ordered_product.status == 'available' %}
@@ -103,6 +103,10 @@
                   <td>{{ ordered_product.available_quantity }}  {{ ordered_product.call_product.product.unit }}</td>
                 {% endif %}
               </tr>
+            {% empty %}
+            <tr>
+              <td colspan="2"><i>Sem produtos disponíveis</i></td>
+            </tr>
             {% endfor %}
 
           </tbody>
@@ -114,4 +118,4 @@
       </itens>
 
   </body>
-  </html>
+</html>
