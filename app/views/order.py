@@ -48,7 +48,6 @@ class OrderList(LoginRequiredMixin, AjaxListView):
     model = Order
     template_name = "order/list.html"
     partial_list = "partials/order/list.html"
-    paginate_by = 6
     object_list = "orders"
 
     def get_queryset(self):
@@ -511,7 +510,7 @@ def WeekReport(request):
     orders_sorted = sorted(orders, key=lambda order: order.institution.name)
     
     for order in orders_sorted:
-        order.available_products_sorted = order.products.filter(
+        order.available_products_sorted = order.call_products.filter(
             status__in=['available', 'parcial']
         ).order_by('call_product__product__name')
     
@@ -558,11 +557,11 @@ def RequestReport(request):
     
     for order in orders:
         if order.status == "pending":
-            order.request_products_sorted = order.products.exclude(
+            order.request_products_sorted = order.call_products.exclude(
                 status='denied'
             ).order_by('call_product__product__name')
         else:
-            order.request_products_sorted = order.products.filter(
+            order.request_products_sorted = order.call_products.filter(
                 status__in=['available', 'parcial']
             ).order_by('call_product__product__name')
     

@@ -2,12 +2,12 @@
   <tr>
     <td>{{ object.number }}</td>
     {% if user.is_staff %}
-      <td>{{ object.institution }}</td>
+      <td class="clickable institution-column" data-institution="{{ object.institution }}">{{ object.institution }}</td>
     {% endif %}
     <td>{{ object.start|date:"SHORT_DATE_FORMAT" }}</td>
     <td>{{ object.end|date:"SHORT_DATE_FORMAT" }}</td>
 
-    <td>
+    <td class="situation-column" data-situation="{% if object.active %}true{% else %}false{% endif %}">
       {% if object.active %}
         <div class="badge text-bg-success">ATIVA</div>
       {% else %}

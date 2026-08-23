@@ -12,7 +12,6 @@ class ProductList(LoginRequiredMixin, StaffRequiredMixin, AjaxListView):
     model = Product
     template_name = 'product/list.html'
     partial_list = 'partials/product/list.html'
-    paginate_by = 7
 
     def get_queryset(self):
         queryset = Product.objects.all()
