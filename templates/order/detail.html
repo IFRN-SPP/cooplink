@@ -51,7 +51,15 @@
                 <div class="d-md-flex gap-5">
                     <p><strong>AUTOR</strong>: {{ order.user.get_full_name}}</p>
                     {% if user.is_staff %}
-                    <p><strong>INSTITUIÇÃO</strong>: {{ order.institution }}</p>
+                    <p class="d-flex align-items-center gap-2">
+                        <span><strong>INSTITUIÇÃO</strong>: {{ order.institution }}</span>
+                        <a href="{% url 'detail-institution' order.institution.pk %}"
+                           class="btn btn-success btn-sm d-inline-flex align-items-center justify-content-center"
+                           title="Visualizar instituição"
+                           aria-label="Visualizar instituição {{ order.institution.name }}">
+                            <i class="bi bi-eye-fill" aria-hidden="true"></i>
+                        </a>
+                    </p>
                     {% endif %}
                     <p><strong>FEITO EM</strong>: {{ order.timestamp|date:"SHORT_DATETIME_FORMAT"}}</p>
                 </div>
