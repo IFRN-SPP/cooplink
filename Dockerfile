@@ -46,7 +46,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY . /app/
 
 # Create socket directory
-RUN mkdir -p /run/sockets && chmod 777 /run/sockets
+RUN mkdir -p /run/sockets
 
 # Create staticfiles directory for collected static
 RUN mkdir -p /app/staticfiles
@@ -58,7 +58,7 @@ RUN mkdir -p /app/media
 RUN chmod -R 755 /app/staticfiles /app/media
 
 # Copy entrypoint script
-COPY ./entrypoint.sh /app/
+COPY entrypoint.sh /app/
 RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 8000
