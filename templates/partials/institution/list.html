@@ -1,7 +1,9 @@
 {% for object in object_list %}
   <tr>
     <td>{{ object.pk }}</td>
-    <td>{{ object.name }}</td>
+    <td>
+      <a href="{% url 'detail-institution' object.pk %}">{{ object.name }}</a>
+    </td>
     <td>{{ object.cnpj }}</td>
     <td>
       <div class="dropstart">

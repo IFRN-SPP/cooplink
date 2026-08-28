@@ -2,7 +2,9 @@
   <tr>
     <td>{{ object.number }}</td>
     {% if user.is_staff %}
-      <td class="clickable institution-column" data-institution="{{ object.institution }}">{{ object.institution }}</td>
+      <td class="clickable institution-column" data-institution="{{ object.institution }}">
+        <a href="{% url 'detail-institution' object.institution.pk %}">{{ object.institution }}</a>
+      </td>
     {% endif %}
     <td>{{ object.start|date:"SHORT_DATE_FORMAT" }}</td>
     <td>{{ object.end|date:"SHORT_DATE_FORMAT" }}</td>

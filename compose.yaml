@@ -15,9 +15,8 @@ services:
       dockerfile: Dockerfile
     user: "0:${NGINX_GID:-0}"
     volumes:
-      - ${SERVER_STATIC_ROOT}:/app/staticfiles
-      - ${SERVER_MEDIA_ROOT}:/app/media
-      - ${SOCKET_DIR}:/run/sockets
+      - static_shared:${STATIC_ROOT}
+      - media_shared:${MEDIA_ROOT}
     environment:
       - DEBUG=${DEBUG}
       - SECRET_KEY=${SECRET_KEY}
@@ -30,6 +29,18 @@ services:
     depends_on:
       - db
     restart: unless-stopped
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8000:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - static_shared:${SERVER_STATIC_ROOT}
+      - media_shared:${SERVER_MEDIA_ROOT}
+    depends_on:
+      - web
 
 volumes:
   postgres_data:
+  static_shared:
+  media_shared:

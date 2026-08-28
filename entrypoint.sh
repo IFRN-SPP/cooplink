@@ -16,10 +16,10 @@ echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
 echo "Setting socket directory permissions..."
-chmod 770 /run/sockets
+chmod 777 /run/sockets
 
 echo "Starting Gunicorn..."
-exec gunicorn --bind unix:/run/sockets/cooplink.sock \
+exec gunicorn --bind 0.0.0.0:8000 \
 	--workers 3 \
 	--timeout 60 \
     --umask 007 \

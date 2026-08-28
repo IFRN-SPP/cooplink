@@ -17,9 +17,7 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", default=False, cast=bool)
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = config(
-    "ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")]
-)
+ALLOWED_HOSTS = ("*","127.0.0.1")
 
 # Deploy Settings
 if not DEBUG:

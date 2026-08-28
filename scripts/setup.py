@@ -27,46 +27,17 @@ def main():
     full_name = "Admin User"
 
     # Cooperative input
-    coop_name = (
-        input(
-            "Enter the name for the cooperative (Press Enter for default: 'Cooperativa'): "
-        ).strip()
-        or "Cooperativa"
-    )
+    coop_name = "Cooperativa"
 
-    cnpj = (
-        input(
-            "Enter the CNPJ for the cooperative (Press Enter for default: '123.456.789-00'): "
-        ).strip()
-        or "123.456.789-00"
-    )
+    cnpj = "123.456.789-00"
 
-    logo_path = (
-        input(
-            "Enter the relative path to the logo file from 'static/' (Press Enter for default): "
-        ).strip()
-        or "assets/logo.png"
-    )
-    extended_name = (
-        input(
-            "Enter the extended name for the cooperative (Press Enter for default): "
-        ).strip()
-        or "Cooperativa Com Um Nome Extensivamente Longo"
-    )
+    logo_path = "assets/logo.png"
+    
+    extended_name = "Cooperativa Com Um Nome Extensivamente Longo"
 
-    catch_phrase = (
-        input(
-            "Enter the catch phrase for the cooperative (Press Enter for default): "
-        ).strip()
-        or "Um lema muito legal e interessante"
-    )
+    catch_phrase = "Um lema muito legal e interessante"
 
-    location = (
-        input(
-            "Enter the location for the cooperative 'Cidade / UF' (Press Enter for default): "
-        ).strip()
-        or "Cidade / BR"
-    )
+    location = "Cidade / BR"
 
     try:
         # Validate the logo path
