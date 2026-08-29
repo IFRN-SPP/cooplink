@@ -5,7 +5,7 @@
         <a href="{% url 'index' %}">Início</a>
       </li>
       <li class="breadcrumb-item">
-        {% if 'order' in request.resolver_match.url_name %}
+        {% if 'order' in request.resolver_match.url_name or 'relatorio' in request.path %}
           <a href="{% url 'order-list' %}">Pedidos</a>
         {% elif 'call' in request.resolver_match.url_name %}
           <a href="{% url 'call-list' %}">Chamadas</a>
@@ -25,6 +25,8 @@
           <li class="breadcrumb-item">Detalhar</li>
         {% elif 'evaluate' in request.resolver_match.url_name %}
           <li class="breadcrumb-item">Avaliar</li>
+        {% elif 'report' in request.resolver_match.url_name or 'relatorio' in request.path %}
+        <li class="breadcrumb-item">Relatórios</li>
         {% else %}
         {% endif %}
     </ol>

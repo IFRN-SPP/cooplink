@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Histórico de Relatórios{% endblock %}
+{% block content %}
+
+  <div class="container">
+    {% include 'partials/breadcrumb.html' %}
+    
+    <div class="table-background">
+      <div class="content-header justify-content-between d-md-flex align-items-center">
+        <h3 class="poppins-bold">HISTÓRICO DE RELATÓRIOS</h3>
+        <div class="d-md-flex gap-3">
+          <a href="{% url 'order-list' %}" class="btn btn-success btn-gap my-1">
+            <i class="bi bi-file-earmark"></i>TODOS OS PEDIDOS
+          </a>
+        </div>
+      </div>
+      <hr>
+      
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <label for="weekSelect" class="form-label mt-2"><strong>SEMANA:</strong></label>
+          <select id="weekSelect" class="form-select">
+            {% for week in weeks %}
+              <option value="{{ week.value }}" {% if week.monday == current_week %}selected{% endif %}>
+                {{ week.label }}
+                {% if week.monday == current_week %} (ATUAL){% endif %}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      
+      <div class="row mb-4">
+        <div class="col-md-12">
+          <label for="institutionSelect" class="form-label"><strong>INSTITUIÇÃO:</strong></label>
+          <select id="institutionSelect" class="form-select">
+            <option value="all">Todas as Instituições</option>
+            {% for institution in institutions %}
+              <option value="{{ institution.id }}">{{ institution.name }}</option>
+            {% endfor %}
+          </select>
+          <small class="text-muted" id="institution-help">
+            Selecione "Todas" para relatório geral ou uma instituição específica para relatório individual.
+          </small>
+        </div>
+      </div>
+      
+      <div class="row mb-4">
+        <div class="col-md-4 mb-2">
+          <button type="button" id="generateWeekReport" class="btn btn-success w-100">
+            <i class="bi bi-file-earmark-bar-graph"></i> GERAR RELATÓRIO SEMANAL
+          </button>
+        </div>
+        <div class="col-md-4 mb-2">
+          <button type="button" id="generateRequestReport" class="btn btn-success w-100">
+            <i class="bi bi-clipboard-data"></i> GERAR RELATÓRIO DE SOLICITAÇÕES
+          </button>
+        </div>
+        <div class="col-md-4 mb-2">
+          <button type="button" id="generateInstitutionReport" class="btn btn-success w-100">
+            <i class="bi bi-building"></i> GERAR RELATÓRIO DA INSTITUIÇÃO
+          </button>
+        </div>
+      </div>
+            
+      <div class="table-responsive mt-4">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>SEMANA</th>
+              <th>RELATÓRIO SEMANAL</th>
+              <th>RELATÓRIO DE SOLICITAÇÕES</th>
+              <th>RELATÓRIO POR INSTITUIÇÃO</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            {% for week in weeks %}
+            <tr>
+              <td>
+                <strong>{{ week.label }}</strong>
+                {% if week.monday == current_week %}
+                  <span class="badge bg-success ms-1">ATUAL</span>
+                {% endif %}
+              </td>
+              
+              <td class="text-center">
+                <a href="{% url 'week-report' %}?week={{ week.value }}" class="btn btn-outline-success" target="_blank">
+                  <i class="bi bi-filetype-pdf"></i> 
+                </a>
+              </td>
+              
+              <td class="text-center">
+                <a href="{% url 'request-report' %}?week={{ week.value }}" class="btn btn-outline-success" target="_blank">
+                  <i class="bi bi-filetype-pdf"></i> 
+                </a>
+              </td>
+              
+              <td class="text-center">
+                <div class="dropdown">
+                  <button class="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-building"></i> SELECIONAR
+                  </button>
+                  <ul class="dropdown-menu">
+                    {% for institution in institutions %}
+                    <li>
+                      <a class="dropdown-item" href="{% url 'institution-report' institution.id %}?week={{ week.value }}" target="_blank">
+                        {{ institution.name }}
+                      </a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="4" class="text-center">Nenhuma semana disponível</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        </table>
+
+        {% if page %}
+        <nav id="ajax-pagination">
+          <ul class="pagination">
+            {% if page.has_previous %}
+              <li class="page-item">
+                <button class="js-link page-link text-success" data-url="?page={{ page.previous_page_number }}&table_only=true">Anterior</button>
+              </li>
+            {% endif %}
+            <li class="page-item"><span class="page-link text-dark"> Página {{ page.number }} de {{ page.paginator.num_pages }}</span></li>
+            {% if page.has_next %}
+              <li class="page-item">
+                <button class="js-link page-link text-success" data-url="?page={{ page.next_page_number }}&table_only=true">Próxima</button>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+        {% endif %}
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="urls-data" 
+       data-week-report-url="{% url 'week-report' %}"
+       data-request-report-url="{% url 'request-report' %}"
+       data-institution-report-url-base="{% url 'institution-report' 0 %}"
+       style="display: none;">
+  </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/jquery.ajax.js' %}"></script>
+<script>
+$(document).ready(function() {
+  const urlsDataElement = document.getElementById('urls-data');
+  const weekReportUrl = urlsDataElement.getAttribute('data-week-report-url');
+  const requestReportUrl = urlsDataElement.getAttribute('data-request-report-url');
+  const institutionReportUrlBase = urlsDataElement.getAttribute('data-institution-report-url-base');
+  
+  const weekSelect = $('#weekSelect');
+  const institutionSelect = $('#institutionSelect');
+  const weekReportBtn = $('#generateWeekReport');
+  const requestReportBtn = $('#generateRequestReport');
+  const institutionReportBtn = $('#generateInstitutionReport');
+  const institutionHelp = $('#institution-help');
+  const weeksTableContainer = $('#weeks-table-container');
+  
+  function updateButtonsState() {
+    const institutionId = institutionSelect.val();
+    const isAllInstitutions = institutionId === 'all';
+    
+    if (isAllInstitutions) {
+      weekReportBtn.prop('disabled', false).removeClass('btn-secondary').addClass('btn-success');
+      requestReportBtn.prop('disabled', false).removeClass('btn-secondary').addClass('btn-success');
+      institutionReportBtn.prop('disabled', true).removeClass('btn-success').addClass('btn-secondary');
+      institutionHelp.text('Selecione "Todas" para relatório geral ou uma instituição específica para relatório individual.');
+    } else {
+      weekReportBtn.prop('disabled', true).removeClass('btn-success').addClass('btn-secondary');
+      requestReportBtn.prop('disabled', true).removeClass('btn-success').addClass('btn-secondary');
+      institutionReportBtn.prop('disabled', false).removeClass('btn-secondary').addClass('btn-success');
+      institutionHelp.text('Instituição específica selecionada. Use o botão "GERAR RELATÓRIO DA INSTITUIÇÃO" para relatório individual.');
+    }
+  }
+  
+  updateButtonsState();
+  
+  institutionSelect.change(updateButtonsState);
+  
+  function loadTablePage(url) {
+    $.ajax({
+      url: url,
+      type: 'GET',
+      success: function(data) {
+        weeksTableContainer.html(data);
+        $(document).off('click', '.js-link').on('click', '.js-link', function(e) {
+          e.preventDefault();
+          const newUrl = $(this).data('url');
+          loadTablePage(newUrl);
+        });
+      },
+      error: function() {
+        alert('Erro ao carregar a página.');
+      }
+    });
+  }
+  
+  $(document).on('click', '.js-link', function(e) {
+    e.preventDefault();
+    const url = $(this).data('url');
+    loadTablePage(url);
+  });
+  
+  weekReportBtn.click(function() {
+    if ($(this).prop('disabled')) return;
+    
+    const weekValue = weekSelect.val();
+    const institutionId = institutionSelect.val();
+    
+    const isValidWeek = $('#weekSelect option[value="' + weekValue + '"]').length > 0;
+    
+    if (!isValidWeek) {
+      alert('Por favor, selecione uma semana válida da lista.');
+      return;
+    }
+    
+    let url = weekReportUrl + "?week=" + encodeURIComponent(weekValue);
+    
+    window.open(url, '_blank');
+  });
+  
+  requestReportBtn.click(function() {
+    if ($(this).prop('disabled')) return;
+    
+    const weekValue = weekSelect.val();
+    const institutionId = institutionSelect.val();
+    
+    const isValidWeek = $('#weekSelect option[value="' + weekValue + '"]').length > 0;
+    
+    if (!isValidWeek) {
+      alert('Por favor, selecione uma semana válida da lista.');
+      return;
+    }
+    
+    let url = requestReportUrl + "?week=" + encodeURIComponent(weekValue);
+    
+    window.open(url, '_blank');
+  });
+  
+  institutionReportBtn.click(function() {
+    if ($(this).prop('disabled')) return;
+    
+    const weekValue = weekSelect.val();
+    const institutionId = institutionSelect.val();
+    
+    if (institutionId === 'all' || !institutionId) {
+      alert('Por favor, selecione uma instituição específica.');
+      return;
+    }
+    
+    const isValidWeek = $('#weekSelect option[value="' + weekValue + '"]').length > 0;
+    
+    if (!isValidWeek) {
+      alert('Por favor, selecione uma semana válida da lista.');
+      return;
+    }
+    
+    const url = institutionReportUrlBase.replace('/0/', '/' + institutionId + '/') + 
+                '?week=' + encodeURIComponent(weekValue);
+    
+    window.open(url, '_blank');
+  });
+});
+</script>
+{% endblock %}

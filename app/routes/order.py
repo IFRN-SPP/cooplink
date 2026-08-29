@@ -12,6 +12,8 @@ from app.views.order import (
   ReopenOrder,
   OrderDelivered,
   OrderReport,
+  ReportHistory,
+  InstitutionReport,
   WeekReport,
   RequestReport,
 )
@@ -31,9 +33,11 @@ urlpatterns = [
     path('<int:pk>/avaliar/', EvaluateOrder, name='evaluate-order'),
     path('<int:pk>/negar/', EvaluateOrderDenied, name='denied-order'),
     path('<int:pk>/reabrir/', ReopenOrder, name='reopen-order'),
-    # confirmação de entrega
-    path('<int:pk>/confirmar-entrega/',OrderDelivered, name='order-delivered'),
+    path('<int:pk>/confirmar-entrega/', OrderDelivered, name='order-delivered'),
+    # relatórios
+    path('relatorios/', ReportHistory, name='report-history'),
     path('relatorio/semanal/', WeekReport, name='week-report'),
     path('<int:pk>/relatorio/', OrderReport, name='order-report'),
-     path('relatorio/solicitacoes/', RequestReport, name='request-report'),
+    path('relatorio/instituicao/<int:pk>/', InstitutionReport, name='institution-report'),
+    path('relatorio/solicitacoes/', RequestReport, name='request-report'),
 ]
