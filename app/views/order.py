@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.conf import settings
 from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
@@ -324,8 +326,8 @@ def EvaluateOrder(request, pk):
             )
 
             product.status = form_status
-            available_quantity = float(form_available_quantity)
-            product_balance = float(product.call_product.balance)
+            available_quantity = Decimal(form_available_quantity)
+            product_balance = product.call_product.balance
 
             if available_quantity > product_balance:
                 messages.error(

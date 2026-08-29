@@ -215,21 +215,19 @@ class Order(models.Model):
 
     @property
     def get_total_price(self):
-        total_price = 0.0
+        total_price = 0
         if self.id:
             products = self.available_products
             for product in products:
-                total_price += float(product.get_quantity_price.replace(",", "."))
+                total_price += product.call_product.price * (product.available_quantity or product.ordered_quantity)
         return "{:.2f}".format(total_price).replace(".", ",") if total_price else None
     
     @property
     def get_pending_total_price(self):
-        total = 0.0
+        total = 0
         for product in OrderedProduct.objects.filter(order=self).exclude(status='denied'):
             if product.call_product and product.ordered_quantity:
-                price = float(product.call_product.price)
-                quantity = float(product.ordered_quantity)
-                total += price * quantity
+                total += product.call_product.price * product.ordered_quantity
         return "{:.2f}".format(total).replace(".", ",") if total else "0,00"
 
     @property
@@ -284,10 +282,8 @@ class OrderedProduct(models.Model):
     def get_quantity_price(self):
         quantity_price = None
         if self.call_product and (self.ordered_quantity or self.available_quantity):
-            price = float(self.call_product.price)
-            quantity = float(self.ordered_quantity)
-            if self.available_quantity:
-                quantity = float(self.available_quantity)
+            price = self.call_product.price
+            quantity = self.available_quantity or self.ordered_quantity
             quantity_price = price * quantity
         return (
             "{:.2f}".format(quantity_price).replace(".", ",")
