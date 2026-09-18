@@ -27,6 +27,7 @@ services:
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - SOCKET_NAME=${SOCKET_NAME:-cooplink.sock}
     depends_on:
       - db
     restart: unless-stopped

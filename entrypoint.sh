@@ -19,7 +19,7 @@ echo "Setting socket directory permissions..."
 chmod 770 /run/sockets
 
 echo "Starting Gunicorn..."
-exec gunicorn --bind unix:/run/sockets/cooplink.sock \
+exec gunicorn --bind unix:/run/sockets/${SOCKET_NAME:-cooplink.sock} \
 	--workers 3 \
 	--timeout 60 \
     --umask 007 \
