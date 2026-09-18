@@ -1,10 +1,10 @@
-name: Deploy Django
+name: Deploy Django (Dev)
 
-# Só roda quando um PR é fechado no branch main
+# Só roda quando um PR é fechado no branch develop
 on:
   pull_request:
     branches:
-      - main
+      - develop
     types:
       - closed
 
@@ -17,7 +17,7 @@ jobs:
     - name: Verify required secrets
       run: |
         missing=0
-        for var in SSH_PRIVATE_KEY SERVER SERVER_USER LOCATION; do
+        for var in SSH_PRIVATE_KEY_DEV SERVER_DEV SERVER_USER_DEV LOCATION_DEV; do
           if [ -z "${!var}" ]; then
             echo "Missing secret: $var"
             missing=1
@@ -28,10 +28,10 @@ jobs:
           exit 1
         fi
       env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SERVER: ${{ secrets.SERVER }}
-        SERVER_USER: ${{ secrets.SERVER_USER }}
-        LOCATION: ${{ secrets.LOCATION }}
+        SSH_PRIVATE_KEY_DEV: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
+        SERVER_DEV: ${{ secrets.SERVER_DEV }}
+        SERVER_USER_DEV: ${{ secrets.SERVER_USER_DEV }}
+        LOCATION_DEV: ${{ secrets.LOCATION_DEV }}
 
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -39,12 +39,12 @@ jobs:
     - name: Setup SSH
       uses: webfactory/ssh-agent@v0.9.0
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
 
     - name: Add server to known_hosts
       run: |
         mkdir -p ~/.ssh
-        ssh-keyscan -H ${{ secrets.SERVER }} >> ~/.ssh/known_hosts
+        ssh-keyscan -H ${{ secrets.SERVER_DEV }} >> ~/.ssh/known_hosts
 
     - name: Deploy code via rsync
       run: |
@@ -52,12 +52,12 @@ jobs:
           --exclude=".git" \
           --exclude=".github" \
           --exclude=".env" \
-          ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }}:${{ secrets.LOCATION }}
+          ./ ${{ secrets.SERVER_USER_DEV }}@${{ secrets.SERVER_DEV }}:${{ secrets.LOCATION_DEV }}
 
     - name: Restart Docker Compose
       run: |
-        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER }} << 'EOF'
-        cd ${{ secrets.LOCATION }}
+        ssh ${{ secrets.SERVER_USER_DEV }}@${{ secrets.SERVER_DEV }} << 'EOF'
+        cd ${{ secrets.LOCATION_DEV }}
         docker compose pull || true
         docker compose build --no-cache
         docker compose up -d
