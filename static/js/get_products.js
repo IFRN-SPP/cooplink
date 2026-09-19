@@ -1,54 +1,61 @@
 'use strict';
 
 $(function() {
+  let productsRequest;
+  let callsRequest;
+
+  const clearProducts = function() {
+    $('.product-select select').empty().append($('<option>', {
+      value: '', text: '---------'
+    }));
+    $('.product-balance').empty();
+    getOrderTotal();
+  };
+
   const getProducts = function() {
-    const callId = $(this).val();
-    const dataUrl = $(this).attr('data-url');
+    const callId = $('#id_call').val();
+    const dataUrl = $('#id_call').attr('data-url');
 
-    if (!dataUrl) return;
+    if (productsRequest) productsRequest.abort();
 
-    if (callId) {
-      const productSelects = $('.product-select select');
+    if (!callId || !dataUrl) {
+      clearProducts();
+      return;
+    }
 
-      productSelects.each(function() {
-        const currentSelect = $(this);
-        const selectId = currentSelect.attr('id');
-        const selectedOption = currentSelect.find('option:selected');
-        currentSelect.data(`${selectId}-selected-option`, selectedOption);
-      });
+    productsRequest = $.ajax({
+      url: dataUrl,
+      type: 'GET',
+      data: {'call_id': callId},
+      success: function(data) {
+        if ($('#id_call').val() !== callId) return;
 
-      $.ajax({
-        url: dataUrl,
-        type: 'GET',
-        data: {'call_id': callId},
-        success: function(data) {
-          productSelects.each(function() {
-            const currentSelect = $(this);
-            currentSelect.empty().prepend($('<option>', {
-              value: '',
-              text: '---------',
-              selected: true
+        $('.product-select select').each(function() {
+          const currentSelect = $(this);
+          const selectedValue = currentSelect.val();
+          currentSelect.empty().append($('<option>', {
+            value: '', text: '---------'
+          }));
+
+          $.each(data.products, (index, product) => {
+            currentSelect.append($('<option>', {
+              value: product.id,
+              text: product.text,
+              'data-price': product.price
             }));
-
-            $.each(data.products, (index, product) => {
-              currentSelect.append($('<option>', {
-                value: product.id,
-                text: product.text,
-                'data-price': product.price
-              }));
-            });
-
-            const selectId = currentSelect.attr('id');
-            const selectedOption = currentSelect.data(`${selectId}-selected-option`);
-            if (selectedOption) {
-              currentSelect.val(selectedOption.val());
-            }
           });
 
-          getOrderTotal();
-        }
-      });
-    }
+          currentSelect.val(selectedValue || '');
+          if (!currentSelect.val()) currentSelect.val('');
+          getBalance.call(this);
+        });
+
+        getOrderTotal();
+      },
+      error: function(xhr, status) {
+        if (status !== 'abort') $('#order-total').text('Indisponível');
+      }
+    });
   };
 
   const getCalls = function() {
@@ -58,11 +65,17 @@ $(function() {
 
     if (!dataUrl) return;
 
-    $.ajax({
+    if (callsRequest) callsRequest.abort();
+    callSelects.empty().append($('<option>', {value: '', text: '---------'}));
+    callSelects.trigger('change');
+    if (!institutionId) return;
+
+    callsRequest = $.ajax({
       url: dataUrl,
       type: 'GET',
       data: {'institution_id': institutionId},
       success: function(data) {
+        if ($('#id_institution').val() !== institutionId) return;
         callSelects.empty();
 
         callSelects.append($('<option>', {
@@ -77,10 +90,6 @@ $(function() {
             text: call.text,
           }));
         });
-
-        if (data.calls.length > 0) {
-          getProducts.call($('#id_call'));
-        }
       }
     });
   };
@@ -91,14 +100,20 @@ $(function() {
 
     const productRow = $(this).closest('.inlineform');
     const productBalance = productRow.find('.product-balance');
+    const productSelect = $(this);
 
-    if (!dataUrl) return;
+    productBalance.empty();
+    if (!productId || !dataUrl) return;
 
     $.ajax({
       url: dataUrl,
       type: 'GET',
       data: {'product_id': productId},
-      success: (data) => productBalance.text(data.balance || '. . .')
+      success: function(data) {
+        if (productSelect.val() === productId) {
+          productBalance.text(data.balance || '. . .');
+        }
+      }
     });
   };
 
@@ -120,34 +135,67 @@ $(function() {
     });
   };
 
+  // Preço e quantidade têm duas casas: 10,50 vira 1050; 1,25 vira 125.
+  // Usar inteiros evita diferenças de centavos nas multiplicações e somas.
+  const decimalToInteger = function(value) {
+    const scaled = Math.round(Number(String(value || 0).replace(',', '.')) * 100);
+    return Number.isFinite(scaled) ? BigInt(scaled) : 0n;
+  };
+
+  // O produto tem quatro casas decimais. Na exibição, reduzimos para duas.
+  // Empates vão para o centavo par, como no servidor: 0,005 -> 0,00; 0,015 -> 0,02.
+  const formatMoney = function(value) {
+    const negative = value < 0n;
+    const absolute = negative ? -value : value;
+    let cents = absolute / 100n;
+    const remainder = absolute % 100n;
+    const roundUpTie = remainder === 50n && cents % 2n !== 0n;
+    if (remainder > 50n || roundUpTie) cents++;
+    return `${negative && cents ? '-' : ''}${cents / 100n},${String(cents % 100n).padStart(2, '0')}`;
+  };
+
   const getOrderTotal = function() {
-    let orderTotal = 0;
+    let orderTotal = 0n;
+    let missingPrice = false;
 
     $('tr.inlineform').each(function() {
       const row = $(this);
+      const deleteInput = row.find('input[id$="-DELETE"]');
+      const isDeleted = deleteInput.is(':checkbox')
+        ? deleteInput.is(':checked') : Boolean(deleteInput.val());
+      if (isDeleted) return;
+
       const select = row.find('select[id$="call_product"]');
       const quantityInput = row.find('input[id$="ordered_quantity"]');
       const unitPriceCell = row.find('.unit-price');
       const productTotalCell = row.find('.product-total');
 
-      const price = parseFloat(select.find('option:selected').data('price')) || 0;
-      const quantity = parseFloat(quantityInput.val()) || 0;
+      const priceValue = select.find('option:selected').attr('data-price');
+      if (select.val() && priceValue === undefined) {
+        unitPriceCell.text('Indisponível');
+        productTotalCell.text('Indisponível');
+        missingPrice = true;
+        return;
+      }
+      const price = decimalToInteger(priceValue);
+      const quantity = decimalToInteger(quantityInput.val());
       const productTotal = price * quantity;
 
-      unitPriceCell.text(price.toFixed(2).replace('.', ','));
-      unitPriceCell.attr('data-value', price.toFixed(2));
-
-      productTotalCell.text(productTotal.toFixed(2).replace('.', ','));
-      productTotalCell.attr('data-value', productTotal.toFixed(2));
+      unitPriceCell.text(formatMoney(price * 100n));
+      productTotalCell.text(formatMoney(productTotal));
 
       orderTotal += productTotal;
     });
 
-    $('#order-total').text(orderTotal.toFixed(2).replace('.', ','));
+    $('#order-total').text(missingPrice ? 'Indisponível' : formatMoney(orderTotal));
   };
 
   $('#id_institution').on('change', getCalls);
-  $('#id_call').on('change', getProducts);
+  $('#id_call').on('change', function() {
+    $('input[id$="ordered_quantity"]').val('');
+    clearProducts();
+    getProducts();
+  });
 
   $(document).on('change', 'select[id$="call_product"]', function() {
     getBalance.call(this);
@@ -160,13 +208,22 @@ $(function() {
     $(document).on('change', 'select[id$="product"]', getUnit);
   }
 
-  $('.add-row').click(() => {
-    const callId = $('#id_call').val();
-    if (callId) getProducts.call($('#id_call'));
-  });
+  $(document).on('change', 'input[id$="-DELETE"]', getOrderTotal);
 
-  if ($('[name="user_call"]').length) {
-    getProducts.call($('[name="user_call"]'));
+  // A mesma configuração atende à criação pelo cliente, pela equipe e à edição.
+  const orderFormset = $('[data-order-formset-prefix]');
+  if (orderFormset.length) {
+    orderFormset.find('.inlineform').formset({
+      prefix: orderFormset.attr('data-order-formset-prefix'),
+      addText: '<button type="button" class="btn btn-success btn-gap"><i class="bi bi-plus-circle"></i>ADICIONAR PRODUTO</button>',
+      deleteText: '<button type="button" class="btn btn-danger btn-sm ms-2"><i class="bi bi-trash3-fill"></i></button>',
+      added: getProducts,
+      removed: getOrderTotal,
+    });
+  }
+
+  if ($('#id_call').length) {
+    getProducts();
   }
 
   getOrderTotal();
