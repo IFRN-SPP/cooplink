@@ -31,6 +31,14 @@
       font-weight:bold;
       border: 1.5px solid #000; 
     }
+
+    /* Keep the closing section together when xhtml2pdf paginates the report. */
+    .report-closing, .report-closing * {
+      -pdf-keep-with-next: true;
+    }
+    .report-closing .signature-end {
+      -pdf-keep-with-next: false;
+    }
     
   </style>
   </head>
@@ -99,30 +107,32 @@
         </table>
         {% endif %}
       </itens>
-      <div style="border: 1.5px solid #000; text-align:start;  line-height: 21px;">
-        <p style="font-size: 14px; padding: 10px 10px 0 10px;">
-          *Nestes termos, os produtos entregues de acordo com o Projeto de Vendas de Gêneros Alimenticios da Agricultura Familiar.
-          <br>
-          <br>
-          Declaro ainda que o(s) produto(s) está(ão) de acordo com os padrões de qualidade aceitos por esta instiuição, pelo(s) qual(is) concedemos a aceitabilidade, compromentendo-nos a dar a destinação final aos produtos estabelecidos.
-        </p>
-      </div>
-      <div style="border: 1.5px solid #000; text-align:start;  line-height: 27px;">
-        <p style="font-size: 14px; padding: 10px 10px 0 10px;">
-          OBSERVAÇÕES: 
-          <br>
-          <br>
-        </p>
-      </div>
+      <div class="report-closing">
+        <div style="border: 1.5px solid #000; text-align:start;  line-height: 21px;">
+          <p style="font-size: 14px; padding: 10px 10px 0 10px;">
+            *Nestes termos, os produtos entregues de acordo com o Projeto de Vendas de Gêneros Alimenticios da Agricultura Familiar.
+            <br>
+            <br>
+            Declaro ainda que o(s) produto(s) está(ão) de acordo com os padrões de qualidade aceitos por esta instiuição, pelo(s) qual(is) concedemos a aceitabilidade, compromentendo-nos a dar a destinação final aos produtos estabelecidos.
+          </p>
+        </div>
+        <div style="border: 1.5px solid #000; text-align:start;  line-height: 27px;">
+          <p style="font-size: 14px; padding: 10px 10px 0 10px;">
+            OBSERVAÇÕES:
+            <br>
+            <br>
+          </p>
+        </div>
         <p align="right">{{cooperative.location}} {{today}}</p>
-      <br>
-      <div  align="center">
-        <p>__________________________________________________</p>
-        <p>NOME:</p>
-        <p>CPF:</p>
-  
-        <p>__________________________________________________</p>
-        <p>{{cooperative.name}}</p>
+        <br>
+        <div align="center">
+          <p>__________________________________________________</p>
+          <p>NOME:</p>
+          <p>CPF:</p>
+
+          <p>__________________________________________________</p>
+          <p class="signature-end">{{cooperative.name}}</p>
+        </div>
       </div>
 
   </body>
