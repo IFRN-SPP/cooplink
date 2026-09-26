@@ -21,6 +21,11 @@ $(function(){
             dataType: 'json',
             success: function(data){
                 if(data.form_is_valid){
+                    // Recarrega listas filtradas para manter o contexto após uma alteração.
+                    if ($('#ajax-table').data('reload-on-save')) {
+                        window.location.reload();
+                        return;
+                    }
                     if(data.success_url){
                         loadList(data.success_url)
                     }
