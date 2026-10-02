@@ -39,7 +39,7 @@
                                     <th>APAGAR</th>
                                 </tr>
                             </thead>
-                            <tbody class="table-group-divider">
+                            <tbody class="table-group-divider" data-order-formset-prefix="{{ form_product.prefix }}">
                                 {% for form in form_product %}
                                     <tr class='inlineform' id="form-row-{{ form.prefix }}">
                                         <td class="inline-margin product-select">{{ form.call_product|as_crispy_field }}</td>
@@ -81,15 +81,5 @@
 {% endblock content %}
 
 {% block script %}
-    <script type="text/javascript">
-        $(function() {
-            $('.inlineform').formset({
-                prefix: '{{ form_product.prefix }}',
-                addText: '<button type="submit" class="btn btn-success btn-gap"><i class="bi bi-plus-circle"></i>ADICIONAR PRODUTO</button>',
-                deleteText: '<button type="submit" class="btn btn-danger btn-sm ms-2"><i class="bi bi-trash3-fill"></i></button>',
-            });
-        })
-    </script>
-
     <script src="{% static 'js/get_products.js' %}"></script>
 {% endblock script %}
