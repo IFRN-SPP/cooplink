@@ -10,7 +10,10 @@
     <div class="table-background">
       <div class="content-header justify-content-between d-md-flex align-items-center">
         <h3 class="poppins-bold">PEDIDOS</h3>
-        <div class="d-md-flex gap-3">
+        <div class="d-md-flex flex-wrap gap-3">
+          {% if institution or call %}
+            <a href="{% url 'order-list' %}" class="btn btn-outline-success my-1">TODOS OS PEDIDOS</a>
+          {% endif %}
           {% if user.is_staff %}
             <a href="{% url 'create-order-admin' %}" class="btn btn-success btn-gap my-1"><i class="bi bi-plus-circle"></i> NOVO PEDIDO</a>
             <a href="{% url 'report-history' %}" class="btn btn-success btn-gap my-1">
@@ -23,8 +26,14 @@
         </div>
       </div>
       <hr>
+      {% if institution %}
+        <p>Instituição: <strong>{{ institution.name }}</strong></p>
+      {% elif call %}
+        <p>Chamada: <strong>{{ call.number }}</strong> | Instituição: <strong>{{ call.institution.name }}</strong></p>
+      {% endif %}
+      {% if orders %}
       <div class="table-responsive">
-        <table id="{% table_id %}" class="table table-striped" data-type="order">
+        <table id="{% table_id %}" class="table table-striped" data-type="order" {% if institution or call %}data-reload-on-save="true"{% endif %}>
           <thead>
             <tr>
               <th>N°</th>
@@ -77,6 +86,9 @@
         </table>
       </div>
       {% include 'partials/pagination.html' %}
+      {% else %}
+        <p class="text-muted">Nenhum pedido encontrado.</p>
+      {% endif %}
     </div>
   </div>
 {% endblock %}

@@ -22,6 +22,8 @@ from app.views.order import (
 urlpatterns = [
     # CRUD Pedidos e Produtos dos pedidos
     path('', OrderList.as_view(), name= 'order-list'),
+    path('instituicao/<int:institution_pk>/', OrderList.as_view(), name='institution-orders'),
+    path('chamada/<int:call_pk>/', OrderList.as_view(), name='call-orders'),
     path('cadastrar/', OrderCreate, name='create-order'),
     path('administracao/cadastrar/', OrderCreateAdmin, name= 'create-order-admin'),
     path('<int:pk>/detalhar/', OrderDetail, name='detail-order'),

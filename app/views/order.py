@@ -55,9 +55,25 @@ class OrderList(LoginRequiredMixin, AjaxListView):
     def get_queryset(self):
         user = self.request.user
         queryset = Order.objects.all()
+        institutions = Institution.objects.all()
         if not user.is_staff:
-            queryset = Order.objects.filter(institution=user.institution)
+            queryset = queryset.filter(institution_id=user.institution_id)
+            institutions = institutions.filter(pk=user.institution_id)
+
+        self.institution = None
+        self.call = None
+        if "institution_pk" in self.kwargs:
+            self.institution = get_object_or_404(institutions, pk=self.kwargs["institution_pk"])
+            queryset = queryset.filter(institution=self.institution)
+        elif "call_pk" in self.kwargs:
+            self.call = get_object_or_404(
+                Call, pk=self.kwargs["call_pk"], institution__in=institutions
+            )
+            queryset = queryset.filter(call=self.call)
         return queryset
+
+    def get_context(self):
+        return {"institution": self.institution, "call": self.call}
 
 
 @login_required
